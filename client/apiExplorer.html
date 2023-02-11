@@ -1,0 +1,141 @@
+<!DOCTYPE html><html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script> -->
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+      div.scrollmenu {/* background-color: #333; */ overflow: auto; white-space: nowrap; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.3s;}
+      div.scrollmenu:hover {box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);}
+      div.scrollmenu a { display: inline-block;/* color: white; *//* text-align: center; *//* padding: 14px; */text-decoration: none;vertical-align: top;color: grey;}
+      .ellipse {white-space: nowrap;overflow: hidden;text-overflow: ellipsis;position: relative;/* line-height: 1rem; */pointer-events:none;}
+      .ellipse:after {content:"";  display: block;  position: absolute;top: 0;right: 0;width: 48px;height: 48px;z-index: 1;pointer-events:initial;}
+      .ellipse:hover:after{cursor: pointer;visibility: visible;}
+      .tooltip {width: 45%;visibility: hidden;background-color: black;border: 2px solid white;color: white;padding: 5px;-webkit-box-shadow: 0 0 50px 0 rgba(0,0,0,0.3);opacity: 0;transition: opacity 0.5s ease;}
+      .ellipse:hover + .tooltip {visibility: visible;transition: opacity 0.5s ease;opacity: 1;}
+      .tooltip{display: none !important;}
+      .custom-link{text-decoration: none;}
+      .w3-button:hover {text-decoration: none;}
+      .w3-container, .w3-panel {padding: 0px !important;}
+      .loader-img{height: 125px;margin-left: 30%;}
+      .hints-item{padding: 10px 12px !important; margin-right:5px; border-radius: 5px; background-color: white;}
+      .custom-search-hints-layout{box-shadow: 0 -1px 0px 0px rgba(0,0,0,0.2) !important}
+      .news-block{border-bottom: 10px solid gainsboro;}
+      .glyphicon-play-circle{color: grey !important;}
+      h5{color: grey; margin-top: 20px;}
+      .container-fluid{padding-left: 5px !important; padding-right: 5px !important;}
+    </style>
+
+
+    <script>
+      var socket = io();
+    </script>
+
+  </head>
+  <body>
+      <h1 style="text-align: center;">API EXPLORER</h1>
+      <hr>
+
+
+
+
+      <!-- The Modal -->
+      <div class="modal" id="URLModal">
+        <div class="modal-dialog" style="margin-top: 50%;">
+          <div class="modal-content" style="">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="border: none; padding-bottom: 5px !important; ">
+              <!-- <h4 class="modal-title">Modal Heading</h4> -->
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" style="padding: 5px; padding-left: 20px;padding-right: 20px;">
+                <iframe id="urlIframe" src="" style="border: none; width: 100%; height: 100%;"></iframe>
+                <div id="modalContent" style="text-align: center; color: gray; font-weight: bold;">
+
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer" style="border: none;">
+              <!-- <center> <button type="button" class="btn btn-danger" style="width: 100%;" data-dismiss="modal">Close</button> <center> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <script>
+
+      </script>
+
+      <script type="text/javascript">
+        var modalState = null;
+
+        window.onOpenModal = function(url, type){
+            console.log("==== call open modal function ====");
+            console.log("== href value :: ", url);
+            console.log("== type value :: ", type);
+            let dynId = '';
+            let playId = '';
+            let pauseId = '';
+            if(type === 'newWindow'){
+              window.open(url);
+            }if(type === 'textToSpeech'){
+              // console.log("============== textToSpeech ==============");
+              dynId = url.replace(/\s/g, '');
+              dynId = dynId.replace(/-/g, '');
+              dynId = dynId.replace(/,/g, '');
+              playId = 'play:'+dynId;
+              pauseId = 'pause:'+dynId;
+              // console.log("play id : ", playId);
+              // console.log("play id : ", pauseId);
+              // window.speechSynthesis.resume();
+
+              textToSpeech(url);
+              // document.getElementById(playId).style.display = "none";
+              // document.getElementById(pauseId).style.display = "block";
+            }else if(type === 'textToPause'){
+              // console.log("== href value :: ", url);
+              // console.log("== type value :: ", type);
+              dynId = url.replace(/\s/g, '');
+              dynId = dynId.replace(/-/g, '');
+              dynId = dynId.replace(/,/g, '');
+              playId = 'play:'+dynId;
+              pauseId = 'pause:'+dynId;
+              window.speechSynthesis.pause();
+              // document.getElementById(pauseId).style.display = "none";
+              // document.getElementById(playId).style.display = "block";
+            }else if(type === 'openModalWithContent'){
+              modalState = type;
+              socket.emit("open-modal-with-content-request", {url : url});
+            }else if(type === "cannabis_study_by_condition"){
+                document.getElementById("cannabisStudyByConditionsMainLoaderBlock").style.display = "block";
+                document.getElementById("cannabisStudyByConditionsTemplate").style.display = "none";
+                socket.emit("cannabis-api-request", {from: 'Gini', resposeTeplateId: 'cannabisStudyByConditionsTemplate', loaderId: 'cannabisStudyByConditionsMainLoaderBlock', filterBy: url, category: "cannabis_study_by_condition"});
+
+            }else{
+              document.getElementById("urlIframe").style.display = "none";
+              document.getElementById("modalContent").innerHTML = url;
+              $("#URLModal").modal();
+            }
+
+        }
+
+
+
+      </script>
+
+
+
+  </body>
+</html>

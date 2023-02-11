@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>GECKO</title>
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+		<meta name="format-detection" content="telephone=yes" />
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <!-- <script type="text/javascript" scr="https://raw.githubusercontent.com/asafdav/ng-scrollbar/master/dist/ng-scrollbar.min.js"></script> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+		<script type="text/javascript" src="/static/controller/geckoController.js"></script>
+
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<!-- adding the spell check property -->
+		<script type='text/javascript' src='JavaScriptSpellCheck/include.js' ></script>
+		<!-- <script type='text/javascript'>$Spelling.SpellCheckAsYouType('queryMsg')</script> -->
+		<!--  date time picker -->
+
+		<!-- end of date time picker -->
+		<!-- custom scroll bar -->
+
+
+
+		<link rel="shortcut icon" type="image/x-icon" href="/static/images/favicon.ico">
+
+		<link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css" />
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+
+		<link href="/static/css/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css" />
+		<link href="/static/css/screen.css" rel="stylesheet" type="text/css" />
+		<link href="/static/css/screen-black.css" rel="stylesheet" type="text/css" />
+		<link href="/static/css/screen-white.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="/static/dateTimePicker/build/css/bootstrap-datetimepicker.css">
+
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	<body ng-app="myApp" ng-controller="geckoControleller" ng-cloak>
+		<section class="black-theme-hld" >
+			<header class="hdr-main">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-3 col-sm-3">
+							<a class="logo" href="javascript:void(0);">
+								<img alt="" src="/static/images/logo.png"/>
+							</a>
+						</div>
+						<div class="col-md-6 col-sm-6">
+							<div class="hdr-text">
+								<h2>{{passcodeInfo.position_name}}</h2>
+								<em>JOB CODE - {{passcodeInfo.position_id}}</em>
+							</div>
+						</div>
+						<div class="col-md-3 col-sm-3" >
+							<div class="timer-hdr " ng-show="showExamTimer">
+								<em> Time Left</em>
+								<!-- <div id="hms">00:10:10</div> -->
+								<div id="hms" style="word-spacing: 20px;">
+									{{startTimerHr}} {{startTimerMnt}} {{startTimerSec}}
+								</div>
+								<div class="" style="word-spacing: 10px;">
+									<span>HRS MIN SEC</span>
+								</div>
+								<div class="" id="timer">
+
+								</div>
+								<!-- <div class="simply-countdown simply-countdown-one"></div> -->
+							</div>
+
+							<div class="timer-hdr " ng-show="showZeroTimer">
+								<em> Time Left</em>
+								<!-- <div id="hms">00:10:10</div> -->
+								<div id="hms" style="word-spacing: 20px;" ng-init="hr=00; mnt=00; sec=00;">
+									{{hr}} {{mnt}} {{sec}}
+								</div>
+								<div class="" style="word-spacing: 10px;">
+									<span>HRS MIN SEC</span>
+								</div>
+								<div class="" id="timer">
+
+								</div>
+								<!-- <div class="simply-countdown simply-countdown-one"></div> -->
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</header>
+
+			<section class="chat-wrapper">
+
+				<!-- --------------------------------->
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2" >
+							<div class="chatbox-hld">
+								<!-- <span>{{chatContainer.length}}</span> -->
+									<div id="geckoChatContainer" class="chatarea-hld chatbot-ovfl-scroll" my-main-directive>
+
+										<div ng-repeat="chat in chatContainer track by $index" my-repeat-directive>
+												<div class="clearfix mrgn-btm" ng-if="chat.input.length > 0 && chat.input !== '' ">
+													<div class="blue-chatable clearfix">
+														<div class="chatenter bg-yellow pull-right with-icon">
+															<p>
+																  {{chat.input}}
+															</p>
+														</div>
+													</div>
+												</div>
+												<div class="clearfix mrgn-btm" ng-if="chat.output.length > 0">
+													<div class="grey-chatable clearfix">
+														<div class="chatenter bg-grey">
+															<div ng-bind-html="chat.output | unsafe">
+
+															</div>
+														</div>
+													</div>
+												</div>
+
+										</div>
+
+									</div>
+									</div>
+									<div class="chatpanel-btm-hld clearfix">
+										<input class="" type="text" id="queryMsg" placeholder="Write a message..." ng-model="queryMsg"  ng-disabled="queryMsgDisableStatus" ng-keypress="sendMsgByEnter($event, queryMsg)"  />
+										<a href="javascript:void(0);" class="popup-btn" id="chatbox-popup-open"> <span></span> <span></span> <span></span> </a>
+
+										<input type="submit" id="send" value="Send" ng-click="sendMsg(queryMsg)"/>
+
+									</div>
+								</div>
+								<div class="skip-question-section" >
+										<div class="" id="showSkipQuestions" ng-if="trackSkipQuestions.length > 0">
+												<span style="color: white; ">You haved skipped Questions </span>
+												<div class="" ng-repeat="questionObj in trackSkipQuestions">
+														<span class="badge" style="color: red; display: inline-block; float:left; margin-right: 1%; margin-top: 1%;">{{questionObj.qIndex}}</span>
+												</div>
+										</div>
+								</div>
+
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<footer class="ftr-hld">
+				<div class="container">
+					<div class="col-md-12 col-sm-12 text-center">
+						<p>
+							Copyright @copy; 2016, WS Group | ISO 9001:2008
+						</p>
+					</div>
+				</div>
+			</footer>
+
+		</section>
+		<div class="modal accessmodal fade in" id="accessPasscodeModal" role="dialog" >
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Enter Passcode</h4>
+					</div>
+					<div class="modal-body">
+						<p>
+							Please enter the passcode that was sent to you for starting the interview.
+						</p>
+						<input type="password" name="psw" id="passcode" ng-model="passcode" maxlength="7" ng-keypress="sendPasscodeByEnter($event, passcode)" placeholder="--------" />
+						<center><div ng-show="passcodeStatus" style="color: red; margin-top: 4%;"><i>Invalid Passcode</i></div></center>
+						<div class="enterbtn">
+							<button class="btn-default" ng-click="checkPasscode(passcode)"  aria-hidden="true">Enter</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal accessmodal fade in" id="nameMismatchModal" role="dialog" >
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<!--<button type="button" class="close" data-dismiss="modal">×</button>-->
+					</div>
+					<div class="modal-body">
+							<p style="padding: 3%;">
+								OOps! this is not the name that matches with my database.
+								I need the human folkes to take a look at what went wrong.
+								Please wait while we sort it out.
+							</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal accessmodal fade in" id="notifyTimer" role="dialog" >
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+					</div>
+					<div class="modal-body">
+							<p style="padding: 5%; color:red; font-size: 18px;">
+								You have 5 minute left for the allocated interview time.
+								<br> Answers will be submitted automatically and you will not allowed to answer any more.
+							</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal accessmodal fade in" id="automaticFinalAnswerSheetSubmit" role="dialog" >
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+					</div>
+					<div class="modal-body">
+							<p style="padding: 5%; color:red; font-size: 18px;">
+								Your allocated interview time is over.
+								<br> Your submitted Answers is automatically submitted and you will get the final report in mail after proces.
+							</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Js added -->
+		<script type="text/javascript" src="/static/controller/geckoController.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/static/js/simplyCountdown.min.js"></script>
+		<script type="text/javascript" src="/static/js/jquery.mCustomScrollbar.min.js"></script>
+		<script type="text/javascript" src="/static/dateTimePicker/moment.js"> </script>
+		<script type="text/javascript" src="/static/dateTimePicker/build/js/bootstrap-datetimepicker.min.js"> </script>
+		<!-- <script type="text/javascript" src="/static/js/jQuery-countdown-v2.0.js"></script> -->
+
+		<!-- Js added -->
+
+		<script type="text/javascript">
+			$(window).load(function(){
+		   		$('#accessPasscodeModal').modal('show');
+					document.getElementById("passcode").focus();
+		    });
+
+			 // This disable for click outside event for the passcode modal section
+			$('#accessPasscodeModal').modal({    backdrop: 'static', 	});  // This disable for click outside event    keyboard: true        // This for keyboard event
+
+			$(document).ready(function() {
+				$(".chatbot-ovfl-scroll").mCustomScrollbar({});
+
+			})
+			$( document ).on( "click", "#dateTimePicker", function( e ) {
+
+
+					$('#dateTimePicker').datetimepicker();
+					$('#dateTimePicker').focus();
+					var selectedRescheduleDate = ($('#dateTimePicker').data('date'));
+					formatSelectedRescheduleDate(selectedRescheduleDate);
+			});
+
+			function ChatinIt(){
+				var winH = $(window).height(),
+					chaBtm = $('.chatpanel-btm-hld').outerHeight(),
+					chaHD = $('.hdr-main').outerHeight(),
+					chaFT = $('.ftr-hld').outerHeight();
+				var	totalChatH = winH - (chaBtm + chaHD + chaFT);
+					$('.chatarea-hld').css('height', totalChatH);
+			}
+
+			if($(window).width() > 767){
+				$(window).on('load resize', function () {
+					ChatinIt(); // call on resize
+				});
+			}
+
+			//---------------------------------------------------------------------------------------------
+							(function (global) {
+
+					if(typeof (global) === "undefined")
+					{
+						throw new Error("window is undefined");
+					}
+
+				    var _hash = "!";
+				    var noBackPlease = function () {
+				        global.location.href += "#";
+
+						// making sure we have the fruit available for juice....
+						// 50 milliseconds for just once do not cost much (^__^)
+				        global.setTimeout(function () {
+				            global.location.href += "!";
+				        }, 50);
+				    };
+
+					// Earlier we had setInerval here....
+				    global.onhashchange = function () {
+				        if (global.location.hash !== _hash) {
+				            global.location.hash = _hash;
+				        }
+				    };
+
+				    global.onload = function () {
+
+						noBackPlease();
+
+						// disables backspace on page except on input fields and textarea..
+						document.body.onkeydown = function (e) {
+				            var elm = e.target.nodeName.toLowerCase();
+				            if (e.which === 8 && (elm !== 'input' && elm  !== 'textarea')) {
+				                e.preventDefault();
+				            }
+				            // stopping event bubbling up the DOM tree..
+				            e.stopPropagation();
+				        };
+
+				    };
+
+				})(window);
+
+
+				// window.onbeforeunload = function (e) {
+				// 	//   e.returnValue = "hello, are you sure???";
+				// 		console.log("browser refresh...");
+				// 		$('#refreshMsgModal').modal('show');
+				//
+				// 	  return "You may lose the changes!!!\n are you sure???";
+				// 	//   return null;
+				// };
+
+				function goodbye(e) {
+			    if(!e) e = window.event;
+			    //e.cancelBubble is supported by IE - this will kill the bubbling process.
+			    e.cancelBubble = true;
+			    e.returnValue = 'You sure you want to leave?'; //This is displayed on the dialog
+
+			    //e.stopPropagation works in Firefox.
+			    if (e.stopPropagation) {
+			        e.stopPropagation();
+			        e.preventDefault();
+			    }
+				}
+				window.onbeforeunload=goodbye;
+
+				// $(function () {
+				// 		$('#date').datetimepicker();
+				// });
+				// $('#dateTimePicker').click(function () {
+				// 		console.log($('#date').data('date'))
+				// 		$('#SelectedDate').text($('#datetimepicker2').data('date'))
+				// })
+			//--------------------------------------------------------------------------------------------
+
+		</script>
+
+	</body>
+</html>

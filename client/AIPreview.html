@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>AI Preview</title>
+    <!-- EXTERNAL CSS  FILES -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- EXTERNAL JAVASCRIPT FILES  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <style media="screen">
+        hr{
+            margin-top: 5px;
+            margin-bottom:5px;
+        }
+        .card-body{
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+        .y{
+          border-bottom: 1px solid #ddd;
+          padding-bottom: 10px;
+        }
+        .y:last-of-type {
+            border: none;
+        }
+        .entityValue{
+          border-bottom: none;
+          padding-bottom: 10px;
+        }
+        .entityValue:last-of-type {
+            border: none;
+        }
+        .right-arrow{
+          float: right;
+          margin-top: -20px;
+        }
+        .expression{
+          margin-left: 50px; margin-top:5px;
+        }
+        .intent-name{margin-top:5px; margin-right:50px;}
+        .edit-icon{
+          left: 20px;
+          position: relative;
+          float: right;
+          top: -27px;
+        }
+        .try-it-now{height:100px; background-color: #DCDCDC;}
+
+    </style>
+  </head>
+  <body>
+    <div ng-app="myApp" ng-controller="AIPreviewController">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div> -->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd;">
+                  <!--  CREATE INTENT PREVIEW  -->
+                  <div class="">
+                      <div>create intent</div>
+                      <div class="form-group">
+                        <label for="usr">Name:</label>
+                        <div class="intent-name">
+                            <input type="text" ng-model="newIntent.intent" class="form-control expression" id="usr">
+                        </div>
+                      </div>
+                      <hr>
+
+                      <div class="intent-expression">
+                        <div class="form-group">
+                          <span>
+                            <label for="usr">Expressions</label>
+                            <i class="fa fa-plus" style="margin-left: 10px;" aria-hidden="true" ng-click="addIntentExpression()"></i>
+                            <button type="button" class="btn btn-primary" style="float:right; margin-bottom:10px;">Add exp</button>
+                          </span>
+                          <div class="expression" ng-repeat="obj in newIntent.examples track by $index" >
+                              <input type="text" class="form-control" id="usr" ng-model="obj.exp">
+                          </div>
+                          <div class="" style="margin-top: 10px; margin-left:50px;">
+                              <button type="button" class="btn btn-primary btn-block" ng-click="saveIntent()" >Save intent</button>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                  <hr>
+                  <!--  ABOUT INTENT PREVIEW  -->
+                  <div id="accordion">
+                    <div class="card bg-light text-dark" style="margin-bottom: 8px;" ng-repeat="x in AIData.data.intents" ng-init="intentIndex = $index;">
+                      <div class="card-header">
+                        <a class="card-link" data-toggle="collapse" href="#collapseIntent{{$index}}">
+                            <div>{{x.intent}}</div>
+                        </a>
+                        <i class="fa fa-chevron-circle-right right-arrow" aria-hidden="true"></i>
+                      </div>
+                      <div  id="collapseIntent{{$index}}" class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+                          <div ng-repeat="y in x.examples track by $index" ng-init="intentExpIndex = $index;" class="y" style=" background-color: white;">
+                              <!-- margin-left: 15px; margin-right:10px; -->
+
+                                    <div ng-if="!x.trackEditArr[$index] && y!== ' '" class="row" >
+                                      <!-- <div class="row"> -->
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                          <div class="" style="width:80%">
+                                            <span>{{y}}</span>
+                                            <div ng-if="x.trackEditArr[$index]" class="">
+                                                <span>
+                                                  <input type="text" class="form-control" id="usr" ng-model="y">
+                                                  <i class="fa fa-floppy-o edit-icon" aria-hidden="true" ng-click="x.trackEditArr[$index] = false; saveEditedIntent(x,intentIndex,intentExpIndex,y)" ></i>
+                                                </span>
+                                            </div>
+                                            <div class="" ng-init="x.trackEditArr[$index] = false;">
+                                              <div class="" style="margin-top: 5px;">
+                                                <input ng-if="y === ' ' " id="newIntent" type="text" class="form-control" id="usr"  ng-model="y" style="width:95%;">
+                                                <i ng-if="y === ' ' " ng-click="saveNewIntentExp(x,intentIndex,intentExpIndex,y)" class="fa fa-floppy-o" aria-hidden="true" style="float: right; margin-top: -28px; margin-right: 1px; font-size: 18px;"></i>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="">
+                                          <div class="">
+                                            <i ng-if="x.examples.length === (intentExpIndex + 1)" class="fa fa-plus-square-o" aria-hidden="true" ng-click="addIntent(x)" style="float: right; margin-top: 8px; margin-left: 5px; font-size: 18px;"></i>
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true" style="float: right; margin-top:9px;" ng-click="x.trackEditArr[$index] = true;"></i>
+                                            <i class="fa fa-trash-o" ng-click="deleteIntentExp(x, intentIndex, intentExpIndex)" aria-hidden="true" style="float: right; margin-top: 8px; margin-right: 5px; font-size: 18px;"></i>
+                                          </div>
+
+                                        </div>
+                                      <!-- </div> -->
+
+
+                                    </div>
+
+
+
+
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+
+                  <!--  CREATE INTENT PREVIEW  -->
+                  <!--  CREATE INTENT PREVIEW  -->
+                  <div class="">
+                      <div>Create entity</div>
+                      <div class="form-group">
+                        <label for="usr">Entity name:</label>
+                        <div class="intent-name">
+                            <input type="text" ng-model="newEntity.entityName" class="form-control expression" id="usr">
+                        </div>
+
+                      </div>
+                      <hr>
+
+                      <div class="create-new-entity">
+                        <!-- <button type="button" class="btn" style="float:right;">Basic</button> -->
+                        <div class="intent-name">
+                            <label for="usr">Entity value:</label>
+                            <input type="text" ng-model="newEntity.entityValue" class="form-control expression" id="usr">
+                        </div>
+                        <div class="form-group">
+                          <span>
+                            <label for="usr">Synonyms</label>
+                            <i class="fa fa-plus" style="margin-left: 10px;" aria-hidden="true" ng-click="addEntitySynonymExpressio()"></i>
+                            <!-- <button type="button" class="btn btn-primary" style="float:right; margin-bottom:10px;">Save</button> -->
+                          </span>
+                          <div class="expression" ng-repeat="obj in newEntity.synonyms track by $index" >
+                              <input type="text" class="form-control" id="usr" ng-model="obj.exp">
+                          </div>
+                          <div class="" style="margin-top: 10px; margin-left:50px;">
+                              <button type="button" class="btn btn-primary btn-block" ng-click="saveEntity()" >Save</button>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                  <hr>
+                  <!--  ABOUT ENTITY PREVIEW  -->
+                  <div class="">
+                      <div>review and edit entity section</div>
+                      <div class="entityReviewSection">
+                        <div id="accordion">
+                          <div class="card bg-light text-dark" style="margin-bottom: 6px;" ng-repeat="x in AIData.data.entities track by $index; " ng-init="entityIndex = $index;">
+                            <div class="card-header" style="border: none; background-color: teal; color:white;">
+                              <a class="card-link" style="color: white;" data-toggle="collapse" href="#collapseEntity{{$index}}">
+                                  <div>{{x.entity}}</div>
+                              </a>
+                              <i class="fa fa-chevron-circle-right right-arrow" aria-hidden="true"></i>
+                            </div>
+                            <div  id="collapseEntity{{$index}}" class="collapse" style="background-color: white;" data-parent="#accordion">
+                              <div class="card-body">
+                                <div ng-repeat="entityValue in x.values track by $index" ng-init="entityValueIndex = $index;" class="y" style="">
+                                    <div  class="">{{entityValue.value}}</div>
+
+                                    <div ng-if="entityValue.synonyms.length > 0" id="synonymPreview" class="" style="border: 1px solid gainsboro; margin-top: 3px;">
+                                      <div class="card-header" style="border: none; background-color: teal; color:white;">
+                                        <a class="card-link" style="color: white;" data-toggle="collapse" href="#collapseSynonyms{{$index}}">
+                                            <div>Synonym</div>
+                                        </a>
+                                        <i class="fa fa-chevron-circle-right right-arrow" aria-hidden="true"></i>
+                                      </div>
+                                      <div  id="collapseSynonyms{{$index}}" class="collapse" data-parent="#accordion" style="background-color: white;">
+                                        <div class="card-body" style="background-color:white;">
+                                          <div ng-repeat="synonym in entityValue.synonyms track by $index;" ng-init="synonymIndex = $index;" class="y" style="">
+                                              <div id="" class="" ng-init="x.trackEditArr[$index] = false;">
+                                                  <div ng-if="!x.trackEditArr[$index] && synonym !== ' '" class="">
+                                                    <span>{{synonym}}</span>
+                                                    <i ng-if="entityValue.synonyms.length === (synonymIndex + 1)" class="fa fa-plus-square-o" aria-hidden="true" ng-click="addNewSynonymExp(entityValue.synonyms)" style="float: right; margin-top: 9px; margin-left: 5px; font-size: 18px;"></i>
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true" style="float: right; margin-top:10px;" ng-click="x.trackEditArr[$index] = true;"></i>
+                                                    <i class="fa fa-trash-o" ng-click="deleteEntitySynonym(x, entityIndex, entityValueIndex, synonymIndex, synonym)" aria-hidden="true" style="float: right; margin-top: 8px; margin-right: 5px; font-size: 18px;"></i>
+                                                  </div>
+                                                  <div ng-if="x.trackEditArr[$index]" class="">
+                                                      <span>
+                                                        <input type="text" class="form-control" id="usr" ng-model="synonym">
+                                                        <i class="fa fa-floppy-o edit-icon" aria-hidden="true" ng-click="x.trackEditArr[$index] = false; savedEditedEntity(x, entityIndex, entityValueIndex, synonymIndex, synonym)" ></i>
+                                                      </span>
+                                                  </div>
+                                                  <div class="" style="margin-top: 5px;">
+                                                    <input ng-if="synonym === ' ' " id="newSynonym" type="text" class="form-control" id="usr"  ng-model="synonym" style="width:95%;">
+
+                                                    <i ng-if="synonym === ' ' " ng-click="addEntitySynonym(x, entityIndex, entityValueIndex, synonymIndex, synonym)" class="fa fa-floppy-o" aria-hidden="true" style="float: right; margin-top: -28px; margin-right: -5px; font-size: 18px;"></i>
+                                                  </div>
+                                              </div>
+
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                  </div>
+                  <!-- <hr> -->
+                </div>
+                <!-- <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <div class="try-it-now" >
+                        <label for="">Try it now</label>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+  <script>
+  var app = angular.module('myApp', []);
+  app.controller('AIPreviewController', function($scope) {
+    console.log("AI Preview controller is loading...");
+    var client = io();
+
+    // $scope.intentInitExpression = [{exp : ""}];
+    $scope.newIntent = {intent : "", examples: [{exp : ""}]}
+    $scope.newEntity = {entityName : "", entityValue:"", synonyms: [{exp : ""}]}
+
+
+    $scope.AIData = null;
+
+    client.emit("fetch-ai-preview-init-data", {})
+
+    client.on("ai-preview-init-data-response", function(data){
+      $scope.$apply(function(){
+          console.log("======  ai priview ai data  ======");
+          $scope.AIData = data;
+          console.log("ai intents data : ", $scope.AIData.data.intents);
+          console.log("ai entity data : ", $scope.AIData.data.entities);
+      })
+    });
+
+    $scope.addIntentExpression = function(){
+        $scope.newIntent.examples.push({exp:""})
+    }
+
+    $scope.addEntitySynonymExpressio = function(){
+        $scope.newEntity.synonyms.push({exp:""})
+    }
+
+    $scope.saveIntent = function(){
+        console.log("saved intent :: ", $scope.newIntent);
+        var newExmples = [];
+        for (var i = 0; i < $scope.newIntent.examples.length; i++) {
+            newExmples.push($scope.newIntent.examples[i].exp);
+        }
+        let newIntentObj = {};
+        newIntentObj.intent = $scope.newIntent.intent;
+        newIntentObj.examples = newExmples;
+        $scope.AIData.data.intents.push(newIntentObj);
+        $scope.newIntent = {intent : "", examples: [{exp : ""}]}
+        console.log(" intent list :: ", $scope.AIData.data.intents);
+        console.log("new intent obj : ", newIntentObj);
+        client.emit("add-new-intent", {newIntent: newIntentObj});
+    }
+
+    $scope.saveEntity = function(){
+
+    }
+
+    $scope.saveEditedIntent = function(intent,intentIndex,intentExpIndex, newExm){
+        // intent.examples[intentExpIndex] = newExm;
+        entity.values[entityValueIndex].synonyms[expIndex] = newExp;
+        client.emit("save-edited-intent", {intent: intent, intentIndex: intentIndex, intentExpIndex: intentExpIndex, newExp: newExm})
+    }
+
+    $scope.savedEditedEntity = function(entity, entityIndex, entityValueIndex, expIndex, newExp){
+        console.log("entity :: ", entity);
+        console.log("index = ", expIndex);
+        console.log("new exp :: ", newExp);
+        console.log("entityValueIndex : ", entityValueIndex);
+        //entity.values[entityValueIndex].value;
+        entity.values[entityValueIndex].synonyms[expIndex] = newExp;
+      //  console.log("$scope.AIData.data.entities: ", {entity: entity, entityValueIndex: entityValueIndex, expIndex: index, newExp: newExp});
+        client.emit("save-edited-entity", {entity: entity, entityIndex: entityIndex, entityValueIndex: entityValueIndex, expIndex: expIndex, newExp: newExp})
+    }
+
+    $scope.addIntent = function(intent){
+        intent.examples.push(" ");
+    }
+
+    $scope.deleteIntentExp = function(intent, intentIndex, intentExpIndex){
+        intent.examples.splice(intentExpIndex, 1);
+        client.emit("delete-intent-exp", {intentIndex: intentIndex, intentExpIndex: intentExpIndex});
+    }
+
+    $scope.addNewSynonymExp = function(synonymArr){
+        console.log("synonymArr :: ", synonymArr);
+        synonymArr.push(" ");
+    }
+
+    $scope.saveNewIntentExp = function(intent,intentIndex,intentExpIndex, newExm){
+        var newIntentExp = document.getElementById("newIntent").value;
+        // console.log("== call save new intent with exp : ", newExm);
+        // console.log("== intent :: ", intent)
+        // console.log("x :: ", newIntentExp);
+        intent.examples[intentExpIndex] = newIntentExp;
+        // client.emit("save-new-intent", {intent: intent, intentIndex: intentIndex, intentExpIndex: intentExpIndex, newExp: newExm});
+        client.emit("save-edited-intent", {intent: intent, intentIndex: intentIndex, intentExpIndex: intentExpIndex, newExp: newIntentExp})
+
+    }
+
+    $scope.addEntitySynonym = function(entity, entityIndex, entityValueIndex, synonymIndex, synonym){
+        // console.log("x ::", entity);
+        // console.log("entityIndex ::", entityIndex);
+        // console.log("entityValueIndex ::", entityValueIndex);
+        // console.log("synonymIndex ::", synonymIndex);
+        var newSynonym = document.getElementById("newSynonym").value;
+        console.log("newSynonym ::", newSynonym);
+        entity.values[entityValueIndex].synonyms[synonymIndex] = newSynonym;
+        client.emit("add-new-synonym", {entityIndex: entityIndex, entityValueIndex: entityValueIndex, synonymIndex: synonymIndex, newSynonym: newSynonym});
+    }
+
+    $scope.deleteEntitySynonym = function(entity, entityIndex, entityValueIndex, synonymIndex, synonym){
+        entity.values[entityValueIndex].synonyms.splice(synonymIndex, 1);
+        client.emit("delete-entity-synonym", {entityIndex: entityIndex, entityValueIndex: entityValueIndex, synonymIndex: synonymIndex})
+    }
+
+
+
+  });
+  </script>
+  </body>
+</html>

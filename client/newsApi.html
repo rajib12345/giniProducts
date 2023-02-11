@@ -1,0 +1,351 @@
+<!DOCTYPE html><html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        div.scrollmenu {
+          /* background-color: #333; */
+          overflow: auto;
+          white-space: nowrap;
+        }
+
+        div.scrollmenu a {
+          display: inline-block;
+          color: white;
+          /* text-align: center; */
+          /* padding: 14px; */
+          text-decoration: none;
+        }
+
+        /* div.scrollmenu a:hover {
+          background-color: #777;
+        } */
+        /* .ellipse{
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        .ellipse:hover{
+          overflow: visible;
+          color: blue;
+
+        } */
+    .ellipse {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: relative;
+      /* line-height: 1rem; */
+      pointer-events:none;
+    }
+
+    .ellipse:after {
+      content:"";
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 48px;
+      height: 48px;
+      z-index: 1;
+      pointer-events:initial;
+    }
+
+    .ellipse:hover:after{
+      cursor: pointer;
+      visibility: visible;
+    }
+
+    .tooltip {
+      width: 45%;
+      visibility: hidden;
+      background-color: black;
+      border: 2px solid white;
+      color: white;
+      padding: 5px;
+      -webkit-box-shadow: 0 0 50px 0 rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+
+    .ellipse:hover + .tooltip {
+      visibility: visible;
+      transition: opacity 0.5s ease;
+      opacity: 1;
+    }
+    .tooltip{
+        display: none !important;
+    }
+
+    </style>
+
+    <script>
+      var socket = io();
+    </script>
+
+  </head>
+  <body ng-app="nearByApi" ng-controller="nearByApiController">
+      <h1 style="text-align: center;">News Headlines</h1>
+      <hr>
+      <div class="" id="topNewsSourcesBlock">
+        <center><h5 style="text-align: center; font-weight: 900;">TOP NEWS SOURCES</h5></center>
+        <div class="" id="topNewsSourcesLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="topNewsSourcesTemplate" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+      <hr>
+      <div class="" id="topIndianEnglishNewsSourcesBlock">
+        <center><h5 style="text-align: center; font-weight: 900;">TOP INDIAN NEWS SOURCES WITH ENGLISH LANGUAGE</h5></center>
+        <div class="" id="topIndianEnglishNewsSourcesLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="topIndianEnglishNewsSourcesTemplate" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+      <hr>
+      <div class="" id="topEnglishNewsSourcesBlock">
+        <center><h5 style="text-align: center; font-weight: 900;">TOP NEWS SOURCES WITH ENGLISH LANGUAGE</h5></center>
+        <div class="" id="topEnglishNewsSourcesLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="topEnglishNewsSourcesTemplate" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+      <hr>
+      <div class="" id="topBusinessNewsBlock">
+
+        <center><h5 style="text-align: center; font-weight: 900;">TOP BUSINESS NEWS</h5></center>
+        <div class="" id="topBusinessNewsLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="topBusinessNewsTemplate" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+      <hr>
+      <div class="" id="topEntertainmentNewsBlock">
+
+        <center><h5 style="text-align: center; font-weight: 900;">TOP ENTERTAINMENT NEWS</h5></center>
+        <div class="" id="topEntertainmentNewsLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="topEntertainmentNewsTemplate" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+      <hr>
+      <div class="" id="topHealthNewsBlock">
+
+        <center><h5 style="text-align: center; font-weight: 900;">TOP HEALTH NEWS</h5></center>
+        <div class="" id="topHealthNewsLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="topHealthNewsTemplate" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+
+      <hr>
+      <div class="" id="topScienceNewsBlock4">
+
+        <center><h5 style="text-align: center; font-weight: 900;">TOP SCIENCE NEWS</h5></center>
+        <div class="" id="topScienceNewsLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="topScienceNewsTemplate" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+      <hr>
+      <!-- <div class="" id="topSportsNewsBlock5">
+
+        <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center>
+        <div class="" id="topSportsNewsLoaderBlock5">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="topSportsNewsTemplate5" class="container-fluid scrollmenu">
+
+        </div>
+      </div> -->
+
+      <hr>
+      <div class="" id="topTechnologyNewsBlock">
+
+        <center><h5 style="text-align: center; font-weight: 900;">TOP TECHNOLOGY NEWS</h5></center>
+        <div class="" id="topTechnologyNewsLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="topTechnologyNewsTemplate" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+      <hr>
+      <div class="" id="topSportsNewsBlock">
+
+        <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS7</h5></center>
+        <div class="" id="topSportsNewsLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="topSportsNewsTemplate" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+
+
+
+      <!-- The Modal -->
+      <div class="modal" id="URLModal">
+        <div class="modal-dialog" style="margin-top: 50%;">
+          <div class="modal-content" style="">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="border: none; padding-bottom: 5px !important; ">
+              <!-- <h4 class="modal-title">Modal Heading</h4> -->
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" style="padding: 5px; padding-left: 20px;padding-right: 20px;">
+                <iframe id="urlIframe" src="" style="border: none; width: 100%; height: 100%;"></iframe>
+                <div id="modalContent" style="text-align: center; color: gray; font-weight: bold;">
+
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer" style="border: none;">
+              <!-- <center> <button type="button" class="btn btn-danger" style="width: 100%;" data-dismiss="modal">Close</button> <center> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <script>
+          function hScroll(hScrollBody){
+              return '<div class="scrollmenu">'+hScrollBody+'</div>';
+          }
+          socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topBusinessNewsTemplate', loaderId: 'topBusinessNewsLoaderBlock', category: 'business', country: 'in'});
+
+          socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topEntertainmentNewsTemplate', loaderId: 'topEntertainmentNewsLoaderBlock', category: 'entertainment', country: 'in'});
+
+          socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topHealthNewsTemplate', loaderId: 'topHealthNewsLoaderBlock', category: 'health', country: 'in'});
+
+          socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topScienceNewsTemplate', loaderId: 'topScienceNewsLoaderBlock', category: 'science', country: 'in'});
+
+          socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topTechnologyNewsTemplate', loaderId: 'topTechnologyNewsLoaderBlock', category: 'technology', country: 'in'});
+
+          socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topSportsNewsTemplate', loaderId: 'topSportsNewsLoaderBlock', category: 'sports', country: 'in'});
+
+          socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topNewsSourcesTemplate', loaderId: 'topNewsSourcesLoaderBlock', category: 'sources'});
+
+          socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topEnglishNewsSourcesTemplate', loaderId: 'topEnglishNewsSourcesLoaderBlock', category: 'englisg news sources'});
+
+          socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topIndianEnglishNewsSourcesTemplate', loaderId: 'topIndianEnglishNewsSourcesLoaderBlock', category: 'Indian englisg news sources'});
+
+          socket.on('news-api-response', function(data){
+              // console.log("data .template :: ", data.template);
+              // if(data.resposeTeplateId === 'topSportsNewsTemplate'){
+              //   let loaderId = data.loaderId;
+              //   document.getElementById(loaderId).style.display = "none";
+              //   document.getElementById("topSportsNewsTemplate").innerHTML = data.returnMsg;
+              // }
+
+              let loaderId = data.loaderId;
+              let blockId = data.resposeTeplateId;
+              document.getElementById(loaderId).style.display = "none";
+              document.getElementById(blockId).innerHTML = data.returnMsg;
+
+          });
+
+
+      </script>
+
+      <script type="text/javascript">
+        var app = angular.module('nearByApi', []);
+        var modalState = null;
+        app.controller('nearByApiController', function($scope){
+
+
+          window.onOpenModal = function(url, type){
+              console.log("==== call open modal function ====");
+              console.log("== href value :: ", url);
+              console.log("== type value :: ", type);
+
+              if(type === 'newWindow'){
+                window.open(url);
+              }else if(type === 'openModalWithContent'){
+                modalState = type;
+                socket.emit("open-modal-with-content-request", {url : url});
+              }else{
+                document.getElementById("urlIframe").style.display = "none";
+                document.getElementById("modalContent").innerHTML = url;
+                $("#URLModal").modal();
+              }
+
+          }
+
+          window.webShare = function(title, text, url){
+            console.log("title : ", title);
+              console.log("=== calling web share function ===");
+              console.log("title : ", title);
+              console.log("text : ", text);
+              console.log("url : ", url);
+
+              if(navigator.share){
+                  console.log("==== supported web share ====");
+                  navigator.share({
+                    title : title,
+                    text : text,
+                    url : url,
+                  }).then((data) => {
+                      console.log("thanks for sharingthe data.");
+                      console.log("data : ", data);
+                  })
+                  .catch((err) => {
+                      console.log("error occured when we are sharing the post.");
+                  })
+              }
+          }
+
+          socket.on("open-modal-with-content-response", function(data){
+              console.log("==== call open modal with content response ====");
+              console.log("open-modal-with-content-response :: ", data.template);
+              if(modalState === 'openModalWithContent'){
+                  document.getElementById("urlIframe").style.display = "none";
+                  document.getElementById("modalContent").innerHTML = data.template;
+                  $("#URLModal").modal();
+              }
+              modalState = null;
+          })
+        });
+      </script>
+
+
+
+  </body>
+</html>

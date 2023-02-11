@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+ <head>
+   <meta charset="utf-8">
+   <title>Bootstrap Example</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+   <script src="/socket.io/socket.io.js"></script>
+   <script>
+     // console.log("client io \n", client);
+   </script>
+   <style>
+       /* width */
+       ::-webkit-scrollbar {
+         width: 3px;
+       }
+
+       /* Track */
+       /* ::-webkit-scrollbar-track {
+         background: #f1f1f1;
+       } */
+
+       /* Handle */
+       /* ::-webkit-scrollbar-thumb {
+         background: #888;
+       } */
+
+       /* Handle on hover */
+       /* ::-webkit-scrollbar-thumb:hover {
+         background: #555;
+       } */
+
+
+   </style>
+ </head>
+ <body>
+   <div class="main-content" ng-app="showCoddedFilesApp" ng-controller="showCodedFilesController">
+     <center><h3>SHOW SHARED FILES CONTENT</h3></center><hr>
+     <div class="file-lists container-fluid">
+         <div class="row">
+               <!-- <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div> -->
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                 <div class="">
+                   <input type="text" class="form-control" id="searchFiles" ng-model="searchText" placeholder="Search here..." style="border-radius: 2px; background-color: black; margin-bottom: 3px; color: white; outline: none; border: none;">
+                 </div>
+
+                 <div class="files-list" style="height:552px; overflow-y: scroll;">
+
+                   <div class="" ng-repeat="file in filteredFiles = (files | filter:searchText)" style="background-color: #f1f1f1; border-left: 5px solid darkcyan; margin-top: 3px;">
+                       <div ng-if="filteredFiles.length > 0 " class="row" style=" padding: 10px; margin-left: 0px; margin-right: 0px;">
+                          <!-- border-bottom: 1px solid gray; -->
+                         <!-- <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"> -->
+                         <!-- </div> -->
+                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                           <div class="row">
+                             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="padding: 0px;">
+                               <i class="fa fa-file-text-o" style="color: gray; font-size: 30px;"></i>
+                             </div>
+                               <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="">
+                                 {{file.name}}
+                               </div>
+                           </div>
+                         </div>
+                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="padding-left: 0px; padding-right: 0px;">
+                           <div class="row" style="background-color: teal; text-align: center; font-size: 13px;" >
+                              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding: 5px; border-right: 2px solid white; " ng-click="openPreviewModal($index)" >
+                                <button type="button" class="" style="border-radius: 1px; background-color: teal; color: white; border:none; outline: none;" ng-click="openPreviewModal($index)">Preview</button>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding: 5px; border-left: 2px solid white; " ng-click="deleteFiles($index)" >
+                                <button type="button" class="" style="border-radius: 1px; background-color: teal; color: white; border:none; outline: none;" ng-click="deleteFiles($index)">Delete</button>
+                                <!-- <i class="fa fa-trash" style="color: gray; font-size: 20px;" ng-click="deleteFiles($index)"></i> -->
+                              </div>
+                           </div>
+
+                         </div>
+                       </div>
+
+                   </div>
+                   <div class="" ng-if="filteredFiles.length === 0 " style="margin-top: 40px; color: red; text-align: center;">
+                         No Results Found.
+                   </div>
+                 </div>
+
+               </div>
+               <!-- <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div> -->
+         </div>
+     </div>
+   </div>
+
+     <div class="">
+       <!-- <figure>
+         <figcaption>Your code title</figcaption>
+         <textarea id="copyJsFile" name="name" rows="20" cols="80"></textarea>
+       </figure> -->
+
+     </div>
+     <!-- Modal -->
+    <div class="modal fade" id="previewModal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <center><h4 class="modal-title" >PREVIEW CONTENT</h4></center>
+          </div>
+          <div class="modal-body">
+            <figure>
+              <!-- <figcaption>Your code is here </figcaption><br> -->
+              <textarea id="copyJsFile" name="name" rows="20" cols="78" style="color: black; border:none; outline: none;"></textarea>
+            </figure>
+          </div>
+          <div class="modal-footer">
+              <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" data-dismiss="modal" style="background-color: teal; text-align: center; border-right: 1px solid white;">
+                    <button type="button" class="btn" data-dismiss="modal" style="font-size: 13px; background-color: teal; color:white; border: none; outline: none;">Close</button>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" data-dismiss="modal" style=" background-color: teal; text-align: center; border-left: 1px solid white;">
+                    <button id="previewCopyBtn" type="button"  class="btn" data-dismiss="modal" style="font-size: 13px; background-color: teal; color:white; border: none; outline: none;" >Copy Content</button>
+                  </div>
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+
+              </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- <figure>
+      <figcaption>Your code title</figcaption>
+      <textarea id="copyJsFile1" name="name" rows="20" cols="80"></textarea>
+       <pre>
+        <code id="showCodeContainer">
+
+
+        </code>
+      </pre>
+    </figure> -->
+    <script>
+
+       var app = angular.module('showCoddedFilesApp', []);
+       app.controller('showCodedFilesController', function($scope){
+          console.log("====== controller is started loading...");
+          var client = io();
+
+           $scope.files = [];
+           $scope.isOpenModal = true;
+
+           client.emit("init-fetch-files", {});
+
+           client.on("fetch-files", function(data){
+              console.log("@@@@ is not calling successfully ....");
+               $scope.$apply(function(){
+                   console.log("===== successfully calling the saved coded files...");
+                   // console.log("=== data.files :: ", data.files);
+                   $scope.files = data.files;
+                   // console.log("$scope.files:: ", $scope.files);
+                   //document.getElementById("showCodeContainer").innerHTML = data.files[0].content;
+                   //document.getElementById("copyJsFile").value = data.files[0].content;
+               })
+           });
+
+           $scope.openPreviewModal = function(index){
+               $("#previewModal").modal();
+               // console.log("index : ", index);
+               var previewContent = $scope.files[index].content;
+               document.getElementById("copyJsFile").value = $scope.files[index].content;
+               document.getElementById("copyJsFile").disabled = "true";
+           }
+
+           $scope.deleteFiles = function(index){
+               $scope.files.splice(index, 1);
+           }
+
+           window.copyReview = function(){
+             console.log("call copy review func...");
+             var copyText = document.getElementById("copyJsFile");
+             copyText.select();
+             document.execCommand("copy");
+             //window.clipboard.setData('text/plain', selection.getText());
+             // window.clipboardData.setData ("Text", copyText.value);
+             // console.log("@@ coppied text : \n", copyText.value);
+           }
+
+       });
+
+   </script>
+   <script>
+   //===================================================================
+   var txt = document.getElementById('copyJsFile');
+   var btn = document.getElementById('previewCopyBtn');
+   var clipboard =
+     {
+       data      : '',
+       intercept : false,
+       hook      : function (evt)
+       {
+         if (clipboard.intercept)
+         {
+           evt.preventDefault();
+           evt.clipboardData.setData('text/plain', clipboard.data);
+           clipboard.intercept = false;
+           clipboard.data      = '';
+         }
+       }
+     };
+
+     window.addEventListener('copy', clipboard.hook);
+     btn.addEventListener('click', onButtonClick);
+
+     function onButtonClick ()
+     {
+       clipboard.data = txt.value;
+
+       if (window.clipboardData)
+       {
+         window.clipboardData.setData('Text', clipboard.data);
+       }
+       else
+       {
+         clipboard.intercept = true;
+         document.execCommand('copy');
+       }
+     }
+   //====================================================================
+
+   </script>
+
+ </body>
+</html>

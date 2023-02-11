@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- CSS LINKS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://mbenford.github.io/ngTagsInput/css/ng-tags-input.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css">
+
+  <!-- JQUERY LINKS -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+
+  <!-- JS LINKS  -->
+  
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="http://mbenford.github.io/ngTagsInput/js/ng-tags-input.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+  
+
+
+	<title>static page</title>
+<style type="text/css">
+.file-name{
+	font-size: 30px;
+	text-align: right;
+}
+.email-sec{
+	margin-top:10px;
+}
+.client-email{
+	margin-left:10px;
+	font-size: 20px;
+}
+.add-tags{
+	margin-top: 10px;
+	font-size: 20px;
+}
+.hash-icon{
+	padding-top: 5px;
+    font-size: 25px;
+}
+.page-footer{
+	padding-bottom: 10px;
+	/*padding-top: 5px;*/
+	background-color: #d04a02;
+}
+.content-body{
+	margin-top: 15px;
+    padding-left: 90px;
+    padding-right: 90px;
+}
+
+
+tags-input {
+	border: none;
+}
+
+tags-input .tags {
+	 box-shadow: none; 
+	 border: none;
+}
+	
+ags-input .tags.focused {
+    outline: none;
+     -webkit-box-shadow: none; 
+    -moz-box-shadow: none ;
+     box-shadow: 0px; 
+}
+
+tags-input .tags .tag-item{
+	background: -webkit-linear-gradient(top,#20B2AA 100%,#cbebff 0%,#a1dbff 0%) !important;
+	background: linear-gradient(top,#20B2AA 100%,#cbebff 0%,#a1dbff 0%)!important;	
+	color: #31393f;
+	padding: 0px 12px;
+	height: 30px;
+	line-height: 30px;
+	border-radius: 9px;
+	border: none;
+}
+
+</style>
+
+</head>
+<body ng-app="myApp" ng-controller="myController">
+
+<!--  HEADER  -->
+  <!-- <header> -->
+    <div class="container-fluid" style="background-color: #f3f3f3; padding-bottom: 10px;">
+		<div class="row" style="margin-top: 15px;">
+			<!-- <div class="col-md-1"></div> -->
+			<div class="col-md-3" style="height: 50px;">
+				<span>
+					<i class="fa fa-html5" style="font-size:48px;color:red"></i>
+					<!-- <img src="./static/pwc.png" class="img-rounded" alt="" style="left: 0px; height:50px; width: 50px;"> -->
+				</span>
+				<span style="padding-left: 20px; font-size: 20px;"><i class="fa fa-align-justify"></i></span>
+			</div>
+			<div class="col-md-3 file-name">File to DMS</div>
+			<div class="col-md-3"></div>
+			<div class="col-md-3 email-sec">
+				<span><i class="fa fa-male" style="font-size:24px"></i></span>
+				<span class="client-email">{{currentEmailId}}</span>
+				<span style="float: right;"><i class="fa fa-close" style="font-size:24px"></i>
+</span>
+			</div>
+		</div>	
+	</div>
+  <!-- </header> -->
+  <!-- <hr> -->
+<!-- BODY CONTENT  -->
+<div class="container-fluid" style="">
+	<div class="row">
+		<div class="col-md-1" style="background-color: #31393f; height: 741px;"></div>
+
+		<div class="col-md-11 content-body" >
+				<!-- tags input panel -->
+				<p><strong>Select tags</strong></p>
+				<div class="panel panel-default">
+  					<div class="panel-body">
+
+	  					<div class="row">
+
+	  						<div class="col-md-11">
+	  							<!-- <tags-input ng-model="documentTags"></tags-input> -->
+	  							
+	  							<div style="display:block; max-width: 850px; /*height: 500px*/; /*border: 1px solid gainsboro;*/ ">
+										<span style="display:inline-block; float:left; background-color:crimson;color:white; padding: 6px; margin-left: 5px; border-radius: 8px; margin-top: 5px;" ng-repeat="tags in documentTags">
+										{{tags.text}}
+										</span>
+								</div>
+	  						</div>
+	  						<div class="col-md-1">
+	  							<span style="float: right;"><i class="fa fa-close" style="font-size:24px"></i>
+								</span>
+	  						</div>
+	  					</div>
+
+  					</div>
+				</div>
+				<!-- select tags input  -->
+				<div>
+					<p><strong>Select types</strong></p>
+					<div class="dropdown">
+					  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Delivearbles
+					  <span class="caret"></span></button>
+					  <ul class="dropdown-menu">
+					    <li ng-repeat="type in documentType"><a href="#">{{type.name}}</a></li>
+					  </ul>
+					</div>
+				</div>
+				<hr>
+
+				<!-- documents section  -->
+
+						<!-- documents header section -->
+				<div class="row" style="margin-left: 10px; margin-right: 12px;">
+					<div >
+						<span><strong>Documents</strong></span>			
+					</div>
+
+					<div class="row" style="border: 1px solid #DCDCDC;">
+					  <div class="col-sm-1" style="border-right: 1px solid #DCDCDC;">
+	  							<center><input type="checkbox" value=""><center>	
+					  </div>
+					  <div class="col-sm-8" style="border-right: 1px solid #DCDCDC;">
+					  	<center><strong>Documents</strong></center>
+					  </div>
+					  <div class="col-sm-3" style="border-right: 1px solid #DCDCDC;">
+					  	<center><strong>Versions</strong></center>
+					  </div>
+					</div>
+
+							<!-- documents body section -->
+					<!-- row 1 -->
+
+					<div class="row" style="border-bottom: 1px solid #DCDCDC;" ng-repeat="doc in documents">
+					  <div class="col-sm-1" style="border-right: 1px solid #DCDCDC; border-left: 1px solid #DCDCDC;">
+	  							<center><input type="checkbox" value=""><center>	
+					  </div>
+					  <div class="col-sm-8" style="">
+					  		{{doc.name}}
+					  </div>
+					  <div class="col-sm-3" style="border-right: 1px solid #DCDCDC; border-left: 1px solid #DCDCDC;">
+					  	{{doc.version}}
+					  </div>
+					</div>
+
+					
+
+				</div>
+				<hr>
+
+				<!-- select folder section -->
+				<div class="row">
+						<div class="col-md-4">
+								<div style="margin-top: 10px;" ng-repeat="client in clientSearchOptions">
+									<form>
+									  <div>{{client.name}}</div>
+									  <div class="row container-fluid">
+									  		<div class="input-group col-md-12">
+											    <input type="text" style="border-right:none;" class="form-control" placeholder={{client.placeholder}}>
+											    <div style="top: -3px" class="input-group-btn">
+											      <button style="border-radius: 0 2px;" class="btn btn-default" type="submit">
+											        <i class="glyphicon glyphicon-search"></i>
+											      </button>
+											    </div>
+											    <div class="" style="position: relative;top: -10px;left: 15px;font-size: 20px;">
+												  	<i class="fa fa-folder-open" ng-click="openTreeView(client.id)" style="color: orange;"></i>
+											  	</div>
+											  </div>
+											  
+									  </div>
+
+									  
+
+									</form>
+									
+								</div>
+
+						</div>
+						<div class="col-md-2">
+							
+						</div>
+
+						<!-- MOST RECENT TAGS -->
+						<div class="col-md-6">
+							<div style="border: 1px solid #DCDCDC; margin-top: 18px;">
+								<center><p style="border-bottom : 1px solid #DCDCDC;"><strong>Most recent clients</strong></p></center>
+								<div style="height: 155px; display:block; /*max-width: 500px*/;">
+									<!-- <tags-input ng-model="mostRecentClients"></tags-input> -->
+									<span style="display:inline-block; float:left; background-color:crimson;color:white; padding: 6px; margin-left: 5px; border-radius: 8px; margin-top: 5px;" ng-repeat="client in mostRecentClients">
+										{{client.text}}
+									</span>
+    									
+								</div>
+							</div>
+						</div>
+						<!-- </div> -->
+				</div>
+
+				<hr>
+				<!-- select date piker section -->
+				<!-- fisrt row section -->
+				
+
+				<div class="row">
+					<div ng-repeat="option in checkBoxOptionsFirstRow">
+						<div class="col-md-3">
+						<div class="checkbox">
+  							<label><input type="checkbox" value="">{{option}}</label>
+						</div>
+					</div>
+					<div class="col-md-1"></div>
+					</div>
+					
+				</div>
+
+				<!-- second row section -->
+				<div class="row" style="margin-top: 8px;">
+					<div ng-repeat="option in checkBoxOptionsSecondRow">
+						<div class="col-md-3">
+							<div class="checkbox" style="margin:0px;">
+	  							<label><input type="checkbox" value="">{{option.name}}</label>
+							</div>
+
+							<div class="form-group">
+				                <div class='input-group date' id='datetimepicker'>
+				                    <input type='text' class="form-control datepicker" />
+				                    <span class="input-group-addon">
+				                        <span class="glyphicon glyphicon-calendar"></span>
+				                    </span>
+				                </div>
+				            </div>
+
+						</div>
+					<div class="col-md-1"></div>
+					</div>
+				</div>
+		</div>
+		
+	</div>	
+
+</div>
+
+<!-- FOOTER -->
+
+<footer class="page-footer">
+  	<div class="container-fluid" >
+		<div class="row">
+			<div class="col-md-1" ></div>
+			<div class="col-md-7" style="padding-top: 5px; margin-left: 4%;">
+				
+				<div class="form-group">
+			      <label class="control-label col-sm-2 add-tags" for="addtags" style="margin-top: 15px;">Add tags:</label>
+			      <div class="col-sm-9">
+			        <p class="form-control-static">
+			        	<!-- <input type="text" class="form-control" id="newTags"> -->
+			        	<tags-input ng-model="addedTags"></tags-input>
+			        </p>
+			      </div>
+			      <div class="col-sm-1 hash-icon" style="margin-top: 8px;">#</div>
+			    </div>
+			</div>
+			<div class="col-md-1" ></div>
+			<div class="col-md-2" style="padding-top: 18px; margin-left: -12px;">
+				<div style="float: right;">
+					<button type="button" class="btn btn-default">CLEAR ALL</button>
+					<button type="button" class="btn btn-default">SUBMIT</button>
+				</div>
+			</div>
+			
+		</div>	
+
+	</div>
+</footer>
+
+<!-- MODAL TEMPLATE SECTION -->
+
+<!-- Modal -->
+<div id="treeViewModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <center><h4 class="modal-title"> <strong>TREE  VIEW</strong></h4></center>
+      </div>
+      <div class="modal-body">
+
+        <p>Some text in the modal.</p>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div> -->
+    </div>
+
+  </div>
+</div>
+
+</body>
+<script type="text/javascript">
+            $(function () {
+                $('.datepicker').datepicker();
+                $('tags-input').find('li').css({"background":"#d04a02"});
+            });
+ </script>
+<script type="text/javascript">
+	// #d04a02 #31393f
+var app = angular.module('myApp', ['ngTagsInput']);
+app.controller("myController", ['$scope', function($scope){
+
+		
+		$scope.checkBoxOptionsFirstRow = ["option 1", "option 2", "option 3"];
+		//$scope.checkBoxOptionsSecondRow = ["option 4", "option 5", "option 6"];
+		$scope.checkBoxOptionsSecondRow = [
+		{name : 'option 4' },
+		{name : 'option 5' },
+		{name : 'option 6'}
+		];
+		$scope.currentEmailId = "xxx.gmail.com";
+		$scope.documentType = [
+		{name: 'Document type 1'}, {name: 'Document type 2'}, {name: 'Document type 3'}, {name: 'Document type 4'}, {name: 'Document type 5'}
+		];
+		$scope.documentTags = [
+		    { id: 1,text: 'doc tag1' },
+		    { id: 2,text: 'doc tag2' },
+		    { id: 3,text: 'doc tag3' },
+		    { id: 4,text: 'doc tag4' },
+		    { id: 5,text: 'doc tag5' },
+		    { id: 6,text: 'doc tag6' },
+		    { id: 7,text: 'doc tag7' },
+		    { id: 8,text: 'doc tag8' },
+		    { id: 9,text: 'doc tag9' }
+		 ];
+		$scope.mostRecentClients = [
+			{ id: 1,text: 'client 1' },
+		    { id: 2,text: 'client 2' },
+		    { id: 3,text: 'client 3' },
+		    { id: 4,text: 'client 4' },
+		    { id: 5,text: 'client 5' },
+		    { id: 6,text: 'client 6' },
+		    { id: 7,text: 'client 7' },
+		    { id: 8,text: 'client 8' },
+		    { id: 9,text: 'client 9' }
+		];
+		$scope.clientSearchOptions = [
+			{
+				id: 1,
+				name: "Client",
+				placeholder : 'Client search'
+			},
+			{
+				id: 2,
+				name: "Job",
+				placeholder : 'Job search'
+			},
+			{
+				id: 3,
+				name: "Project",
+				placeholder : 'Project search'
+			}
+		]
+		$scope.documents = [
+			
+			{
+				name : 'documents 1',
+				version : 'version 1'
+			},
+			{
+				name : 'documents 2',
+				version : 'version 2'
+			},
+			{
+				name : 'documents 3',
+				version : 'version 3'
+			}
+		]
+
+		$scope.addedTags = [];
+
+		$scope.openTreeView = function(id){
+			console.log("calling tree view fun...");
+			console.log("id :: ", id)
+			$('#treeViewModal').modal('show');
+			$('#treeViewModal').modal({ backdrop: 'static'}); 
+		}
+}]);
+
+</script>
+</html>

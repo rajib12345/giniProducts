@@ -1,0 +1,424 @@
+<!DOCTYPE html><html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        div.scrollmenu {
+          /* background-color: #333; */
+          overflow: auto;
+          white-space: nowrap;
+        }
+
+        div.scrollmenu a {
+          display: inline-block;
+          color: white;
+          /* text-align: center; */
+          /* padding: 14px; */
+          text-decoration: none;
+        }
+
+        .ellipse {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          position: relative;
+          /* line-height: 1rem; */
+          pointer-events:none;
+        }
+
+        .ellipse:after {
+          content:"";
+          display: block;
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 48px;
+          height: 48px;
+          z-index: 1;
+          pointer-events:initial;
+        }
+
+        .ellipse:hover:after{
+          cursor: pointer;
+          visibility: visible;
+        }
+
+        .tooltip {
+          width: 45%;
+          visibility: hidden;
+          background-color: teal;
+          border: 2px solid white;
+          color: white;
+          padding: 5px;
+          -webkit-box-shadow: 0 0 50px 0 rgba(0,0,0,0.3);
+          opacity: 0;
+          transition: opacity 0.5s ease;
+        }
+
+        .ellipse:hover + .tooltip {
+          visibility: visible;
+          transition: opacity 0.5s ease;
+          opacity: 1;
+        }
+
+        ::-webkit-scrollbar {
+          width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+          /* background: #e9ebee; */
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          /* background: #e9ebee; */
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: #e9ebee;
+        }
+
+        /*  */
+        .WidgetFt{
+          display: none !important;
+        }
+
+    </style>
+
+    <script>
+      var client = io();
+    </script>
+
+  </head>
+  <body ng-app="booksApi" ng-controller="scoreBatApiController">
+      <h1 style="text-align: center;">{{title}}</h1>
+      <hr>
+      <div >
+
+        <div class="panel-group" id="accordion" ng-repeat="x in data">
+          <div class="panel panel-default">
+                <!-- parent -->
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion"  href={{'#collapse-'+x.parent}} >{{x.parent}}</a>
+                  </h4>
+                </div>
+
+                <!-- childs -->
+                <div ng-if="x.childs.length> 0 " class="">
+                  <div id={{'collapse-'+x.parent}} class="panel-collapse collapse" style="margin-left: 20px;">
+                      <div class="panel panel-default" ng-repeat="y in x.childs">
+                          <div class="panel-heading">
+                            <h4 class="panel-title">
+                              <a data-toggle="collapse" data-parent="#accordion" href={{'#collapse-'+y.parent}} >{{y.parent}}</a>
+                            </h4>
+                          </div>
+                          <div ng-if="y.childs.length> 0 "   class="panel-collapse collapse in">
+                            <div id={{'collapse-'+y.parent}} class="panel-collapse collapse">
+
+                                <div class="panel panel-default" ng-repeat="z in y.childs">
+                                    <div class="panel-heading">
+                                      <h4 class="panel-title">
+                                        {{z.parent}}
+                                        <a data-toggle="collapse" data-parent="#accordion" href={{'#collapse-'+z.parent}} >{{z.parent}}</a>
+                                      </h4>
+                                    </div>
+                                    <div ng-if="z.childs.length> 0 "   class="panel-collapse collapse in">
+                                        <div id={{'collapse-'+z.parent}} class="panel-collapse collapse" style="margin-left: 20px;">
+                                            <div class="panel panel-default" ng-repeat="zz in z.childs">
+                                                <div class="panel-heading">
+                                                  <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href={{'#collapse-'+zz.parent}} >{{zz.parent}}</a>
+                                                  </h4>
+                                                </div>
+                                                <div ng-if="zz.childs.length> 0 "   class="panel-collapse collapse in">
+                                                    <div id={{'collapse-'+zz.parent}} class="panel-collapse collapse" style="margin-left: 20px;">
+                                                        <div class="panel panel-default" ng-repeat="zzz in zz.childs">
+                                                            <div class="panel-heading">
+                                                              <h4 class="panel-title">
+                                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">{{zzz.parent}}</a>
+                                                              </h4>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+
+                </div>
+            </div>
+        </div>
+
+
+      </div>
+
+      <script type="text/javascript">
+        var app = angular.module('booksApi', []);
+        app.controller('scoreBatApiController', function($scope){
+
+          $scope.title = "meralco parent cild hiararcy";
+          $scope.data = [
+            {
+              parent : 'parent1',
+              childs : [
+              {
+                parent : 'parent1-child11',
+                childs : [
+                    {
+                      parent: 'parent1-child1-child111',
+                      childs : [
+                        {
+                          parent: 'parent1-child1-child1-child1111',
+                          childs: []
+                        },
+                        {
+                          parent: 'parent1-child1-child1-child1111',
+                          childs: []
+                        },
+                        {
+                          parent: 'parent1-child1-child1-child11111',
+                          childs: []
+                        }
+                      ]
+                    },
+                    {
+                      parent: 'parent1-child1-child22',
+                      childs : [
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      }
+                      ]
+                    },
+                    {
+                      parent: 'parent1-child1-child33',
+                      childs : [
+                        {
+                          parent: 'parent1-child1-child1-child3333',
+                          childs: []
+                        },
+                        {
+                          parent: 'parent1-child1-child1-child3333',
+                          childs: []
+                        },
+                        {
+                          parent: 'parent1-child1-child1-child3333',
+                          childs: []
+                        }
+                      ]
+                    }
+
+                ]
+              },
+              {
+                parent : 'parent1-child2',
+                childs : [
+                    {
+                      parent: 'parent1-child2-child1',
+                      childs : [
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      }
+                      ]
+                    },
+                    {
+                      parent: 'parent1-child2-child2',
+                      childs : [
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      }
+                      ]
+                    },
+                    {
+                      parent: 'parent1-child1-child3',
+                      childs : [
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      }
+                      ]
+                    }
+
+                ]
+              },
+              {
+                parent : 'parent1-child3',
+                childs : [
+                    {
+                      parent: 'parent1-child3-child1',
+                      childs : [
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      }
+                      ]
+                    },
+                    {
+                      parent: 'parent1-child3-child2',
+                      childs : [
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      }
+                      ]
+                    },
+                    {
+                      parent: 'parent1-child3-child3',
+                      childs : [
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      }
+                      ]
+                    }
+
+                ]
+              },
+              {
+                parent : 'parent1-child4',
+                childs : [
+                    {
+                      parent: 'parent1-child4-child1',
+                      childs : [
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      }
+                      ]
+                    },
+                    {
+                      parent: 'parent1-child4-child2',
+                      childs : [
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      }
+                      ]
+                    },
+                    {
+                      parent: 'parent1-child4-child3',
+                      childs : [
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      },
+                      {
+                        parent: 'parent1-child1-child1-child2222',
+                        childs: []
+                      }
+                      ]
+                    }
+
+                ]
+              }
+
+              ]
+            }
+          ]
+
+
+        });
+      </script>
+
+
+
+  </body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <title>Video-conf</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script async src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> -->
+    <script defer src="static/js/fontAwesomeKit.js"></script>
+    <!-- <script defer src="//mozilla.github.io/pdf.js/build/pdf.js"></script> -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+    </script>
+  </head>
+  <body>
+    <div class="" style="margin-top: 20px; margin-bottom: 20px; ">
+        <center><h1>Video Conference Application...</h1></center>
+    </div>
+    <hr>
+    <div style="display: block; width: 80%; margin: auto; ">
+        <div class="" style="display: inline-block; width: 49%; margin-right: 5px; float: left;">
+          <video id="video1" width="320" height="240" controls autoplay>
+              Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="" style="display: inline-block; width: 49%; margin-right: 5px; float: right; ">
+          <video id="video2" width="320" height="240" controls autoplay>
+              Your browser does not support the video tag.
+          </video>
+        </div>
+    </div>
+
+    <script>
+      var socket = io();
+      let activeUserList = [];
+      let currentUser = {};
+      var constraints = { audio: false, video: { width: 1280, height: 720, facingMode: "user" } };
+      let currentMediaStream = null;
+  
+
+      function getVideoStream(videoId, cat, userName, id){
+          navigator.mediaDevices.getUserMedia(constraints)
+          .then(function(mediaStream) {
+            var video = document.getElementById(videoId);
+            video.srcObject = mediaStream;
+            currentMediaStream = mediaStream;
+            video.onloadedmetadata = function(e) {
+              video.play();
+            };
+            console.log("@@@ mediaStream : ", mediaStream);
+            if(mediaStream){
+                socket.emit("request-video-conf-call", {category: cat, currentUser: {user : userName, id: id, mediaStream : mediaStream}})
+            }
+
+          })
+          .catch(function(err) { console.log(err.name + ": " + err.message); });
+      }
+
+      function videoByStream(videoId, stream){
+        navigator.mediaDevices.getUserMedia(constraints)
+        .then(function(mediaStream) {
+          var video = document.getElementById(videoId);
+          video.srcObject = mediaStream;
+          video.onloadedmetadata = function(e) {
+            video.play();
+          };
+        })
+      }
+
+      socket.emit("request-video-conf-call", {category : 'get_active_user_list'});
+
+      socket.on("response-video-conf-call", (response) => {
+          if(response.category === 'get_active_user_list'){
+              console.log("activeUserList : ", response.users);
+
+                  if(response.users.length === 0){
+                      console.log("111111111111111111");
+                      console.log("users : ", response.users);
+                      let videoId = 'video'+(response.users.length + 1)
+                      getVideoStream(videoId, "video_conf_new_user", "xxxx", 1);
+
+                      // socket.emit("request-video-conf-call", {category: 'video_conf_new_user', currentUser: {user : "aaa", id: 1, currentMediaStream : currentMediaStream}})
+                  }else if(response.users.length === 1){
+                      response.users.forEach((item, index) => {
+                          let videoId = "video"+item.id;
+                          videoByStream(videoId, item.mediaStream);
+
+                      });
+                      console.log("2222222222222222222222");
+                      console.log("users : ", response.users);
+                      let videoId = 'video'+(response.users.length + 1)
+                      getVideoStream(videoId, "video_conf_new_user", "yyyy", 2);
+
+                      // socket.emit("request-video-conf-call", {category: 'video_conf_new_user', currentUser: {user : "bbb", id: 2, currentMediaStream : currentMediaStream}})
+                  }
+          }
+      })
+
+
+      socket.on('updated-user-list', (data) => {
+          console.log("############# calling socket updated-user-list =================");
+          if(data.users){
+            activeUserList = data.users;
+          }
+          console.log("### active user list : ", activeUserList);
+          data.users.forEach((item, index) => {
+              let videoId = "video"+item.id;
+              videoByStream(videoId, item.mediaStream);
+
+          });
+
+
+      })
+
+
+      //====================================================================
+      // Prefer camera resolution nearest to 1280x720.
+
+    </script>
+  </body>
+</html>

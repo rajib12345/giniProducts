@@ -1,0 +1,269 @@
+<!DOCTYPE html><html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        div.scrollmenu {
+          /* background-color: #333; */
+          overflow: auto;
+          white-space: nowrap;
+        }
+
+        div.scrollmenu a {
+          display: inline-block;
+          color: white;
+          /* text-align: center; */
+          /* padding: 14px; */
+          text-decoration: none;
+        }
+
+        .ellipse {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          position: relative;
+          /* line-height: 1rem; */
+          pointer-events:none;
+        }
+
+        .ellipse:after {
+          content:"";
+          display: block;
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 48px;
+          height: 48px;
+          z-index: 1;
+          pointer-events:initial;
+        }
+
+        .ellipse:hover:after{
+          cursor: pointer;
+          visibility: visible;
+        }
+
+        .tooltip {
+          width: 45%;
+          visibility: hidden;
+          background-color: teal;
+          border: 2px solid white;
+          color: white;
+          padding: 5px;
+          -webkit-box-shadow: 0 0 50px 0 rgba(0,0,0,0.3);
+          opacity: 0;
+          transition: opacity 0.5s ease;
+        }
+
+        .ellipse:hover + .tooltip {
+          visibility: visible;
+          transition: opacity 0.5s ease;
+          opacity: 1;
+        }
+
+        ::-webkit-scrollbar {
+          width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+          /* background: #e9ebee; */
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          /* background: #e9ebee; */
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: #e9ebee;
+        }
+
+    </style>
+    <script type="text/javascript" src="https://www.google.com/books/jsapi.js"></script>
+    <script type="text/javascript">
+      google.books.load();
+
+
+    </script>
+    <script>
+      var client = io();
+    </script>
+
+  </head>
+  <body ng-app="booksApi" ng-controller="booksApiController">
+
+      <h1 style="text-align: center;  font-weight: 900;">GINI MUSIC HUB</h1>
+      <hr>
+      <h5 style="text-align: center;  font-weight: 900;">NAPSTER PLAYLIST </h5>
+      <div id="napsterMusicPlaylist" class="container-fluid scrollmenu">
+
+      </div>
+      <h5 style="text-align: center;  font-weight: 900;">NAPSTER PLAYLIST BY SELECTION </h5>
+
+      <hr>
+      <div id="napsterMusicPlaylistById" class="container-fluid scrollmenu">
+
+      </div>
+
+      <hr>
+      <h5 style="text-align: center; font-weight: 900;">AUDIO BY PLAYLIST ID </h5>
+      <div id="openWhydPlaylistCategory" class="container-fluid scrollmenu">
+
+      </div>
+
+      <hr>
+      <h5 style="text-align: center; font-weight: 900;">OPENWHYD PLALIST BY GENRE </h5>
+      <div id="openWhydPlaylistByGenre" class="container-fluid scrollmenu">
+
+      </div>
+      <hr>
+      <h5 style="text-align: center; font-weight: 900;">ALL SONGS </h5>
+      <div id="openWhydPlaylistByGenre1" class="container-fluid scrollmenu">
+
+      </div>
+
+      <hr>
+      <h5 style="text-align: center; font-weight: 900;">RAP SONGS</h5>
+      <div id="openWhydPlaylistByGenre2" class="container-fluid scrollmenu">
+
+      </div>
+
+      <hr>
+      <h5 style="text-align: center; font-weight: 900;">HIP HOP SONGS</h5>
+      <div id="openWhydPlaylistByGenre3" class="container-fluid scrollmenu">
+
+      </div>
+
+      <hr>
+      <h5 style="text-align: center; font-weight: 900;">METAL SONGS</h5>
+      <div id="openWhydPlaylistByGenre4" class="container-fluid scrollmenu">
+
+      </div>
+
+      <hr>
+      <h5 style="text-align: center; font-weight: 900;">ROCK SONGS</h5>
+      <div id="openWhydPlaylistByGenre5" class="container-fluid scrollmenu">
+
+      </div>
+
+      <script type="text/javascript">
+        var app = angular.module('booksApi', []);
+        console.log("cliet server started...");
+        app.controller('booksApiController', function($scope){
+
+        client.emit("request-napster-music-playlist-api", {from: 'Api'});
+
+        client.on("response-napster-music-playlist-api", (data) => {
+          console.log("=== books category response ===");
+          document.getElementById("napsterMusicPlaylist").innerHTML = data.returnMsg;
+        })
+
+
+        client.on("response-napster-music-by-playlistId", (data) => {
+          console.log("=== audio by id response ===");
+          document.getElementById("napsterMusicPlaylistById").innerHTML = data.returnMsg;
+        })
+
+        //====================================== openwhyd  ==========================================
+
+        client.emit("request-openwhyd-playlist-category", {from: 'Api'});
+
+        client.on("response-openwhyd-playlist-category", (data) => {
+          console.log("=== books category response ===");
+          document.getElementById("openWhydPlaylistCategory").innerHTML = data.returnMsg;
+        })
+
+        client.on("response-openwhyd-playlist-by-genre", (data) => {
+          console.log("===  openWhydPlaylistByGenre response ===");
+          document.getElementById("openWhydPlaylistByGenre").innerHTML = data.returnMsg;
+        })
+
+            //====================== START PLALIST SHOWINNG ===========================
+            //1
+            client.emit("request-openwhyd-playlist-by-genre-one", {id : 1 , from: 'Api'})
+
+            client.on("response-openwhyd-playlist-by-genre-one", (data) => {
+              console.log("===  openWhydPlaylistByGenre response ===");
+              document.getElementById("openWhydPlaylistByGenre1").innerHTML = data.returnMsg;
+            })
+
+            //2
+            client.emit("request-openwhyd-playlist-by-genre-two", {id : 2 , from: 'Api'})
+
+            client.on("response-openwhyd-playlist-by-genre-two", (data) => {
+              console.log("===  openWhydPlaylistByGenre response ===");
+              document.getElementById("openWhydPlaylistByGenre2").innerHTML = data.returnMsg;
+            })
+
+            //3
+            client.emit("request-openwhyd-playlist-by-genre-three", {id : 3 , from: 'Api'})
+
+            client.on("response-openwhyd-playlist-by-genre-three", (data) => {
+              console.log("===  openWhydPlaylistByGenre response ===");
+              document.getElementById("openWhydPlaylistByGenre3").innerHTML = data.returnMsg;
+            })
+
+            //4
+            client.emit("request-openwhyd-playlist-by-genre-four", {id : 4 , from: 'Api'})
+
+            client.on("response-openwhyd-playlist-by-genre-four", (data) => {
+              console.log("===  openWhydPlaylistByGenre response ===");
+              document.getElementById("openWhydPlaylistByGenre4").innerHTML = data.returnMsg;
+            })
+
+            //5
+            client.emit("request-openwhyd-playlist-by-genre-five", {id : 5 , from: 'Api'})
+
+            client.on("response-openwhyd-playlist-by-genre-five", (data) => {
+              console.log("===  openWhydPlaylistByGenre response ===");
+              document.getElementById("openWhydPlaylistByGenre5").innerHTML = data.returnMsg;
+            })
+
+
+
+            //====================== START PLALIST SHOWINNG ===========================
+
+        //===========================================================================================
+
+        // window.getProductsById = function(id, api){
+        //    console.log("call get products by id : ", id);
+        //    console.log("call get products by api : ", api);
+        //    if(api === "NAPSTER:playlist"){
+        //      client.emit("request-openwhyd-playlist-by-genre", {id : id , api: api, from: 'Api'})
+        //    }else{
+        //      client.emit("find-products-by-id-request", {id : id , api: api, from: 'Api'})
+        //
+        //    }
+        // }
+
+        window.getProductsById = function(id, api){
+           console.log("================ calling get products by id =================");
+           console.log("call get products by id : ", id);
+           console.log("call get products by api : ", api);
+           if(api === "OPENWHYD:genre-category"){
+                client.emit("request-openwhyd-playlist-by-genre", {id : id , api: api, from: 'Api'})
+           }else{
+                client.emit("find-products-by-id-request", {id : id , api: api, from: 'Gini'})
+           }
+        }
+
+
+
+        });
+      </script>
+
+
+
+  </body>
+</html>

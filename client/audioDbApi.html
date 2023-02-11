@@ -1,0 +1,166 @@
+<!DOCTYPE html><html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        div.scrollmenu {
+          /* background-color: #333; */
+          overflow: auto;
+          white-space: nowrap;
+        }
+
+        div.scrollmenu a {
+          display: inline-block;
+          color: white;
+          /* text-align: center; */
+          /* padding: 14px; */
+          text-decoration: none;
+        }
+
+        .ellipse {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          position: relative;
+          /* line-height: 1rem; */
+          pointer-events:none;
+        }
+
+        .ellipse:after {
+          content:"";
+          display: block;
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 48px;
+          height: 48px;
+          z-index: 1;
+          pointer-events:initial;
+        }
+
+        .ellipse:hover:after{
+          cursor: pointer;
+          visibility: visible;
+        }
+
+        .tooltip {
+          width: 45%;
+          visibility: hidden;
+          background-color: teal;
+          border: 2px solid white;
+          color: white;
+          padding: 5px;
+          -webkit-box-shadow: 0 0 50px 0 rgba(0,0,0,0.3);
+          opacity: 0;
+          transition: opacity 0.5s ease;
+        }
+
+        .ellipse:hover + .tooltip {
+          visibility: visible;
+          transition: opacity 0.5s ease;
+          opacity: 1;
+        }
+
+    </style>
+    <script>
+      var client = io();
+    </script>
+
+  </head>
+  <body ng-app="audioDbApi" ng-controller="audioDbApiController">
+      <h1 style="text-align: center;">Audio Db Api</h1>
+      <hr>
+      <h3>Find album by album name </h3>
+      <div id="findAlbumTemplate" class="container-fluid scrollmenu">
+
+      </div>
+      <hr>
+      <h3>Find top 50 most loved track</h3>
+      <div id="top50Track" class="container-fluid scrollmenu">
+
+      </div>
+      <h3>Find trending albums</h3>
+      <div id="trendingTrack" class="container-fluid scrollmenu">
+
+      </div>
+      <hr>
+      <h3>Find trending albums by artist id </h3>
+      <div id="albumByArtistId" class="container-fluid scrollmenu">
+
+      </div>
+
+
+      <script type="text/javascript">
+        var app = angular.module('audioDbApi', []);
+        app.controller('audioDbApiController', function($scope){
+          let albumName = "coldplay";
+          client.emit("find-album-api-request", {albumName : albumName, from: 'Api'});
+
+          client.emit("music_top-50-most-loved-track-request", {from: 'Api'});
+
+          client.emit("music_trending-album-request", {from : "Api"});
+
+          client.on("find-album-api-response", function(data){
+              document.getElementById("findAlbumTemplate").innerHTML = data.returnMsg;
+          })
+
+          client.on("music_top-50-most-loved-track-response", (data) =>{
+              document.getElementById("top50Track").innerHTML = data.returnMsg;
+          })
+
+          client.on("music_trending-album-response", (data) =>{
+              document.getElementById("trendingTrack").innerHTML = data.returnMsg;
+          })
+
+          client.on("find-products-by-id-response", (data) => {
+              console.log("find products by id response : ", data);
+              document.getElementById("albumByArtistId").innerHTML = data.returnMsg;
+          })
+
+          // ======================================================================
+
+          window.getProductsById = function(id, api){
+             console.log("call get products by id : ", id);
+             console.log("call get products by api : ", api);
+             client.emit("find-products-by-id-request", {id : id , api: api, from: 'Api'})
+          }
+
+          window.onOpenModal = function(url, type, api){
+              console.log("==== call open modal function ====");
+              console.log("== href value :: ", url);
+              console.log("== type value :: ", type);
+              console.log("== api name : ", api);
+
+              if(type !== undefined && type !== null && type === 'newWindow'){
+                window.open(url);
+              }else if(type !== undefined && type !== null && type === 'openModalWithContent'){
+                modalState = type;
+                client.emit("open-modal-with-content-request", {url : url, api: api});
+              }else if(type === "here map"){
+                 client.emit("here-map-api-request", {from : 'gini', placesCategory : url});
+              }else{
+                document.getElementById("urlIframe").src = url;
+                $("#URLModal").modal();
+              }
+
+          }
+
+
+
+
+        });
+      </script>
+
+
+
+  </body>
+</html>

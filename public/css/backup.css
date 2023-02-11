@@ -1,0 +1,501 @@
+.THIS .slds-table td{
+    padding: 16px 0px !important;
+}
+.THIS .slds-icon-utility-add, .THIS .slds-icon-utility-dash {
+    display: inline-block !important;
+    left: 10px;
+    position: relative;
+}
+.THIS .fa-minus-circle, .THIS .fa-plus-circle {
+    display: inline-block !important;
+    left: 10px;
+    top: -5px;
+    position: relative;
+    font-size: 18px !important;
+    color: #ff5114 !important;
+}
+
+.THIS .custom-subsidiaries{
+    padding-right: 0px !important;
+}
+.THIS .custom-child-subsidiaries{
+    padding-right: 0px !important;
+    width: 25% !important;
+}
+
+.THIS .custom-child-subsidiaries:hover{
+    color: black;
+}
+
+.THIS .businessunit{
+    width: 25% !important;
+}
+.THIS .custom-2nd-level-subsidiaries{
+    padding-right: 0px !important;
+}
+.THIS .custom-subsidiaries-content{
+    margin-left: 45px !important;
+}
+.THIS .custom-child-subsidiaries-content{
+    margin-left: 55px !important;
+}
+.THIS .custom-2nd-level-subsidiaries-content{
+    margin-left: 65px !important;
+}
+.THIS .custom-child-subsidiaries-row, .THIS .custom-2nd-level-subsidiaries-row{
+    background-color: whitesmoke;
+    color: black;
+}
+
+
+
+.THIS .custom-2nd-level-subsidiaries-row{
+    background-color: whitesmoke !important;
+    color: black !important;
+}
+.THIS .custom-parent{margin-left: 20px;}
+
+.THIS.scrollerSize {
+    height: 900px;
+}
+.THIS .custom-nested-table{
+    border: none !important;
+}
+.THIS .custom-nested-table tbody{
+    height: 100px !important;
+    overflow: scroll;
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-bottom: 5px solid #ff5114 !important;
+    position: relative;
+    bottom: -1px !important;
+}
+.THIS .custom-nested-table-one-row tbody{
+    height: 60px !important;
+    display: block;
+    overflow: hidden;
+    border-bottom: 5px solid #ff5114 !important;
+    position: relative;
+    bottom: -1px !important;
+}
+.THIS .mov-table-conglomerate tr:last-child {
+    background-color: #ff5114 !important;
+}
+
+
+/*
+.THIS .custom-nested-table-first-block{
+    width: 30% !important;
+} */
+
+.THIS .custom-nested-table tr td:nth-child(1) {
+    min-width: 295px !important;
+}
+.THIS .custom-nested-table tr td:nth-child(2) div{
+    margin-left: -10px !important;
+}
+.THIS .custom-nested-table tr td:nth-child(3) div{
+    margin-left: -16% !important;
+}
+.THIS .custom-nested-table tr td:nth-child(4) div{
+    margin-left: -51% !important;
+}
+.THIS .custom-nested-table tr td:nth-child(5) div{
+    margin-left: -61% !important;
+}
+.THIS .custom-nested-table tr td:nth-child(6) div{
+    margin-left: -21% !important;
+}
+.THIS .custom-balance-alignment{
+    padding-left: 1rem !important;
+}
+
+
+.THIS .custom-nested-table tr td{
+    text-align: center;
+    min-width: 177px;
+    background-color: whitesmoke !important;
+    color: black !important;
+    font-weight: 400 !important;
+}
+/*
+.THIS .custom-nested-table tr:hover{
+    text-align: center;
+    background-color: whitesmoke !important;
+    color: black !important;
+    font-weight: 400 !important;
+} */
+.THIS .custom-table-block{padding: 0px !important;}
+.THIS .custom-yr-month-select-layout{width: 232px;  border: none; }
+.THIS .custom-select-box{background-color: whitesmoke; height: 42px !important; border-radius: 50px;}
+.THIS .uiInput--default .form-element__label {margin-left: 14px !important;}
+.THIS .custom-yr-month-block-layout{margin-left: 20px; }
+.THIS .custom-parent-table tr{
+    height: 60px !important;
+    border-bottom: 0px solid #ccc;
+}
+
+.THIS .custom-parent-table tr td{
+    border-bottom: 1px solid #ccc;
+}
+
+.THIS .custom-nested-table tr td{
+      border-bottom: 1px solid #ccc;
+}
+
+/*
+.THIS .custom-nested-table tr{height: 60px !important; } */
+.THIS .custom-nested-table td:hover{
+    text-align: center;
+    background-color: whiteSmoke !important;
+    color: black !important;
+    font-weight: 400 !important;
+}
+
+
+.THIS .custom-nested-table tr:last-child:hover td {
+    background-color: whitesmoke !important;
+    color: black !important;
+    font-weight: 400 !important;
+}
+.THIS .custom-parent-table-layout{overflow-x: hidden;}
+.THIS .custom-arrow-icon-layout{
+    width: 14px !important;
+    position: relative;
+    left: 20px;
+    top: 0px;
+    color: #ff5114 !important;
+}
+.THIS .custom-arrow-block{text-align: right !important;}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  	.THIS .custom-parent-table-layout {
+    	 overflow-x: scroll !important;
+	}
+    .THIS .custom-nested-table tr td:nth-child(1) {
+    	min-width: 257px !important;
+	}
+    .THIS .custom-nested-table tr td:nth-child(2) div{
+    	margin-left: 8px !important;
+	}
+    .THIS .custom-nested-table tr td:nth-child(3) div{
+    margin-left: 3% !important;
+    }
+    .THIS .custom-nested-table tr td:nth-child(4) div{
+        margin-left: 2% !important;
+    }
+    .THIS .custom-nested-table tr td:nth-child(5) div{
+        margin-left: 3% !important;
+    }
+    .THIS .custom-nested-table tr td:nth-child(6) div{
+        margin-left: 0% !important;
+    }
+    .THIS .custom-nested-table tr td{
+        min-width: 124px;
+	}
+    .THIS .businessunit{
+    	width: 25% !important;
+	}
+    .THIS .mov-table-conglomerate tr td {
+        text-align: center;
+        min-width: 260px;
+	}
+
+
+}
+
+
+/* iPad Device Setup  */
+@media (min-width: 768px) and (max-width: 1024px){
+  	.THIS .custom-parent-table-layout {
+    	 overflow-x: scroll !important;
+	}
+	.THIS .custom-nested-table tr td:nth-child(1) {
+    	min-width: 257px !important;
+	}
+    .THIS .custom-nested-table tr td:nth-child(2) div{
+    	margin-left: 8px !important;
+	}
+    .THIS .custom-nested-table tr td:nth-child(3) div{
+    margin-left: 3% !important;
+    }
+    .THIS .custom-nested-table tr td:nth-child(4) div{
+        margin-left: 2% !important;
+    }
+    .THIS .custom-nested-table tr td:nth-child(5) div{
+        margin-left: 3% !important;
+    }
+    .THIS .custom-nested-table tr td:nth-child(6) div{
+        margin-left: 0% !important;
+    }
+    .THIS .custom-nested-table tr td{
+        min-width: 124px;
+	}
+    .THIS .businessunit{
+    	width: 25% !important;
+	}
+    .THIS .mov-table-conglomerate tr td {
+        text-align: center;
+        min-width: 260px;
+	}
+}
+
+
+/* ========================================================================== new version =============================== */
+
+.THIS .slds-table td{
+    padding: 16px 0px !important;
+}
+.THIS .slds-icon-utility-add, .THIS .slds-icon-utility-dash {
+    display: inline-block !important;
+    left: 10px;
+    position: relative;
+}
+.THIS .fa-minus-circle, .THIS .fa-plus-circle {
+    display: inline-block !important;
+    left: 10px;
+    top: -5px;
+    position: relative;
+    font-size: 18px !important;
+    color: #ff5114 !important;
+}
+
+.THIS .custom-subsidiaries{
+    padding-right: 0px !important;
+}
+.THIS .custom-child-subsidiaries{
+    padding-right: 0px !important;
+    width: 25% !important;
+}
+
+.THIS .custom-child-subsidiaries:hover{
+    color: black;
+}
+
+.THIS .businessunit{
+    width: 25% !important;
+}
+.THIS .custom-2nd-level-subsidiaries{
+    padding-right: 0px !important;
+}
+.THIS .custom-subsidiaries-content{
+    margin-left: 45px !important;
+}
+.THIS .custom-child-subsidiaries-content{
+    margin-left: 55px !important;
+}
+.THIS .custom-2nd-level-subsidiaries-content{
+    margin-left: 65px !important;
+}
+.THIS .custom-child-subsidiaries-row, .THIS .custom-2nd-level-subsidiaries-row{
+    background-color: whitesmoke;
+    color: black;
+}
+
+
+
+.THIS .custom-2nd-level-subsidiaries-row{
+    background-color: whitesmoke !important;
+    color: black !important;
+}
+.THIS .custom-parent{margin-left: 20px;}
+
+.THIS.scrollerSize {
+    height: 900px;
+}
+.THIS .custom-nested-table{
+    border: none !important;
+}
+.THIS .custom-nested-table tbody{
+    height: 100px !important;
+    overflow: scroll;
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-bottom: 5px solid #ff5114 !important;
+    position: relative;
+    bottom: -1px !important;
+}
+.THIS .custom-nested-table-one-row tbody{
+    height: 60px !important;
+    display: block;
+    overflow: hidden;
+    border-bottom: 5px solid #ff5114 !important;
+    position: relative;
+    bottom: -1px !important;
+}
+.THIS .mov-table-conglomerate tr:last-child {
+    background-color: #ff5114 !important;
+}
+
+
+/*
+.THIS .custom-nested-table-first-block{
+    width: 30% !important;
+} */
+
+.THIS .custom-nested-table tr td:nth-child(1) {
+    min-width: 295px !important;
+}
+.THIS .custom-nested-table tr td:nth-child(2) div{
+    margin-left: -10px !important;
+}
+.THIS .custom-nested-table tr td:nth-child(3) div{
+    margin-left: -16% !important;
+}
+.THIS .custom-nested-table tr td:nth-child(4) div{
+    margin-left: -51% !important;
+}
+.THIS .custom-nested-table tr td:nth-child(5) div{
+    margin-left: -61% !important;
+}
+.THIS .custom-nested-table tr td:nth-child(6) div{
+    margin-left: -21% !important;
+}
+.THIS .custom-balance-alignment{
+    padding-left: 1rem !important;
+}
+
+
+.THIS .custom-nested-table tr td{
+    text-align: center;
+    min-width: 177px;
+    background-color: whitesmoke !important;
+    color: black !important;
+    font-weight: 400 !important;
+}
+/*
+.THIS .custom-nested-table tr:hover{
+    text-align: center;
+    background-color: whitesmoke !important;
+    color: black !important;
+    font-weight: 400 !important;
+} */
+.THIS .custom-table-block{padding: 0px !important;}
+.THIS .custom-yr-month-select-layout{width: 232px;  border: none; }
+.THIS .custom-select-box{background-color: whitesmoke; height: 42px !important; border-radius: 50px;}
+.THIS .uiInput--default .form-element__label {margin-left: 14px !important;}
+.THIS .custom-yr-month-block-layout{margin-left: 20px; }
+.THIS .custom-parent-table tr{
+    height: 60px !important;
+    border-bottom: 0px solid #ccc;
+    border-top: 1px solid white;
+
+}
+
+.THIS .custom-parent-table tr:hover{
+    height: 60px !important;
+    border-bottom: 0px solid #ccc;
+    position: relative;
+    border-top: 1px solid white;
+}
+/*.THIS .custom-nested-table tr:hover{
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+} */
+
+.THIS .custom-parent-table tr td{
+    border-bottom: 1px solid #ccc;
+}
+
+.THIS .custom-nested-table tr td{
+      border-bottom: 1px solid #ccc;
+}
+
+/*
+.THIS .custom-nested-table tr{height: 60px !important; } */
+.THIS .custom-nested-table td:hover{
+    text-align: center;
+    background-color: whiteSmoke !important;
+    color: black !important;
+    font-weight: 400 !important;
+}
+
+
+.THIS .custom-nested-table tr:last-child:hover td {
+    background-color: whitesmoke !important;
+    color: black !important;
+    font-weight: 400 !important;
+}
+.THIS .custom-parent-table-layout{overflow-x: hidden;}
+.THIS .custom-arrow-icon-layout{
+    width: 14px !important;
+    position: relative;
+    left: 20px;
+    top: 0px;
+    color: #ff5114 !important;
+}
+.THIS .custom-arrow-block{text-align: right !important;}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  	.THIS .custom-parent-table-layout {
+    	 overflow-x: scroll !important;
+	}
+    .THIS .custom-nested-table tr td:nth-child(1) {
+    	min-width: 257px !important;
+	}
+    .THIS .custom-nested-table tr td:nth-child(2) div{
+    	margin-left: 8px !important;
+	}
+    .THIS .custom-nested-table tr td:nth-child(3) div{
+    margin-left: 3% !important;
+    }
+    .THIS .custom-nested-table tr td:nth-child(4) div{
+        margin-left: 2% !important;
+    }
+    .THIS .custom-nested-table tr td:nth-child(5) div{
+        margin-left: 3% !important;
+    }
+    .THIS .custom-nested-table tr td:nth-child(6) div{
+        margin-left: 0% !important;
+    }
+    .THIS .custom-nested-table tr td{
+        min-width: 124px;
+	}
+    .THIS .businessunit{
+    	width: 25% !important;
+	}
+    .THIS .mov-table-conglomerate tr td {
+        text-align: center;
+        min-width: 260px;
+	}
+
+
+}
+
+
+/* iPad Device Setup  */
+@media (min-width: 768px) and (max-width: 1024px){
+  	.THIS .custom-parent-table-layout {
+    	 overflow-x: scroll !important;
+	}
+	.THIS .custom-nested-table tr td:nth-child(1) {
+    	min-width: 257px !important;
+	}
+    .THIS .custom-nested-table tr td:nth-child(2) div{
+    	margin-left: 8px !important;
+	}
+    .THIS .custom-nested-table tr td:nth-child(3) div{
+    margin-left: 3% !important;
+    }
+    .THIS .custom-nested-table tr td:nth-child(4) div{
+        margin-left: 2% !important;
+    }
+    .THIS .custom-nested-table tr td:nth-child(5) div{
+        margin-left: 3% !important;
+    }
+    .THIS .custom-nested-table tr td:nth-child(6) div{
+        margin-left: 0% !important;
+    }
+    .THIS .custom-nested-table tr td{
+        min-width: 124px;
+	}
+    .THIS .businessunit{
+    	width: 25% !important;
+	}
+    .THIS .mov-table-conglomerate tr td {
+        text-align: center;
+        min-width: 260px;
+	}
+}

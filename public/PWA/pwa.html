@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A2HS demo</title>
+    <!-- <link href="style.css" rel="stylesheet"> -->
+    <!-- <script src="index.js" defer></script> -->
+    <!-- <script src="static/PWA/index.js" defer></script> -->
+    <script src="static/PWA/addToHomeScreen.js"></script>
+    <link href="static/PWA/addToHomeScreen.css" rel="stylesheet">
+
+    <link rel="manifest" href="static/PWA/manifest.webmanifest">
+    <!-- <link rel="manifest" href="./manifest.webmanifest"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style media="screen">
+      html {
+          height: 100%;
+          background: black;
+          }
+
+          body {
+          height: inherit;
+          margin: 0;
+          }
+
+          img {
+          display: block;
+          width: 100%;
+          }
+
+          .add-button {
+          position: absolute;
+          top: 1px;
+          left: 1px;
+          }
+
+          @media (orientation: landscape) {
+          img {
+            height: 100%;
+            object-fit: cover;
+          }
+
+        }
+    </style>
+    <style media="screen">
+      .modal {
+          position: fixed;
+          top: 55% !important;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          z-index: 1050;
+          display: none;
+          overflow: hidden;
+          -webkit-overflow-scrolling: touch;
+          outline: 0;
+      }
+      .close {
+          float: none !important;
+          font-size: 21px;
+          font-weight: 700;
+          line-height: 1;
+          color: #000;
+          /* text-shadow: 0 1px 0 #fff; */
+          filter: alpha(opacity=20);
+          opacity: 1 !important;
+          position: right;
+          position: relative;
+          /* right: 0px; */
+          color: white;
+      }
+      .modal-content{
+        border: none !important;
+      }
+      .modal-content {
+          position: relative;
+          background-color: #fff;
+          background-clip: padding-box;
+          /* border: 1px solid #999; */
+          border: 1pxsolidrgba(0,0,0,.2);
+          border-radius: 12px;
+          /* -webkit-box-shadow: 0 3px 9px rgb(0 0 0 / 50%); */
+          box-shadow: none !important;
+          outline: 0;
+      }
+      .modal-body {
+            position: relative;
+            padding: 15px;
+            border-radius: 12px 12px 0px 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <!-- Trigger the modal with a button -->
+      <button type="button" class="btn-default btn-lg" style="border: none; color: purple; margin-top: 16px; margin-bottom: 16px; float: right;" data-toggle="modal" data-target="#myModal">PWA Instruction</button>
+    </div>
+    <hr>
+    <div class="">
+      <!-- <img src="static/PWA/fox1.jpg" style="width: 50%; height: 400px; margin-top: 100px; " alt="a fox picture"> -->
+      <div class="card" style="width: 100%; padding: 24px; ">
+          <img class="card-img-top" src="static/PWA/fox1.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Cras justo odio</li>
+            <li class="list-group-item">Dapibus ac facilisis in</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+          </ul>
+          <div class="card-body">
+            <a href="#" class="card-link">Card link</a>
+            <a href="#" class="card-link">Another link</a>
+          </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog" style="">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <!-- <div class="modal-header">
+          </div> -->
+          <div class="modal-body" style="background: purple; color: white; ">
+            <div>
+                <p style="text-align: right;"><button type="button" class="close" data-dismiss="modal">&times;</button></p>
+
+                <div>
+                    <span>Installing uses almost no storage and provides a quick way to return to this app.</span>
+                </div>
+                <br>
+
+
+            </div>
+          </div>
+          <div class="" id="installAppContent">
+
+          </div>
+          <div class="modal-footer">
+            <div><button type="button" class="btn btn-default" data-dismiss="modal" style="width: 30%; float: left; margin-right: 60px; border-radius: 20px;">Not now</button><div>
+            <div class="">
+              <button class="" id="installApp" style="height: 40px; display: block; border: none !important; float: right; background: purple; color: white; border-radius: 20px; padding: 10px 15px;">Add to home screen</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+  <script>
+      // addToHomescreen();
+  </script>
+  <script type="text/javascript">
+    console.log("started the html > js script ");
+    const images = ['fox1', 'fox2', 'fox3', 'fox4'];
+    const imgElem = document.querySelector('img');
+    const installApp = document.getElementById('installApp');
+
+
+    function randomValueFromArray(array) {
+      const randomNo = Math.floor(Math.random() * array.length);
+      return array[randomNo];
+    }
+
+    let deferredPrompt;
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+      .register('static/PWA/sw.js')
+      .then(() => { console.log('---------- Service Worker Registered ----------'); });
+    }
+    let appInstalledFlag = false;
+
+    if ( "onbeforeinstallprompt" in window ) {
+      console.log("===== before install prompt is supported =====");
+      window.addEventListener('beforeinstallprompt', (e) => {
+          console.log("=== 111 === before instLL prompt listener is calling ===");
+          deferredPrompt = e;
+          appInstalledFlag = true;
+      });
+      console.log("99999999 appInstalledFlag : ", appInstalledFlag);
+      if(appInstalledFlag === false){
+        console.log("9999999999999999999999999999999999999");
+        document.getElementById("installApp").disabled = "true";
+        document.getElementById("installApp").style.background = "gray";
+        document.getElementById("installApp").style.color = "black";
+        document.getElementById("installAppContent").innerHTML = `
+          <div>
+              <p style="color: purple; font-weight: 700; padding: 20px; "><span>The app is already added to your home screen.</span></p>
+          </div>
+        `;
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      let displayMode = 'browser tab';
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+        displayMode = 'standalone';
+      }
+      // Log launch display mode to analytics
+      console.log('DISPLAY_MODE_LAUNCH:', displayMode);
+    });
+
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      console.log("=== 555 === standalone ===");
+      console.log("This is running as standalone.");
+      document.getElementById("installApp").disabled = "true";
+      document.getElementById("installApp").style.background = "gray";
+      document.getElementById("installApp").style.color = "black";
+      document.getElementById("installAppContent").innerHTML = `
+        <div>
+            <p style="color: purple; font-weight: 700; padding: 20px; "><span>The app is already added to your home screen.</span></p>
+        </div>
+      `;
+
+    }
+
+    console.log("==== \n\n window.matchMedia :: ", window.matchMedia);
+
+    window.addEventListener('appinstalled', (e) => {
+        console.log("=== 222 === before instLL prompt listener is calling ===");
+    });
+
+    window.onappinstalled = () => {
+      console.log('Thank you for installing our app!!!!');
+      appInstalledFlag = true;
+    };
+
+    installApp.addEventListener('click', async () => {
+        console.log("======= on click add to home screen button ========");
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                deferredPrompt = null;
+            }
+        }
+        window.onappinstalled = () => {
+          console.log('Thank you for installing our app!');
+          document.getElementById("installApp").disabled = "true";
+          document.getElementById("installApp").style.background = "gray";
+          document.getElementById("installApp").style.color = "black";
+
+
+          document.getElementById("installAppContent").innerHTML = `
+                <div>
+                    <p style="color: purple; font-weight: 700; padding: 20px; "><span>Thank you for installing our app!</span></p>
+                </div>
+          `;
+        };
+    });
+
+    if ( window.addToHomescreen ) {
+        console.log("========= calling add to home screen ===========");
+       ath = addToHomescreen({
+         onCanInstall: function ( platform, _instance ) {
+         //run any on screen prompting logic from here
+              console.log("11111111111111111111111111111111");
+         },
+         onBeforeInstallPrompt: function ( platform ) {
+         //this triggers in response to the browser triggering the beforeInstallPrompt event
+         console.log( "native prompt: ", platform );
+         console.log("22222222222222222222222222222222222222222");
+
+         }
+       });
+     }
+
+     (async function getInstalledApps(){
+        console.log("==== 777 === calling get installed apps in home screen ====");
+        const relatedApps = await navigator.getInstalledRelatedApps();
+        console.log("=== relatedApps : ", relatedApps);
+        relatedApps.forEach((app) => {
+          console.log("----------------------------------");
+          console.log(app.id, app.platform, app.url);
+        });
+     })();
+
+
+
+    //--------------------------------------------------------------------------------------------
+
+
+</script>
+</html>

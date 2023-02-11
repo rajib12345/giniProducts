@@ -1,0 +1,644 @@
+<!DOCTYPE html><html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        div.scrollmenu {
+          /* background-color: #333; */
+          overflow: auto;
+          white-space: nowrap;
+        }
+
+        div.scrollmenu a {
+          display: inline-block;
+          color: white;
+          /* text-align: center; */
+          /* padding: 14px; */
+          text-decoration: none;
+        }
+
+        /* div.scrollmenu a:hover {
+          background-color: #777;
+        } */
+        /* .ellipse{
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        .ellipse:hover{
+          overflow: visible;
+          color: blue;
+
+        } */
+    .ellipse {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: relative;
+      /* line-height: 1rem; */
+      pointer-events:none;
+    }
+
+    .ellipse:after {
+      content:"";
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 48px;
+      height: 48px;
+      z-index: 1;
+      pointer-events:initial;
+    }
+
+    .ellipse:hover:after{
+      cursor: pointer;
+      visibility: visible;
+    }
+
+    .tooltip {
+      width: 45%;
+      visibility: hidden;
+      background-color: black;
+      border: 2px solid white;
+      color: white;
+      padding: 5px;
+      -webkit-box-shadow: 0 0 50px 0 rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+
+    .ellipse:hover + .tooltip {
+      visibility: visible;
+      transition: opacity 0.5s ease;
+      opacity: 1;
+    }
+    .tooltip{
+        display: none !important;
+    }
+
+    </style>
+    <script>
+      var socket = io();
+    </script>
+
+  </head>
+  <body id="mainContentBlock" ng-app="movieApp" ng-controller="popularMovies">
+      <center>
+          <h1>MOVIEW REVIEW</h1>
+      </center>
+      <hr>
+      <div class="" id="popularMoviesBlock">
+        <h5 style="text-align: center; font-weight: 900;">POPULAR MOVIES</h5>
+        <div id="popularMovies" class="container-fluid scrollmenu">
+
+        </div>
+
+        <!-- trailer -->
+        <div id="popularMovieTrailer" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+
+      <hr>
+      <div class="" id="topRatedMoviesBlock">
+        <h5 style="text-align: center; font-weight: 900;">TOP RATED MOVIES</h5>
+        <div id="topRatedMovies" class="container-fluid scrollmenu">
+
+        </div>
+        <!-- trailer -->
+        <div id="topRatedMovieTrailer" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+      <hr>
+      <div class="" id="upcommingMoviesBlock">
+        <h5 style="text-align: center; font-weight: 900;">UPCOMMING MOVIES</h5>
+        <div id="upcommingMovies" class="container-fluid scrollmenu">
+
+        </div>
+
+        <!-- trailer -->
+        <div id="upcommingMovieTrailer" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+
+      <hr>
+      <div class="" id="nowPlayingMoviesBlock">
+        <h5 style="text-align: center; font-weight: 900;">NOW PLAYING MOVIES</h5>
+        <div id="nowPlayingMovies" class="container-fluid scrollmenu">
+
+        </div>
+
+        <!-- trailer -->
+        <div id="nowPlayigMovieTrailer" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+      <hr>
+      <div class="" id="trendingMoviesBlock">
+        <h5 style="text-align: center; font-weight: 900;">TRENDING MOVIES</h5>
+        <div id="trendingMovies" class="container-fluid scrollmenu">
+
+        </div>
+
+        <!-- trailer -->
+        <div id="trendingMovieTrailer" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+      <hr>
+      <div class="" id="popularTvShowsBlock">
+        <h5 style="text-align: center; font-weight: 900;">POPULAR TV SHOWS</h5>
+        <div id="popularTvShows" class="container-fluid scrollmenu">
+
+        </div>
+        <div id="popularTvShowsTrailer" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+
+
+      <hr>
+      <div class="" id="arivingTvShowsBlock">
+        <h5 style="text-align: center; font-weight: 900;">ARIVING TODAY TV SHOWS</h5>
+        <div id="arivingTvShows" class="container-fluid scrollmenu">
+
+        </div>
+        <div id="airivingTodayTvShowsTrailer" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+
+
+      <hr>
+      <div class="" id="topRatedTvShowsBlock">
+        <h5 style="text-align: center; font-weight: 900;">TOP RATED TV SHOWS</h5>
+        <div id="topRatedTvShows" class="container-fluid scrollmenu">
+
+        </div>
+        <div id="topRatedTvShowsTrailer" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+
+      <hr>
+      <div class="" id="latestTvShowsBlock">
+          <h5 style="text-align: center; font-weight: 900;">LATEST TV SHOWS</h5>
+          <div id="latestTvShows" class="container-fluid scrollmenu">
+
+          </div>
+          <div id="latestTvShowsTrailer" class="container-fluid scrollmenu">
+
+          </div>
+      </div>
+
+      <hr>
+      <div class="" id="popularPersonBlock">
+        <h5 style="text-align: center; font-weight: 900;">POPULAR PERSON</h5>
+        <div id="popularPerson" class="container-fluid scrollmenu">
+
+        </div>
+        <div id="popularPersonDetails" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+
+      <!-- The Modal -->
+      <div class="modal" id="URLModal">
+        <div class="modal-dialog" style="margin-top: 50%;">
+          <div class="modal-content" style="">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="border: none; padding-bottom: 5px !important; ">
+              <!-- <h4 class="modal-title">Modal Heading</h4> -->
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" style="padding: 5px; padding-left: 20px;padding-right: 20px;">
+                <iframe id="urlIframe" src="" style="border: none; width: 100%; height: 100%;"></iframe>
+                <div id="modalContent" style="text-align: center; color: gray; font-weight: bold;">
+
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer" style="border: none;">
+              <!-- <center> <button type="button" class="btn btn-danger" style="width: 100%;" data-dismiss="modal">Close</button> <center> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <script type="text/javascript">
+        var app = angular.module('movieApp', []);
+        var modalState = null;
+        app.controller('popularMovies', function($scope){
+
+        socket.emit("request-tmdb-movies", {from: 'Api', api: 'TMDB:popular-movies'});
+
+        // top rated movies
+        socket.emit("request-tmdb-movies", {from: 'Api', api: 'TMDB:topRated-movies'});
+
+        // upcommig MOVIES
+        socket.emit("request-tmdb-movies", {from: 'Api', api: 'TMDB:upcomming-movies'});
+
+        // now playig MOVIES
+        socket.emit("request-tmdb-movies", {from: 'Api', api: 'TMDB:now-playing-movies'});
+
+        // trending MOVIES
+        socket.emit("request-tmdb-movies", {from: 'Api', api: 'TMDB:trending-movies'});
+
+        // poplar tv shows MOVIES
+        socket.emit("request-tmdb-movies", {from: 'Api', api: 'TMDB:poplar-tv-shows'});
+
+        // ariving tv shows MOVIES
+        socket.emit("request-tmdb-movies", {from: 'Api', api: 'TMDB:airiving-today-tv-shows'});
+
+        // ariving tv shows MOVIES
+        socket.emit("request-tmdb-movies", {from: 'Api', api: 'TMDB:top-rated-tv-shows'});
+
+        // latest tv shows MOVIES
+        socket.emit("request-tmdb-movies", {from: 'Api', api: 'TMDB:latest-tv-shows'});
+
+        // popular persons
+        socket.emit("request-tmdb-movies", {from: 'Api', api: 'TMDB:popular-person'});
+
+        socket.on("response-tmdb-movies", (data) => {
+          // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+          console.log("############ data : ", data);
+          let moviesStatusKeyword = false;
+          // console.log("############ data.api : ", data.api);
+          // console.log("############ data.returnMsg : ", data.returnMsg);
+          if(data.api === 'TMDB:latest-tv-shows'){
+            //console.log("!!!!!!!!!!!!!data: \n\n\n", data);
+          }
+          if(data.api.split("_").length > 1){
+              console.log("$$$$ requested for similar movies from type :: ", data.api.split("_")[0]);
+              moviesStatusKeyword = data.api.split("_")[1];
+              data.api = data.api.split("_")[0];
+
+          }
+          console.log("############ data.api: : ",data.api);
+          console.log("####### moviesStatusKeyword: ", moviesStatusKeyword);
+          if(data.api === 'TMDB:popular-movies'){
+
+            if(moviesStatusKeyword){
+                if(moviesStatusKeyword === 'similiar-movies'
+                    || moviesStatusKeyword === 'recommedations'
+                    || moviesStatusKeyword === "ERROR"
+                    || moviesStatusKeyword === 'similiar-movies-trailer-by-movie-id'
+                    || moviesStatusKeyword === 'recommedations-trailer-by-movie-id'
+                  ){
+                  document.getElementById("popularMovieTrailer").innerHTML = data.returnMsg;
+                  // document.getElementById("popularMovieTrailer").scrollIntoView();
+                }
+
+            }else{
+              document.getElementById("popularMovies").innerHTML = data.returnMsg;
+              // document.getElementById("popularMovies").scrollIntoView();
+
+            }
+            document.getElementById("popularMoviesBlock").scrollIntoView();
+
+          }else if(data.api === 'TMDB:topRated-movies'){
+                if(moviesStatusKeyword){
+                    if(moviesStatusKeyword === 'similiar-movies'
+                        || moviesStatusKeyword === 'recommedations'
+                        || moviesStatusKeyword === "ERROR"
+                        || moviesStatusKeyword === 'similiar-movies-trailer-by-movie-id'
+                        || moviesStatusKeyword === 'recommedations-trailer-by-movie-id'
+                      ){
+                      document.getElementById("topRatedMovieTrailer").innerHTML = data.returnMsg;
+                      // document.getElementById("topRatedMovieTrailer").scrollIntoView();
+                    }
+
+                }else{
+                  document.getElementById("topRatedMovies").innerHTML = data.returnMsg;
+                  // document.getElementById("topRatedMovies").scrollIntoView();
+
+                }
+                document.getElementById("topRatedMoviesBlock").scrollIntoView();
+
+          }else if(data.api === 'TMDB:upcomming-movies'){
+                if(moviesStatusKeyword){
+                    if(moviesStatusKeyword === 'similiar-movies'
+                        || moviesStatusKeyword === 'recommedations'
+                        || moviesStatusKeyword === "ERROR"
+                        || moviesStatusKeyword === 'similiar-movies-trailer-by-movie-id'
+                        || moviesStatusKeyword === 'recommedations-trailer-by-movie-id'
+                      ){
+                      document.getElementById("upcommingMovieTrailer").innerHTML = data.returnMsg;
+                      // document.getElementById("upcommingMovieTrailer").scrollIntoView();
+
+                    }
+
+                }else{
+                  document.getElementById("upcommingMovies").innerHTML = data.returnMsg;
+                  // document.getElementById("upcommingMovies").scrollIntoView();
+
+                }
+                document.getElementById("upcommingMoviesBlock").scrollIntoView();
+
+          }else  if(data.api === 'TMDB:now-playing-movies'){
+              if(moviesStatusKeyword){
+                console.log("1111111111111111111111111111111111111111");
+                  if(moviesStatusKeyword === 'similiar-movies'
+                      || moviesStatusKeyword === 'recommedations'
+                      || moviesStatusKeyword === "ERROR"
+                      || moviesStatusKeyword === 'similiar-movies-trailer-by-movie-id'
+                      || moviesStatusKeyword === 'recommedations-trailer-by-movie-id'
+                    ){
+                    document.getElementById("nowPlayigMovieTrailer").innerHTML = data.returnMsg;
+                    // document.getElementById("nowPlayigMovieTrailer").scrollIntoView();
+
+                  }
+
+              }else{
+                document.getElementById("nowPlayingMovies").innerHTML = data.returnMsg;
+                // document.getElementById("nowPlayingMovies").scrollIntoView();
+
+              }
+              document.getElementById("nowPlayingMoviesBlock").scrollIntoView();
+
+          }else if(data.api === 'TMDB:trending-movies'){
+              if(moviesStatusKeyword){
+                console.log("1111111111111111111111111111111111111111");
+                  if(moviesStatusKeyword === 'similiar-movies'
+                      || moviesStatusKeyword === 'recommedations'
+                      || moviesStatusKeyword === "ERROR"
+                      || moviesStatusKeyword === 'similiar-movies-trailer-by-movie-id'
+                      || moviesStatusKeyword === 'recommedations-trailer-by-movie-id'
+                    ){
+                    document.getElementById("trendingMovieTrailer").innerHTML = data.returnMsg;
+                    // document.getElementById("trendingMovieTrailer").scrollIntoView();
+
+                  }
+
+              }else{
+                document.getElementById("trendingMovies").innerHTML = data.returnMsg;
+                // document.getElementById("trendingMovies").scrollIntoView();
+
+              }
+              document.getElementById("trendingMoviesBlock").scrollIntoView();
+
+          }else if(data.api === 'TMDB:poplar-tv-shows'){
+              // document.getElementById("popularTvShows").innerHTML = data.returnMsg;
+              if(moviesStatusKeyword){
+                console.log("1111111111111111111111111111111111111111");
+                  if(moviesStatusKeyword === 'similiar-tv-shows'
+                  || moviesStatusKeyword === 'recommedations'
+                  || moviesStatusKeyword === 'similiar-tv-shows-trailer-by-tv-show-id'
+                  || moviesStatusKeyword === 'recommedations-trailer-by-tv-show-id'
+                ){
+                    document.getElementById("popularTvShowsTrailer").innerHTML = data.returnMsg;
+                    // document.getElementById("popularTvShowsTrailer").scrollIntoView();
+
+                  }
+
+              }else{
+                document.getElementById("popularTvShows").innerHTML = data.returnMsg;
+                // document.getElementById("popularTvShows").scrollIntoView();
+
+              }
+              document.getElementById("popularTvShowsBlock").scrollIntoView();
+
+          }else if(data.api === 'TMDB:airiving-today-tv-shows'){
+                // document.getElementById("arivingTvShows").innerHTML = data.returnMsg;
+                if(moviesStatusKeyword){
+                  console.log("1111111111111111111111111111111111111111");
+                    if(moviesStatusKeyword === 'similiar-tv-shows'
+                    || moviesStatusKeyword === 'recommedations'
+                    || moviesStatusKeyword === 'similiar-tv-shows-trailer-by-tv-show-id'
+                    || moviesStatusKeyword === 'recommedations-trailer-by-tv-show-id'
+                  ){
+                      document.getElementById("airivingTodayTvShowsTrailer").innerHTML = data.returnMsg;
+                      // document.getElementById("arivingTvShowsTrailer").scrollIntoView();
+
+                    }
+
+                }else{
+                  document.getElementById("arivingTvShows").innerHTML = data.returnMsg;
+                  // document.getElementById("arivingTvShows").scrollIntoView();
+
+                }
+                document.getElementById("arivingTvShowsBlock").scrollIntoView();
+
+
+          }else if(data.api === 'TMDB:top-rated-tv-shows'){
+            // document.getElementById("topRatedTvShows").innerHTML = data.returnMsg;
+            if(moviesStatusKeyword){
+              console.log("1111111111111111111111111111111111111111");
+                if(moviesStatusKeyword === 'similiar-tv-shows'
+                || moviesStatusKeyword === 'recommedations'
+                || moviesStatusKeyword === 'similiar-tv-shows-trailer-by-tv-show-id'
+                || moviesStatusKeyword === 'recommedations-trailer-by-tv-show-id'
+              ){
+                  document.getElementById("topRatedTvShowsTrailer").innerHTML = data.returnMsg;
+                  // document.getElementById("topRatedTvShowsTrailer").scrollIntoView();
+
+                }
+
+            }else{
+              document.getElementById("topRatedTvShows").innerHTML = data.returnMsg;
+              // document.getElementById("topRatedTvShows").scrollIntoView();
+
+            }
+            document.getElementById("topRatedTvShowsBlock").scrollIntoView();
+
+          }else if(data.api === 'TMDB:latest-tv-shows'){
+            // document.getElementById("topRatedTvShows").innerHTML = data.returnMsg;
+            console.log("************** ===== ***************");
+            if(moviesStatusKeyword){
+                if(moviesStatusKeyword === 'similiar-tv-shows'
+                || moviesStatusKeyword === 'recommedations'
+                || moviesStatusKeyword === 'similiar-tv-shows-trailer-by-tv-show-id'
+                || moviesStatusKeyword === 'recommedations-trailer-by-tv-show-id'
+              ){
+                  document.getElementById("latestTvShowsTrailer").innerHTML = data.returnMsg;
+                  // document.getElementById("latestTvShowsTrailer").scrollIntoView();
+
+                }
+
+            }else{
+              document.getElementById("latestTvShows").innerHTML = data.returnMsg;
+              // document.getElementById("latestTvShows").scrollIntoView();
+
+            }
+            document.getElementById("latestTvShowsBlock").scrollIntoView();
+
+          }else if(data.api === 'TMDB:topRated-movies-trailer-by-movie-id'){
+            document.getElementById("topRatedMovieTrailer").innerHTML = data.returnMsg;
+            document.getElementById("topRatedMoviesBlock").scrollIntoView();
+
+          }else if(data.api === 'TMDB:popular-movies-trailer-by-movie-id'){
+            document.getElementById("popularMovieTrailer").innerHTML = data.returnMsg;
+            document.getElementById("popularMoviesBlock").scrollIntoView();
+
+          }else if(data.api === 'TMDB:trending-movies-trailer-by-movie-id'){
+            document.getElementById("trendingMovieTrailer").innerHTML = data.returnMsg;
+            document.getElementById("trendingMoviesBlock").scrollIntoView();
+
+          }else if(data.api === 'TMDB:now-playing-movies-trailer-by-movie-id'){
+            document.getElementById("nowPlayigMovieTrailer").innerHTML = data.returnMsg;
+            document.getElementById("nowPlayingMoviesBlock").scrollIntoView();
+
+          }else if(data.api === 'TMDB:upcomming-movies-trailer-by-movie-id'){
+            document.getElementById("upcommingMovieTrailer").innerHTML = data.returnMsg;
+            document.getElementById("upcommingMoviesBlock").scrollIntoView();
+
+          }else if(data.api === 'TMDB:poplar-tv-shows-trailer-by-tv-show-id'){
+            document.getElementById("popularTvShowsTrailer").innerHTML = data.returnMsg;
+            document.getElementById("popularTvShowsBlock").scrollIntoView();
+
+          }else if(data.api === 'TMDB:airiving-today-tv-shows-trailer-by-tv-show-id'){
+            document.getElementById("airivingTodayTvShowsTrailer").innerHTML = data.returnMsg;
+            document.getElementById("arivingTvShowsBlock").scrollIntoView();
+
+          }else if(data.api === 'TMDB:top-rated-tv-shows-trailer-by-tv-show-id'){
+            document.getElementById("topRatedTvShowsTrailer").innerHTML = data.returnMsg;
+            document.getElementById("topRatedTvShowsBlock").scrollIntoView();
+
+          }else if(data.api === 'TMDB:popular-person'){
+            // document.getElementById("popularPerson").innerHTML = data.returnMsg;
+            if(moviesStatusKeyword){
+
+                if(moviesStatusKeyword === 'similiar-movies'
+                || moviesStatusKeyword === 'recommedations'
+                || moviesStatusKeyword === 'popular-movies'
+                || moviesStatusKeyword === 'similiar-movies-trailer-by-movie-id'
+                || moviesStatusKeyword === 'popular-movies-trailer-by-movie-id'
+                || moviesStatusKeyword === 'recommedations-trailer-by-movie-id'
+              ){
+                  console.log("==== #############################  TMDB:popular-person  ############################# ====");
+                  document.getElementById("popularPersonDetails").innerHTML = data.returnMsg;
+                  document.getElementById("popularPersonBlock").scrollIntoView();
+
+                }
+
+            }else{
+              document.getElementById("popularPerson").innerHTML = data.returnMsg;
+              document.getElementById("popularPersonBlock").scrollIntoView();
+
+            }
+
+          }else if(data.api === 'TMDB:popular-person-trailer-by-movie-id'){
+              document.getElementById("popularPersonDetails").innerHTML = data.returnMsg;
+              document.getElementById("popularPersonBlock").scrollIntoView();
+
+          }
+
+          // document.getElementById("popularMoviesBlock").scrollIntoView();
+
+        });
+
+
+        function onInit(){
+          // console.log("==================== on init fn ======================");
+          document.getElementById("mainContentBlock").scrollIntoView();
+        }
+        setTimeout(function(){
+          onInit();
+        }, 1000)
+        window.onClickButtonAction = function(id, title, bookImg, api){
+          console.log("============ on click button action ==============");
+          console.log("isbn: ", id);
+          console.log("title: ", title);
+          console.log("bookImg : ", bookImg);
+          console.log("@@@@ api : ", onClickButtonAction);
+
+          // if(title === "TMDB:popular-person-popular-movies"){
+          //     socket.emit("TMDB:popular-trending-people-popular-movies", {from: 'Api', api: title, movieId: id});
+          // }else{
+          //     socket.emit("request-tmdb-movies", {from: 'Api', api: title, movieId: id});
+          // }
+          socket.emit("request-tmdb-movies", {from: 'Api', api: title, movieId: id});
+
+
+        }
+
+
+
+
+          window.onOpenModal = function(url, type){
+              console.log("==== call open modal function ====");
+              console.log("== href value :: ", url);
+              console.log("== type value :: ", type);
+
+              if(type === 'newWindow'){
+                window.open(url);
+              }else if(type === 'openModalWithContent'){
+                modalState = type;
+                socket.emit("open-modal-with-content-request", {url : url});
+              }else{
+                document.getElementById("urlIframe").style.display = "none";
+                document.getElementById("modalContent").innerHTML = url;
+                $("#URLModal").modal();
+              }
+
+          }
+
+          window.webShare = function(title, text, url){
+            console.log("title : ", title);
+              console.log("=== calling web share function ===");
+              console.log("title : ", title);
+              console.log("text : ", text);
+              console.log("url : ", url);
+
+              if(navigator.share){
+                  console.log("==== supported web share ====");
+                  navigator.share({
+                    title : title,
+                    text : text,
+                    url : url,
+                  }).then((data) => {
+                      console.log("thanks for sharingthe data.");
+                      console.log("data : ", data);
+                  })
+                  .catch((err) => {
+                      console.log("error occured when we are sharing the post.");
+                  })
+              }
+          }
+
+          socket.on("open-modal-with-content-response", function(data){
+              console.log("==== call open modal with content response ====");
+              console.log("open-modal-with-content-response :: ", data.template);
+              if(modalState === 'openModalWithContent'){
+                  document.getElementById("urlIframe").style.display = "none";
+                  document.getElementById("modalContent").innerHTML = data.template;
+                  $("#URLModal").modal();
+              }
+              modalState = null;
+          })
+
+        });
+      </script>
+
+
+
+  </body>
+</html>

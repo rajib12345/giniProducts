@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>MDM Screen Share</title>
+  </head>
+  <body>
+    <center><h1>Implementation Of Screen Share By MDM </h1></center>
+    <p>
+        <button id="start">Start Sharing</button>
+        <button id="stop">Stop Sharing</button>
+        <button id="screenshots">Take Screen Shots</button>
+        <button id="startRecording">Start Recording</button>
+        <button id="stopRecording">Stop Recording</button>
+        <a id="downloadButton" class="button">
+            Download
+        </a>
+
+
+    </p>
+    <video id="previewSharedScreen" width="800" height="680" autoplay></video>
+
+    <hr>
+
+    <video id="recording" width="160" height="120" controls></video>
+
+    <canvas id="canvas" width="300" height="300" style="border: 1px solid grey; "></canvas>
+
+    <!-- <video id="video1" width="800" height="680" autoplay></video> -->
+
+
+    <script type="text/javascript">
+      let screenSharedMediaStream = null;
+      var recordedChunks = [];
+      var mediaRecorder = null;
+      // function main() {
+      const video = document.getElementById("previewSharedScreen");
+      const start = document.getElementById("start");
+      const stop = document.getElementById("stop");
+      const screenshots = document.getElementById("screenshots");
+      const downloadButton = document.getElementById("downloadButton");
+      const recording = document.getElementById("recording");
+      const startRecording = document.getElementById("startRecording");
+      const stopRecording = document.getElementById("stopRecording");
+      var displayMediaOptions = {
+          video: {
+            cursor: "always",
+          },
+          audio: false,
+      };
+
+      start.onclick = function (e) {
+          console.log("1111111111111111111111");
+          startSharing();
+      };
+
+      stop.onclick = function (e) {
+          console.log("222222222222222222222222");
+          stopSharing();
+      };
+
+      screenshots.onclick = function (e) {
+          capture();
+      };
+
+      startRecording.onclick = function (e) {
+          console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+          startRecording1();
+      };
+
+      stopRecording.onclick = function (e) {
+        console.log("@#################################");
+
+          stopRecording1();
+      };
+
+      downloadButton.onclick = function (e) {
+          downloadRecording();
+      };
+
+      async function startSharing() {
+        try {
+          const captureStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+          screenSharedMediaStream = captureStream;
+          video.srcObject = captureStream;
+          downloadButton.href = captureStream;
+          video.captureStream = video.captureStream || video.mozCaptureStream;
+          return new Promise(resolve => video.onplaying = resolve);
+          } catch (error) {
+            console.log(error);
+          }
+      }
+
+      function stopSharing() {
+        let stream = video.srcObject;
+        stream.getTracks().forEach((track) => track.stop());
+      }
+        //}
+
+        // main();
+
+      function startRecording1(){
+          console.log("============= call dun start recording ==============");
+          var options = { mimeType: "video/mp4; codecs=vp9" };
+          var constraints = { audio: true, video: { width: 1280, height: 720, facingMode: "user" } };
+
+          mediaRecorder = new MediaRecorder(window.sharedScreenMediaStream);
+          mediaRecorder.ondataavailable = (e) => {
+              if(e.data){
+                  recordedChunks.push(e.data)
+              }
+          };
+          mediaRecorder.start();
+          video.onloadedmetadata = function(e) {
+            video.play();
+          };
+      }
+
+      function handleDataAvailable(event) {
+          console.log("data-available");
+          if (event.data.size > 0) {
+            recordedChunks.push(event.data);
+            // console.log(recordedChunks);
+          } else {
+            // ...
+          }
+      }
+
+      function stopRecording1(){
+          console.log("============= call dun stop recording ==============");
+          console.log("stopping recording...");
+          mediaRecorder.stop();
+          const blob = new Blob(
+             recordedChunks, {
+                 type: "video/webm"
+             });
+         window.sharedScreenMediaStream.getTracks().forEach(track => track.stop());
+
+         // recordedChunks = [];
+         let previewRecordedVideoElement = document.getElementById("recording");
+         previewRecordedVideoElement.controls = true;
+         const recordedMediaURL = URL.createObjectURL(blob);
+         previewRecordedVideoElement.src = recordedMediaURL;
+         downloadButton.href = recordedMediaURL;
+         downloadButton.download = "RecordedVideo.webm";
+
+
+      }
+
+      function downloadRecording() {
+          console.log("=============== on click download btn =================");
+          // console.log("Successfully recorded " + recordedBlob.size + " bytes of " + recordedBlob.type + " media.");
+          let previewRecordedVideoElement = document.getElementById("recording");
+          URL.revokeObjectURL(previewRecordedVideoElement);
+      }
+
+        // demo: to download after 9sec
+        // setTimeout(event => {
+        //     console.log("stopping recording...");
+        //     mediaRecorder.stop();
+        // }, 9000);
+        //=================================================================================
+
+       const capture = async () => {
+          const canvas = document.getElementById("canvas");
+          const context = canvas.getContext("2d");
+          // const video = document.getElementById("video1");
+
+          try {
+            // const captureStream = await navigator.mediaDevices.getDisplayMedia();
+            // video.srcObject = captureStream;
+            context.drawImage(video, 0, 0, window.width, window.height);
+            const frame = canvas.toDataURL("image/png");
+            screenSharedMediaStream.getTracks().forEach(track => track.stop());
+            window.location.href = frame;
+          } catch (err) {
+            console.error("Error: " + err);
+          }
+      };
+
+      //capture();
+    </script>
+  </body>
+</html>

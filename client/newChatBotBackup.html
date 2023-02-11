@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<title>chat bot</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- EXTERNAL CSS  FILES -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.css">
+
+  <!-- EXTERNAL JAVASCRIPT FILES  -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+
+<style>
+.input {
+	float: right;
+}
+.output{
+	clear : right;
+}
+
+#chatContainer {
+    padding:5px;
+    border:1px solid black;
+}
+
+.mCSB_draggerRail{width:20px;}
+</style>
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+    <div>
+    	<center><h6>chat bot application.</h6></center>
+    </div>
+    <div class="row container-fluid" style="margin-top : 20px;">
+	      <div class="col-md-3"></div>
+          <div class="col-md-6" >
+	         <div id="chatContainer" style="border : 1px solid grey; height: 500px;" my-main-directive>
+	             <div ng-repeat="chat in chatContainer track by $index" my-repeat-directive>
+	                 <div style="margin-top : 10px;">
+	                 	  <div class="input" ng-if="chat.input.length > 0 && chat.input !== '' ">
+									       <div class="" style=" border-radius: 10px; padding: 10px; padding-bottom : 15px;background-color: SlateGray; color: white; max-width: 200px; min-width:100px; text-align: left; padding-right: 15px; margin-right : 5px; ">
+											      <!-- <p>
+										       {{chat.input}}
+											      </p> -->
+                            <div ng-bind-html="chat.input | unsafe">
+
+                            </div>
+									       </div>
+								
+						          </div>
+						          <div class="output" ng-if="chat.output.length > 0">
+									       <div class="" style=" border-radius: 10px; padding: 10px; background-color: LightSeaGreen ; color: white; max-width: 300px; min-width:150px; padding-left: 15px; margin-left : 5px; padding-bottom : 15px;">
+										         <div ng-bind-html="chat.output | unsafe">
+
+										         </div>
+									       </div>
+	                    </div>
+	                 </div>
+	             	  
+	             </div>
+	         	                            
+	         </div>
+	        
+             <div class="input-group">
+               <input type="text" class="form-control"  name="query" id="chatQuery" ng-model="query" ng-keypress="sendMsgByEnter($event, query)" placeholder="Enter your text here...">
+               <div class="input-group-btn">
+                  <button class="btn btn-default" ng-click="processQuery()">send</button>
+               </div>
+             </div>
+          </div>
+          <div class="col-md-3"></div>
+
+    </div>
+         
+</div>
+
+<script type="text/javascript">
+  $('#chatContainer').mCustomScrollbar({ 
+        theme:"dark-3"        
+  });
+</script>
+
+<script>
+var app = angular.module('myApp', []);
+
+app.directive('myRepeatDirective', function() {
+  return function(scope, element, attrs) {
+    if (scope.$last){
+      setTimeout(function(){
+        $('#chatContainer').mCustomScrollbar("scrollTo","bottom");
+
+      }, 500)
+      // scope.$emit('LastElem');
+    }
+
+  };
+});
+
+app.filter('unsafe', function($sce) {
+return function(val) {
+    return $sce.trustAsHtml(val);
+  };
+});
+
+app.controller('myCtrl', function($scope) { 
+	console.log("main controller is loading...");
+	var client = io();
+    $scope.chatContainer = [];
+    $scope.query = '';
+    var dummyQuery = '';
+    var inputTime = ''; 
+    var changeRequest = '';
+    var changeResponse = {};
+
+     //================== [ start ] chat application flow  =======================
+
+     $scope.processQuery = function(){
+          console.log("calling the process query function...\n with query :: ", $scope.query);
+          dummyQuery = $scope.query;
+
+          if(dummyQuery === undefined){
+              var chatObject = {};
+              chatObject["input"] = '';
+              chatObject["output"] = 'Please write something for query.';
+              $scope.chatContainer.push(chatObject);
+              return;
+          }else{
+            dummyQuery = dummyQuery.replace(/\s\s+/g, ' ');
+                  //dummyQuery = queryMsg;
+                  if(dummyQuery === '' || dummyQuery === undefined){
+                       var chatObject = {};
+                       chatObject["input"] = '';
+                       chatObject["output"] = 'I am sorry that is a little out of my league.<br> Can you please give response in proper format.';
+                       $scope.chatContainer.push(chatObject);
+                  }else{
+                      client.emit("query-request", {query : $scope.query})
+                      $scope.query = '';
+                  }
+          }
+
+     }
+
+     $scope.sendMsgByEnter = function(keyEvent, queryMsg){
+          var d = new Date();
+          var hr = d.getHours();
+          var mnt = d.getMinutes();
+          var sec = d.getSeconds();
+          inputTime = hr+':'+mnt+':'+sec;
+
+          if(queryMsg === undefined){
+              var chatObject = {};
+              chatObject["input"] = '';
+              chatObject["output"] = 'Please write something for query.';
+              $scope.chatContainer.push(chatObject);
+              return;
+          }
+
+          if (keyEvent.which === 13){
+
+                  queryMsg = queryMsg.replace(/\s\s+/g, ' ');
+                  dummyQuery = queryMsg;
+                  if(queryMsg === '' || queryMsg === undefined){
+                       var chatObject = {};
+                       chatObject["input"] = '';
+                       chatObject["output"] = 'I am sorry that is a little out of my league.<br> Can you please give response in proper format.';
+                       $scope.chatContainer.push(chatObject);
+                   }else if(changeRequest.requestTopic){
+                       processChangeRequest(changeRequest);
+                   }else{
+                      client.emit("query-request", {query : $scope.query})
+                      $scope.query = '';
+                  }
+
+                 
+
+          }
+     }
+
+     var processChangeRequest = function(){
+        if(changeRequest.requestTopic){
+            switch(changeRequest.requestTopic){
+                case 'email':
+                    processEmailChangeRequest();
+                break;
+            }
+        }
+     }
+
+     var emailChangeOptions = null;
+     
+     var count = 0;
+     var processEmailChangeRequest = function(){
+        console.log("entered email id :: ", $scope.query);
+        //$scope.query = '';
+        var d = new Date();
+        var hr = d.getHours();
+        var mnt = d.getMinutes();
+        var sec = d.getSeconds();
+        var outputTime = hr+':'+mnt+':'+sec;
+         
+        var chatObject = {};  
+        var msg = '';
+        var input = '';
+        
+        console.log("email changeResponse :: ", emailChangeOptions);
+        
+        for(var i=0; i<emailChangeOptions.length; i++){
+
+           if(emailChangeOptions[i].isVisited === 'active'){
+              
+              emailChangeOptions[i].value = dummyQuery;
+              emailChangeOptions[i].isVisited = 'done';
+
+              if(emailChangeOptions.length === count ){
+               //console.log("need to send the email response option to server :: ",emailChangeOptions);
+               
+                var input = `
+                  <div>
+                     <div>`+dummyQuery+`<div>
+                     <p style="font-size: 10px; float: right; ">`+inputTime+`</p>
+                  </div>
+                `;
+                msg = 'please wait... <br> while we are changing your emailid.';
+                var output = `
+                  <div>
+                     <div>`+msg+`<div>
+                     <p style="font-size: 10px; float: right;">`+outputTime+`</p>
+                  </div>
+                `;
+                chatObject["input"] = input;
+                chatObject["output"] = output;
+                $scope.chatContainer.push(chatObject);
+                
+                changeRequest.requestTopic = null;
+                //console.log("need to send the email response option to server 2:: ",emailChangeOptions);
+                client.emit('email-change-request-data', {emailChangeOptions : emailChangeOptions, changeRequest : changeRequest});
+
+                // --------- initialize to default state ------------
+                count = 0;
+                $scope.query = '';
+                
+                emailChangeOptions = null;
+
+                return;
+            }
+            }
+
+        }
+
+        for(var j=0; j<emailChangeOptions.length; j++){
+           if(emailChangeOptions[j].isVisited === 'inactive'){
+                console.log("===================================");
+                emailChangeOptions[j].isVisited = 'active';
+                msg = emailChangeOptions[j].msg;
+                count++;
+                var input1 = `
+                  <div>
+                     <div>`+dummyQuery+`<div>
+                     <p style="font-size: 10px; float: right; ">`+inputTime+`</p>
+                  </div>
+                `;
+
+                var output1 = `
+                  <div>
+                     <div>`+msg+`<div>
+                     <p style="font-size: 10px; float: right;">`+outputTime+`</p>
+                  </div>
+                `;
+                chatObject["input"] = input1;
+                chatObject["output"] = output1;
+                $scope.chatContainer.push(chatObject);
+                break;
+           }
+        }
+        $scope.query = '';
+        console.log("email changeResponse :: ", emailChangeOptions);
+        console.log("count :: ", count);
+
+
+        //client.on("change-email-request", {changeResponse : changeResponse})
+
+     }
+
+     client.on("query-response", function(data){
+        $scope.$apply(function(){
+          console.log("query response : ", data.returnMsg);
+          var d = new Date();
+          var hr = d.getHours();
+          var mnt = d.getMinutes();
+          var sec = d.getSeconds();
+          var outputTime = hr+':'+mnt+':'+sec;
+
+          var chatObject = {};  
+          var input = `
+             <div>
+                 <div>`+dummyQuery+`<div>
+                 <p style="font-size: 10px; float: right; ">`+inputTime+`</p>
+             </div>
+          `;
+          var output = `
+             <div>
+                 <div>`+data.returnMsg+`<div>
+                 <p style="font-size: 10px; float: right;">`+outputTime+`</p>
+             </div>
+          `;
+          chatObject["input"] = input;
+          chatObject["output"] = output;
+          if(data.returnMsg != '' || data.returnMsg === undefined)
+              $scope.chatContainer.push(chatObject);
+          })
+      
+     })
+
+     client.on("change-request", function(data){
+        //$scope.$apply(function(){
+        console.log("change request object :: ", data.changeRequest);
+        changeRequest = data.changeRequest;
+        emailChangeOptions = data.emailChangeOptions;
+        
+        //})
+ 
+     });
+
+     client.on('email-change-request-response', function(data){
+       $scope.$apply(function(){
+        var d = new Date();
+        var hr = d.getHours();
+        var mnt = d.getMinutes();
+        var sec = d.getSeconds();
+        var outputTime = hr+':'+mnt+':'+sec;
+
+        var chatObject = {}; 
+        var msg = ''; 
+        var input = `
+             <div>
+                 <div>`+msg+`<div>
+                 <p style="font-size: 10px; float: right; ">`+inputTime+`</p>
+             </div>
+        `;
+        var output = `
+             <div>
+                 <div>`+data.returnMsg+`<div>
+                 <p style="font-size: 10px; float: right;">`+outputTime+`</p>
+             </div>
+        `;
+        chatObject["input"] = input;
+        chatObject["output"] = output;
+        $scope.chatContainer.push(chatObject);
+        })
+     });
+     
+
+    
+     //================== [ end ] chat application flow  =======================
+
+     
+     
+}); 
+</script>
+
+</body>
+</html>

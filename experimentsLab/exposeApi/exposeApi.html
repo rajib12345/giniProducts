@@ -1,0 +1,320 @@
+
+<!DOCTYPE html><html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://cdn.cloudmersive.com/js/email-validate-widget.js?4a95cd2a-efdc-4dd1-a4b8-d4ca27bd90fe" type="text/javascript"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+      div.scrollmenu {
+        /* background-color: #333; */
+        overflow: auto;
+        white-space: nowrap;
+      }
+
+      div.scrollmenu a {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        padding: 14px;
+        text-decoration: none;
+      }
+
+      div.scrollmenu a:hover {
+        /* background-color: #777; */
+      }
+      .btn{
+        /* background-color: white; */
+      }
+      .one-line-ellipse-hscroll-bar{
+        white-space: nowrap;
+        /* width: auto; */
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+</style>
+    <script>
+
+    </script>
+  </head>
+  <body>
+
+    <div class="main-content" ng-app="exposeApi" ng-controller="exposeApiController">
+      <!-- THIS CODE IS FOR EMAIL VERIFICATION  -->
+      <!-- <input class="cloudmersiveEmailValidator" type="text" name="MyEmailField" id="MyEmail" /> -->
+
+      <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                    <div class="form-group" style="margin-top: 20px;">
+                      <label for="usr">Enter URL</label>
+                      <span><input type="text" class="form-control" id="usr" placeholder="Enter url here..." ng-model="exposeApiURL"></span>
+                      <center><button type="button" class="btn btn-success" style="margin-top: 10px;" ng-click="onClickExposeURL(exposeApiURL)">Expose URL</button></center>
+                    </div>
+                    <hr>
+
+                    <hr>
+                    <div class="">
+                      <center><h3>EXPOSED API DETAILS</h3></center><hr>
+                      <div id="apiFieldsContainer" class="">
+
+                      </div>
+
+                      <div class="">
+                        <!-- <center><button  type="button" name="button" class="btn btn-block" ng-click="saveJsFile()" style="background-color: DarkCyan; color: white;">Save File</button></center> -->
+                      </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+            </div>
+            <div class="" style="text-align: center;">
+                <button type="button" class="btn btn-primary" ng-click="generateTemplate()">Generate Template</button>
+            </div>
+            <hr>
+            <div class="row">
+                  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                  <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                      <div id="testTemplate" class="container-fluid scrollmenu">
+
+                      </div>
+                      <hr>
+                  </div>
+                  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+            </div>
+
+      </div>
+    </div>
+
+      <script>
+
+          var app = angular.module('exposeApi', []);
+          app.controller('exposeApiController', function($scope){
+            var socket = io();
+            var argList = [];
+            var firstNode;
+            var fisrtNodeObj = {};
+            var imgPosValue = "none";
+            $scope.exposeApiURL = '';
+            $scope.apiResponse ;
+            // socket.emit("api-expose", {});
+
+            socket.on('exposed-api-response', function(data){
+                $scope.$apply(function(){
+                    $scope.apiResponse = data.response;
+                    console.log("exposed api value :: ", $scope.apiResponse);
+                    let result = $scope.generateExposedApiTemplate(data.response);
+                    // let finalTemplate = createFinalApiLayoutTemplate(result.keysTemplate, result.valuesTemplate);
+                })
+            })
+
+            socket.on('location-by-search-response', function(data){
+                // console.log("data .template :: ", data.template);
+                document.getElementById("testTemplate").innerHTML = data.template;
+                // document.getElementById("testTemplate").innerHTML = hScroll(data.template)
+
+            });
+
+            $scope.onClickExposeURL = function(url){
+                console.log("exposed url is : ", url);
+                $scope.exposeApiURL = '';
+                socket.emit("exposed-api-url", {apiUrl : url})
+            }
+
+            function hScroll(hScrollBody){
+                return '<div class="scrollmenu">'+hScrollBody+'</div>';
+            }
+
+            function createFinalApiLayoutTemplate(keysTemplate, valuesTemplate){
+                let template = `
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4" style="padding-right: 5px;">
+                            <div style="text-align: center; font-size: 18px; ">KEYS</div>
+                            <div>`+keysTemplate+`</div>
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8" style="padding-left: 0px;">
+                            <div style="text-align: center; font-size: 18px; ">VALUE</div>
+                            <div>`+valuesTemplate+`</div>
+                        </div>
+                    </div>
+                    <hr>
+                `;
+                return template;
+            }
+
+            function isKeyExistsInArgList(key){
+                console.log("=======================");
+                let status = false;
+                if(argList.length){
+                  argList.forEach(function(item, index){
+                      if(item.key === key){
+                         status = true;
+                      }
+                  });
+                }
+                return status;
+            }
+
+            function removeKeyFromArgList(key){
+              let keyIndex;
+              argList.forEach(function(item, index){
+                  if(item.key === key){
+                      keyIndex = index;
+                  }
+              });
+              argList.splice(keyIndex, 1);
+            }
+
+            window.createArgList = function(key){
+                console.log("=== selected key : \n", key);
+                console.log("=== selected value : ", fisrtNodeObj[key]);
+                let type;
+                let btnId = '';
+                if(fisrtNodeObj[key].includes(".jpg") || fisrtNodeObj[key].includes(".jpeg") || fisrtNodeObj[key].includes(".png")){
+                    type = "image";
+                }else if(typeof(fisrtNodeObj[key]) === "string"){
+                    type = "block";
+                }
+                let isKeyExists = isKeyExistsInArgList(key);
+                if(isKeyExistsInArgList(key)){
+                  document.getElementById(key).style.backgroundColor = "grey";
+                  document.getElementById(key).style.color = "white";
+
+                  removeKeyFromArgList(key);
+                }else{
+                  btnId = 'btn'+key;
+                  document.getElementById(key).style.backgroundColor = "teal";
+                  document.getElementById(key).style.color = "white";
+
+
+                  let argObj = {key : key, subkey: null, type: type};
+                  argList.push(argObj);
+                }
+                console.log("isKeyExists : ", isKeyExists);
+                console.log("arglist :: ", argList);
+
+            }
+
+            window.setImgPosition = function(){
+                imgPosValue = document.getElementById("imgPos").value;
+                console.log("== selected img position : ", imgPosValue);
+            }
+
+            $scope.generateTemplate = function(){
+                console.log("call generate template...");
+                socket.emit("generate-template", {response: $scope.apiResponse,argList : argList, imgPos: imgPosValue});
+            }
+
+            $scope.generateExposedApiTemplate = function(data){
+                finalTemplate = '';
+                firstNode = [];
+                let keysTemplate;
+                let valuesTemplate;
+                let index = 0;
+                console.log("data 0 index :: ", data[0]);
+                fisrtNodeObj = data[0];
+                firstNode.push(data[0]);
+                firstNode.forEach(function(item){
+                  keysTemplate = '';
+                  valuesTemplate = '';
+                  for(key in item){
+                      if(typeof(item[key]) === "string" || typeof(item[key]) === "number" || typeof(item[key]) === "boolean"){
+                          // keysTemplate += '<div style="margin-bottom: 5px;"><button class="btn" onclick="createArgList(\''+item[key]+'\', \''+key+'\')">'+key+'</button></div>';
+
+                          // keysTemplate += '<div style="margin-bottom: 5px;"><button class="btn" onclick="createArgList(\''+key+'\')">'+key+'</button></div>';
+                          //
+                          // valuesTemplate += '<div class="one-line-ellipse-hscroll-bar" style="height: 34px; background-color: whitesmoke; margin-bottom: 5px; padding-left: 10px; padding-right: 10px;">'+item[key]+'</div>';
+                          keysTemplate += '<div style="margin-bottom: 5px; padding: 7px 12px; background-color: grey; color: white;" id="'+key+'" onclick="createArgList(\''+key+'\')">'+key+'</div>';
+
+                          if(item[key].includes(".jpeg") || item[key].includes(".jpg") || item[key].includes(".png")){
+                              valuesTemplate += `
+                                  <div class="row">
+                                      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="padding-right: 0px;">
+                                            <div class="one-line-ellipse-hscroll-bar" style="height: 34px; background-color: whitesmoke; margin-bottom: 5px; padding-left: 10px; padding-right: 10px;">`+item[key]+`</div>
+                                      </div>
+                                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="padding-left: 5px;">
+
+                                          <div>
+                                              <select class="" id="imgPos" onchange="setImgPosition()" style="padding-left: 5px; padding-top: 8px; padding-bottom: 8px; background: burlywood; border: none;">
+                                                  <option value="top">Top</option>
+                                                  <option value="none">None</option>
+                                                  <option value="left">Left</option>
+                                                  <option value="right">Right</option>
+                                              </select>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                              `;
+
+                          }else{
+                            valuesTemplate += '<div class="one-line-ellipse-hscroll-bar" style="height: 34px; background-color: whitesmoke; margin-bottom: 5px; padding-left: 10px; padding-right: 10px;">'+item[key]+'</div>';
+                          }
+                      }else if(Array.isArray(item[key])){
+                          let arr = item[key];
+                          let template = '<div style="display: block; color: black; ">';
+                          for (var i = 0; i < arr.length; i++) {
+                              if(typeof(arr[i]) === "string" || typeof(arr[i]) === "number"){
+                                  template += '<div style="background-color: whitesmoke; padding: 8px; float: left; border-right: 3px solid teal;">'+arr[i]+'</div>';
+                              }
+                          }
+                          template += '</div>';
+                          keysTemplate += '<div style="margin-bottom: 5px; padding: 7px 12px; background-color: grey; color: white;">'+key+'</div>';
+                          valuesTemplate += template;
+                      }else if(Array.isArray(item[key]) === false){
+                          // subkey section here
+                          let objectVal = item[key];
+                          keysTemplate += '<div style="margin-bottom: 5px; padding: 7px 12px; background-color: grey; color: white;" onclick="createArgList(key)">'+key+'</div>';
+
+                          valuesTemplate += '<div style="height: 34px; background-color: whitesmoke; margin-bottom: 5px; padding-left: 10px; padding-right: 10px;"></div>';
+                          for(subkey in objectVal){
+                            keysTemplate += '<div style="margin-bottom: 5px; margin-left: 15px; padding: 7px 12px; background-color: darkGrey; color: white; " onclick="createArgList(subkey)">'+subkey+'</div>';
+
+                            valuesTemplate += '<div style="height: 34px; background-color: whitesmoke; margin-bottom: 5px; padding-left: 10px; padding-right: 10px;">'+objectVal[subkey]+'</div>';
+                          }
+                      }else{
+                          keysTemplate += '<div style="margin-bottom: 5px; padding: 7px 12px; background-color: grey; color: white;" onclick="createArgList(key)" >'+key+'</div>';
+
+                          valuesTemplate += '<div style="height: 34px; background-color: whitesmoke; margin-bottom: 5px; padding-left: 10px; padding-right: 10px; color: orange;">Empty value</div>';
+                      }
+                  }
+                  finalTemplate += createFinalApiLayoutTemplate(keysTemplate, valuesTemplate);
+                  // document.getElementById('apiFieldsContainer').innerHTML = hScroll(finalTemplate);
+                  document.getElementById('apiFieldsContainer').innerHTML = finalTemplate;
+
+                })
+
+            }
+
+
+
+
+
+          });
+
+          // <div class="dropdown">
+          //     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Img Pos
+          //     <span class="caret"></span></button>
+          //     <ul class="dropdown-menu">
+          //     <li><a href="#">top</a></li>
+          //     <li><a href="#">left</a></li>
+          //     <li><a href="#">right</a></li>
+          //     <li><a href="#">none</a></li>
+          //     </ul>
+          // </div>
+
+      </script>
+      <script>
+
+      </script>
+
+  </body>
+</html>

@@ -1,0 +1,2702 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta charset="utf-8">
+<title>News App</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<script async src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> -->
+<script defer src="static/js/fontAwesomeKit.js"></script>
+<script defer src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+
+
+
+<style>
+:root {
+  --default-theme-color: #607D8B;
+
+}
+::placeholder {
+  color: var(--default-theme-color);opacity: 1; /* Firefox */
+}
+.custom-grey-placeholder::-webkit-input-placeholder {color: grey;}
+.vertical-template-block{background: white;}
+.language-icon{font-size: 22px;color: var(--default-theme-color); position: absolute;right: 16px;top: 10px;}
+.menu-icon{color: var(--default-theme-color); background: white !important; padding: 3px 16px;}
+.search-icon{color: var(--default-theme-color); position: absolute; top: 13px; padding-left: 4px;}
+.search-input-box{color: var(--default-theme-color) !important; padding-left: 16px; width: 100%;padding: 10px;border: none; outline: none !important; padding-left: 30px;}
+.compare-hr-separetor-right{border: 0;border-top: 1px solid var(--default-theme-color);margin-left: 10%;margin-right: 40%; position: relative; left: -24px}
+.compare-hr-separetor-left{border: 0;border-top: 1px solid var(--default-theme-color);margin-left: 40%;margin-right: 10%; position: relative; left: 24px;}
+.side-bar-block{display:none; z-index: 99; color: white !important; font-weight: 700; width: 250px; border-right: 2px solid var(--default-theme-color);}
+.side-bar-close-btn{width: 100%;display: block;padding: 8px 16px;text-align: left;border: none;white-space: normal;float: none;outline: 0;color: purple;}
+div.scrollmenu {  /* background-color: #333; */  overflow: auto;  white-space: nowrap;  /* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); */transition: 0.3s;}
+
+div.scrollmenu a {  display: inline-block;  text-decoration: none;  vertical-align: top;color: grey;/* background: #E9EBEE; */}
+a:hover{  display: inline-block;text-decoration: none !important;}
+
+.ellipse {  white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis;position: relative;  /* line-height: 1rem; */  pointer-events:none;  /* display: -webkit-box; */  -webkit-line-clamp: 3;  -webkit-box-orient: vertical;}
+
+.ellipse:after {  content:"";  display: block;  position: absolute;  top: 0;  right: 0;  width: 48px;  height: 48px;  z-index: 1;  pointer-events:initial;}
+
+.tooltip {  width: 45%;  visibility: hidden;  background-color: black;  border: 2px solid white;  color: white;  padding: 5px;  -webkit-box-shadow: 0 0 50px 0 rgba(0,0,0,0.3);  opacity: 0;transition: opacity 0.5s ease;}
+
+.tooltip{display: none !important;}
+.custom-sidebar-layout{background: #F7F7F7}
+.custom-link{text-decoration: none;font-weight: normal;/* border-style: dashed !important; *//* border-width: 0px 0px 1px 0px !important; */color: var(--default-theme-color) !important; font-size: 14px !important; padding-left: 24px !important; padding-right: 10px !important;}
+.w3-button:hover {text-decoration: none; color: var(--default-theme-color) !important; background-color: white !important;}
+.w3-container, .w3-panel {padding: 0px !important;}
+.w3-container{padding-bottom: 0px !important; }
+.loader-img{height: 125px;margin-left: 30%;}
+.hints-item{padding: 10px 12px !important; margin-right:5px; border-radius: 5px; background-color: white;}
+.custom-search-hints-layout{}
+.news-block{border-bottom: 10px solid darkgray;}
+.glyphicon-play-circle{color: grey !important;}
+h5{color: grey; margin-top: 20px;}
+.container-fluid{padding-left: 5px !important; padding-right: 5px !important;}
+body{position: static !important;}
+select{outline: none !important; border: none;}
+.google_translate_element{text-align: center; position: relative; top: 4px; height: 20px !important; overflow: hidden;}
+.google_translate_element select{background: white !important; color: var(--default-theme-color); width: 60% !important;}
+::-webkit-scrollbar {width: 0px !important;}
+.block-title{background: #EAEAED; color: black; height: 50px; padding-top: 13px; padding-left: 10px; font-weight: normal; font-size: 14px; text-align: center; font-weight: 600;}
+.init-default-loader-block{height: 150px; width: 100%; background-color: white; position: relative; margin-bottom: 1%;}
+.empty-div-dashed-border{border-style: dashed; border-width: 0px 0px 3px 0px; border-color: gainsboro; width: 96%; margin-left: 2%;}
+.footer-block{height: 40px;background: white;text-align: center;border-top: 1px solid whitesmoke;padding-top: 8px;}
+.appHeadliesTitle{font-size: 2em !important;}
+.default-side-bar-menu{background-color: var(--default-theme-color) !important; color: white !important; font-weight: 700; font-size: 16px; border: none !important;}
+.side-bar-hr-separetor{margin-top: 16px;margin-bottom: 16px;border: 0;border-top: 1px solid var(--default-theme-color);width: 50%;left: 25%;position: relative;}
+</style>
+
+<script>
+  var socket = io();
+</script>
+<body ng-app="nearByApi" ng-controller="nearByApiController" >
+
+<!-- Sidebar -->
+
+
+<div class="w3-sidebar w3-bar-block w3-animate-left side-bar-block custom-sidebar-layout" style="" id="mySidebar">
+  <div class="side-bar-close-btn" style="float: right; display: none;">
+    <!-- <button onclick="w3_close()" class="w3-bar-item w3-button w3-large side-bar-close-btn">Close &times;</button> -->
+    <button onclick="w3_close()" class="w3-bar-item w3-button w3-large side-bar-close-btn" style="text-align: right;position: relative;top: -10px;right: -22px;">&times;</button>
+  </div>
+  <!-- <div class="side-bar-profile-block">
+      <div class="side-bar-logo-block">
+            <img class="loader-img" src="static/images/corona-logo/Coronavirus-Cleaners.png"  alt="">
+      </div>
+  </div> -->
+  <div class="side-bar-profile-block">
+      <div  class="side-bar-logo-block" style="width: 50%;/* border-right: 1px solid black; */display: inline-block;/* width: 209px; */">
+            <!-- <img onclick="onClickSideMenu('home')" class="" style="width: 100%;" src="static/images/corona-logo/Coronavirus-Cleaners.png" alt=""> -->
+            <img onclick="onClickSideMenu('home')" class="" style="width: 100%;" src="static/images/corona-logo/corona-logo.jpg" alt="">
+
+      </div>
+      <div onclick="onClickSideMenu('home')" style=" color: var(--default-theme-color); display: inline-block; position: relative; top: -5px; left: -10%;">
+        <span>Gini-Covid19</span>
+      </div>
+  </div>
+  <div class="side-bar-categories-block">
+    <a href="#" id="home"  onclick="onClickSideMenu('home')" class="w3-bar-item w3-button custom-link default-side-bar-menu " style="color: white;">
+      <div>
+        <div style="width:10%; display: inline-block;"><span class="glyphicon glyphicon-home" style="color: white; font-size: 20px;"></span></div>
+        <div style="display: inline-block; font-size: 20px; padding-left: 10px;">Home</div>
+      </div>
+
+    </a>
+    <!--  GLOBAL REPORT -->
+    <a href="#" id="covid19CountryWiseReport" onclick="onClickSideMenu('covid19CountryWiseReport')" class="w3-bar-item w3-button custom-link" style="">
+      <!-- <div style="10%; display: inline-block;"><span class="glyphicon glyphicon-home" style="color: white; font-size: 20px;"></span></div>
+      <div style="width: 90%; display: inline-block;">Covid19 Country Wise Report</div> -->
+      <span>Covid19 Country Wise Report</span>
+    </a>
+    <!-- rajib -->
+    <a href="#" id="covid19StateWiseDailyChangesReport"  onclick="onClickSideMenu('covid19StateWiseDailyChangesReport')" class="w3-bar-item w3-button custom-link" style="">State Wise Daily Change Report Of India</a>
+
+    <a href="#" id="covid19GlobalDailyReport"  onclick="onClickSideMenu('covid19GlobalDailyReport')" class="w3-bar-item w3-button custom-link" style="">Covid-19 Global Daily Latest Report</a>
+
+    <a href="#" id="whoCovid19LatestReportIndia" onclick="onClickSideMenu('whoCovid19LatestReportIndia')" class="w3-bar-item w3-button custom-link" style="">Covid-19 Latest Report In India</a>
+    <a href="#" id="covid19IndiaStatewiseTestingLabDetails" onclick="onClickSideMenu('covid19IndiaStatewiseTestingLabDetails')" class="w3-bar-item w3-button custom-link" style="">India Government Testing Labs Details </a>
+    <a href="#" id="covid19IndiaStateWiseDeathRecoveriesReport" onclick="onClickSideMenu('covid19IndiaStateWiseDeathRecoveriesReport')" class="w3-bar-item w3-button custom-link" style="">Death Recoveries Report of India </a>
+    <a href="#" id="covid19IndiaStateWiseReport" onclick="onClickSideMenu('covid19IndiaStateWiseReport')" class="w3-bar-item w3-button custom-link" style="">Covid19 State Wise Report of India</a>
+    <a href="#" id="covid19IndiaDistrictWiseReport" onclick="onClickSideMenu('covid19IndiaDistrictWiseReport')" class="w3-bar-item w3-button custom-link" style="">Covid-19 District Wise Report Of India  </a>
+    <a href="#" id="covid19IndiaTimeSeriesReport" onclick="onClickSideMenu('covid19IndiaTimeSeriesReport')" class="w3-bar-item w3-button custom-link" style="">Covid19 Time Series Report of India</a>
+    <a href="#" id="covid19IndiaTestingReport" onclick="onClickSideMenu('covid19IndiaTestingReport')" class="w3-bar-item w3-button custom-link" style="">Covid19 Testing Report of India</a>
+
+    <div class="">
+        <span><hr class="side-bar-hr-separetor" style="width: 15%; left: 12%; display: inline-block;"></span>
+        <span style="color: red;position: relative;left: 16%;top: -14px; color: #607D8B; font-size: 16px;">Covid FAQ</span>
+        <span><hr class="side-bar-hr-separetor" style="width: 15%; left: 20%; display: inline-block;"></span>
+    </div>
+
+    <a href="#" id="indiaGvtHelpLineNumberPdf" onclick="onClickSideMenu('indiaGvtHelpLineNumberPdf')" class="w3-bar-item w3-button custom-link" style="">India Government Helpline Numbers  </a>
+    <a href="#" id="whoDashboard" onclick="onClickSideMenu('whoDashboard')" class="w3-bar-item w3-button custom-link" style="">Who Covid-19 Dashboard</a>
+    <a href="#" id="whoCovid19QuestionAndAnswer" onclick="onClickSideMenu('whoCovid19QuestionAndAnswer')" class="w3-bar-item w3-button custom-link" style="">Who Covid-19 Question And Answers</a>
+    <!-- <a href="#" id="pressRelease" onclick="onClickSideMenu('pressRelease')" class="w3-bar-item w3-button custom-link" style="">Covid-19 Press Release</a> -->
+
+    <!-- <hr class="side-bar-hr-separetor" style=""> -->
+    <div class="">
+        <span><hr class="side-bar-hr-separetor" style="width: 15%; left: 10%; display: inline-block;"></span>
+        <span style="color: red;position: relative;left: 12%;top: -14px; color: #607D8B; font-size: 16px;">News Section</span>
+        <span><hr class="side-bar-hr-separetor" style="width: 15%; left: 14%; display: inline-block;"></span>
+    </div>
+
+    <a href="#" id="covid19CurrentsHealthReport" onclick="onClickSideMenu('covid19CurrentsHealthReport')" class="w3-bar-item w3-button custom-link" style="">Global Health Update</a>
+    <a href="#" id="wallStreetJournalReport" onclick="onClickSideMenu('wallStreetJournalReport')" class="w3-bar-item w3-button custom-link" style="">Wall Street Journal</a>
+    <a href="#" id="theNextWebNewsReport" onclick="onClickSideMenu('theNextWebNewsReport')" class="w3-bar-item w3-button custom-link" style="">The Next Web Journal</a>
+    <a href="#" id="covid19GlobalHealthNewsReport" onclick="onClickSideMenu('covid19GlobalHealthNewsReport')" class="w3-bar-item w3-button custom-link" style="">Covid19 Global Health Update</a>
+
+  </div>
+
+</div>
+
+
+<!-- Page Content -->
+  <div class="w3-teal" style="background-color: white!important;">
+    <div id="searchInputBlock" class="" style="border-bottom: 1px solid var(--default-theme-color)">
+      <span style="width: 10%;">
+        <span>
+          <button id="menuIcon" class="w3-button w3-xlarge menu-icon" style="" onclick="w3_open()">
+            ☰
+          </button>
+        </span>
+        <span>
+          <button id="searchBackIcon" class="w3-button w3-xlarge" style="display: none; color: grey; background-color: white; padding: 3px 16px;" onclick="onClickSearchBackBtn()">
+            <span class="glyphicon glyphicon-menu-left"></span>
+            <!-- <span><i class="fad fa-chevron-left"></i></span> -->
+          </button>
+        </span>
+      </span>
+      <span class="header-block" style="width: 80%; top: 0px; display: inline-block; margin-left: -14px;">
+        <span id="searchIcon" class="search-icon" style="display: block; " class="glyphicon glyphicon-search"></span>
+        <!-- <input type="text" id="searchPersonalizedNews" placeholder="Search personalized news..." > -->
+        <span style=""><div id="google_translate_element" class="google_translate_element" style="display: none; text-align: center; position: relative; height: 20px; overflow: hidden; top: 4px;"></div></span>
+        <!--  onclick="onClickPersonalizedSearch()" ng-model="query" ng-keypress='sendMsgByEnter($event, query, "enter")' ng-keydown='onClickBackSpace($event, query)' -->
+        <input type="text" id="searchPersonalizedNews" class="search-input-box"  onclick="onClickPersonalizedSearch()" ng-model="query" ng-keypress='sendMsgByEnter($event, query, "enter")' ng-keydown='onClickBackSpace($event, query)' placeholder="Search news by keywords..." name="" autocomplete="off"  style="">
+        <!-- <i class="material-icons" style="color:grey;"></i> -->
+        <span id="languageIcon"  onclick="onClickLanguageIcon()" style="display: block;" class="glyphicon glyphicon-globe language-icon"></span>
+        <span id="microphoneIcon" onclick="onClickMicrophoneIcon()" style="display: none; color: grey; position: absolute; top: 8px; font-size: 24px; right: 8px;" class="glyphicon glyphicon-volume-down"></span>
+      </span>
+
+    </div>
+    <div class="customSearchSources">
+      <div id="customSearchOptions" class="scrollmenu custom-search-hints-layout" id="" style="display: none;">
+      </div>
+    </div>
+    <div class="w3-container" id="appHeadliesBlock" style="background-color: white!important; text-align: center; color: grey; padding-bottom: 12px !important;">
+      <div class="">
+        <h1 id="appHeadliesTitle" class="appHeadliesTitle">Covid-19 Headlines</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-container" onclick="onClickBody()">
+
+    <div class="topNewsContentsBlock" id="topNewsContentsBlock">
+
+        <div class="" id="covid19HomeNewsBlock">
+
+        <!-- ===================================  START :: COVID19 HOME PAGE ==================================== -->
+
+
+        <!-- <div class="covid19DontsBlock news-block" id="covid19DontsBlock" style="">
+            <div class="block-title" style="">
+                  <span> # COVID19 DONT'S</span>
+            </div>
+            <div id="covid19DontsLoaderBlock" class="init-default-loader-block"  style="margin-bottom: -2%;">
+            </div>
+            <div id="covid19DontsTemplate" class="scrollmenu" style="" ></div>
+        </div> -->
+
+        <!-- ============================================================================================ -->
+
+        <!--    1   GLOBAL   REPORT  -->
+
+            <div class="covid19DosBlock news-block" id="covid19DosBlock" style="">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 WORLD REPORT</h5></center> -->
+
+                <div class="block-title" style="">
+                      <span> # COVID19 DO'S AND DONT'S</span>
+                </div>
+                <div id="covid19DosLoaderBlock" class="init-default-loader-block"  style="margin-bottom: -2%;">
+                  <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                </div>
+                <div id="covid19DosTemplate" class="scrollmenu" style="" ></div>
+            </div>
+
+
+            <div class="covid19GlobalReportNewsBlock news-block" id="covid19GlobalReportNewsBlock" style="">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 WORLD REPORT</h5></center> -->
+
+                <div class="block-title" style="">
+                      <span> # COVID19 WORLD REPORT</span>
+                </div>
+                <div id="covid19GlobalReportNewsLoaderBlock" class="init-default-loader-block"  style="margin-bottom: -2%;">
+                  <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+                </div>
+                <div id="covid19GlobalReportNewsTemplate" class="scrollmenu" style="" ></div>
+            </div>
+
+
+
+        <!--   2  CONTRY WISE COVID19 REPORT    -->
+
+            <div class="covid19CountryWiseReportNewsBlock news-block" id="covid19CountryWiseReportNewsBlock" style="">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 REPORT COUNTRY WISE</h5></center> -->
+                <div class="block-title" style="">
+                      <div style="display: inline-block;"># COVID-19 COUNTRY WISE REPORT</div>
+                      <div style="display: inline-block;position: absolute;right: 8px;"></div>
+                </div>
+                <div  id="covid19CountryWiseReportNewsLoaderBlock" class="init-default-loader-block" style="margin-bottom: 4%;">
+                  <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+                </div>
+                <div id="covid19CountryWiseReportNewsTemplate" class="container-fluid scrollmenu" style="" ></div>
+                <!-- <div class="footer-block" style="">
+                    <span>View all</span>
+                </div> -->
+            </div>
+
+            <div class="covid19IndiaPredictionReportNewsBlock news-block" id="covid19IndiaPredictionReportNewsBlock" style="">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 WORLD REPORT</h5></center> -->
+
+                <div class="block-title" style="">
+                      <span> # COVID19 INDIA ANALYSIS REPORT</span>
+                </div>
+                <div id="covid19IndiaPredictionReportNewsLoaderBlock" class="init-default-loader-block"  style="margin-bottom: -2%;">
+                  <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+                </div>
+                <div id="covid19IndiaPredictionReportNewsTemplate" class="scrollmenu" style="background: #FDF5E6; padding-bottom: 20px; padding-left: 8px; padding-right: 8px;" ></div>
+            </div>
+
+        <!--   3  GLOBAL REPORT BY DATE  -->
+
+            <div class="covid19CompareCountriesRecordNewsBlock news-block" id="covid19CompareCountriesRecordNewsBlock" style="padding-bottom: 30px;">
+                <div class="" style="">
+                  <!-- <center><h5 style="text-align: center; font-weight: 900;">GLOBAL COVID19 COUNTRY COMPARISON</h5></center> -->
+                  <div class="block-title" style="">
+                        <span> # COVID19 COUNTRY WISE COMPARISON</span>
+                  </div>
+                  <div id="covid19CompareCountriesRecordNewsTemplate" class="" style="margin-top: 12px; width: 100%;" >
+                      <div id="covid19CompareCountryOneBlock" class="" style="width: 100%; display: inline-block; float: left; ">
+                          <div id="countryListOne" class="" style=" ">
+                            <select id="CompareCountryOne" onchange="onChangeListValue('CompareCountryOne')"  style="width: 96%; margin-left: 6px; padding-left: 5%; font-size: 17px; height: 40px; color: #4b4f56; background: white; border: 1px solid #ccd0d5;"></select>
+                          </div>
+                          <div id="covid19CompareCountryOneLoaderBlock" class="init-default-loader-block" style="width: 90%; margin-left: 6%;">
+                            <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+                          </div>
+                          <div id="covid19CompareCountryOneTemplateBlock" class="covid19CompareCountryOneTemplateBlock" style="position: relative; top: 16px;"></div>
+                      </div>
+                      <div style="width: 100%;">
+                          <div class="">
+                            <div class="" style="display: inline-block; width: 32%; margin-top: 16px;">
+                              <hr class="compare-hr-separetor-left" style="">
+                            </div>
+                            <div class="" style="display: inline-block; width: 32%; text-align: center; margin-top: 16px;">
+                                <span style="position: relative; top: -16px; color: #607D8B; font-weight: 600; ">Compare to</span>
+                            </div>
+                            <div class="" style="display: inline-block; width: 32%;margin-top: 16px;">
+                              <hr class="compare-hr-separetor-right" style="">
+                            </div>
+                          </div>
+                      </div>
+                      <div id="covid19CompareCountryTwoBlock" class="" style="width: 100%; display: inline-block;">
+                          <div id="countryListTwo" class="" style="">
+                            <select id="CompareCountryTwo" onchange="onChangeListValue('CompareCountryTwo')"  style="width: 96%; margin-left: 6px; padding-left: 5%; font-size: 17px; height: 40px; color: #4b4f56; background: white; border: 1px solid #ccd0d5;"></select>
+                          </div>
+                          <div id="covid19CompareCountryTwoLoaderBlock" class="init-default-loader-block" style="width: 90%; margin-left: 6%;">
+                            <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+                          </div>
+                          <div id="covid19CompareCountryTwoTemplateBlock" class="covid19CompareCountryTwoTemplateBlock" style="margin-left: 0px; position: relative; top: 16px;"></div>
+                      </div>
+
+                  </div>
+                </div>
+            </div>
+
+            <div class="covid19IndiaZonesReportNewsBlock news-block" id="covid19IndiaZonesReportNewsBlock" style="">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 WORLD REPORT</h5></center> -->
+                <div class="">
+                  <div class="block-title" style="">
+                        <!-- <span> # COVID19 ZONE WISE REPORT OF INDIA</span> -->
+                        <span> # FIND OUT YOUR ZONE IS SAFE OR NOT ?</span>
+                  </div>
+                  <div class="" style="margin-top: 10px; margin-bottom: 10px;">
+                      <div class="" id="covid19IndiaZoneReportStatesNameInfoLoaderBlock" class="init-default-loader-block" >
+                        <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                      </div>
+                      <div id="covid19IndiaZoneReportStatesNameInfoBlock" class=" scrollmenu" style="margin-top: 12px; margin-left: 2%;" ></div>
+                  </div>
+                  <div id="covid19IndiaZonesReportNewsLoaderBlock" class="init-default-loader-block"  style="margin-bottom: -2%;">
+                    <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                  </div>
+                  <div id="covid19IndiaZonesReportNewsTemplate" class="scrollmenu" style="" ></div>
+                </div>
+            </div>
+
+
+            <div class="covid19IndiaStateDailyChangesReportNewsBlock news-block" id="covid19IndiaStateDailyChangesReportNewsBlock" style="">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 WORLD REPORT</h5></center> -->
+                <div class="">
+                  <div class="block-title" style="">
+                        <!-- <span># COVID-19 STATE WISE DAILY CHANGES OF INDIA</span> -->
+                        <span># FIND OUT YOUR STATES DAILY CHANGES </span>
+
+                  </div>
+                  <div class="" style="margin-top: 10px; margin-bottom: 10px;">
+                      <div class="" id="covid19IndiaStateDailyChangesReportStatesNameInfoLoaderBlock" class="init-default-loader-block" >
+                        <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                      </div>
+                      <div id="covid19IndiaStateDailyChangesReportStatesNameInfoBlock" class=" scrollmenu" style="margin-top: 12px; margin-left: 2%;" ></div>
+                  </div>
+                  <div id="covid19IndiaStateDailyChangesReportNewsLoaderBlock" class="init-default-loader-block"  style="margin-bottom: -2%;">
+                    <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                  </div>
+                  <div id="covid19IndiaStateDailyChangesReportNewsTemplate" class="scrollmenu" style="" ></div>
+                </div>
+            </div>
+
+            <div class="newcovid19IndiaDistrictWiseReportNewsBlock news-block" id="newcovid19IndiaDistrictWiseReportNewsBlock">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID19 INDIA STATE WISE TESTING LAB DETAILS </h5></center> -->
+                <div class="block-title" style="">
+                      <!-- <span># COVID-19 DISTRICT WISE REPORT OF INDIA</span> -->
+                      <span># FIND OUT YOUR DISTRICT REPORT </span>
+                </div>
+                <div class="" style="margin-top: 10px; margin-bottom: 10px;">
+                    <div class="" id="covid19IndiaDistrictReportStatesNameInfoLoaderBlock" class="init-default-loader-block" >
+                      <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+                    </div>
+                    <div id="covid19IndiaDistrictReportStatesNameInfoBlock" class=" scrollmenu" style="margin-top: 12px; margin-left: 2%;" ></div>
+                </div>
+                <div class="" style="">
+                  <div  id="newcovid19IndiaDistrictWiseReportNewsLoaderBlock" class="init-default-loader-block" >
+                    <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                  </div>
+                  <div id="newcovid19IndiaDistrictWiseReportTemplate" class=" scrollmenu" style="" ></div>
+                </div>
+                <div class="districtWiseReportFooterBlock" id="districtWiseReportFooterBlock"></div>
+            </div>
+
+
+        <!--   4  GLOBAL REPORT BY DATE RANGE  -->
+
+            <div class="covid19GlobalDailyReportNewsBlock news-block" id="covid19GlobalDailyReportNewsBlock" style="">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 DAILY WORLD REPORT</h5></center> -->
+                <div class="block-title" style="">
+                      <span># COVID19 DAILY WORLD REPORT</span>
+                </div>
+                <div  id="covid19GlobalDailyReportNewsLoaderBlock" class="init-default-loader-block" style="margin-bottom: -2%;">
+                  <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                </div>
+                <div id="covid19GlobalDailyReportNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;" ></div>
+                <!-- <div class="footer-block" style="">
+                    <span>View all</span>
+                </div> -->
+            </div>
+
+        <!--   5  INDIA  REPORT BY DATE RANGE -->
+
+            <div class="covid19GlobalReportByDateNewsBlock news-block" id="covid19GlobalReportByDateNewsBlock" style="padding-bottom: 5px;">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 GLOBAL REPORT BY DATE</h5></center> -->
+                <div class="block-title" style="">
+                      <span># FIND OUT COVID19 GLOBAL REPORT BY DATE</span>
+                </div>
+
+
+                <div class="" style="  width: 100%;color: #4b4f56;font-size: 16px;height: 35px;margin-top: 20px;margin-top: 10px;padding-top: 10px;">
+                    <div class="" style="display: inline-block; width: 27%; height: 100%; text-align: center; ">
+                      <span style="font-size: 16px; padding: 5px 5px 5px 5px; ">2020</span>
+                    </div>
+                    <div class="" style="display: inline-block; width: 42%; border-left: 1px solid #4b4f56; border-right: 1px solid #4b4f56; padding-left: 8%; ">
+                          <select id="globalMonth" onchange="onChangeMonths('global_month')" style="width: 100%; height: 100%; ">
+                            <option value="06">June</option>
+                            <option value="05">May</option>
+                            <option value="04">April</option>
+                            <option value="03">March</option>
+                            <option value="02">February</option>
+                            <option value="01">January</option>
+                          </select>
+                    </div>
+                    <div class="" style="display: inline-block; width: 27%; background: #F7F7F7;">
+                      <select id="globalDay" onchange="onChangeDays('global_day')" style="width: 100%; height: 100%; background: white; padding-left: 20%;"></select>
+                    </div>
+
+                </div>
+                <div id="covid19GlobalReportByDateNewsLoaderBlock" class="init-default-loader-block" style="margin-top: 1%;">
+                  <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                </div>
+                <div id="covid19GlobalReportByDateNewsTemplate" class="container-fluid scrollmenu" style="" ></div>
+            </div>
+
+        <!--   6   -->
+
+            <div class="covid19IndiaLatestReportNewsBlock news-block" id="covid19IndiaLatestReportNewsBlock" style="">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 LATEST REPORT OF INDIA</h5></center> -->
+                <div class="block-title" style="">
+                      <span># COVID19 DAILY REPORT OF INDIA</span>
+                </div>
+                <div id="covid19IndiaLatestReportNewsLoaderBlock" class="init-default-loader-block" style="margin-bottom: -2%;">
+                  <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                </div>
+                <div id="covid19IndiaLatestReportTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;" ></div>
+            </div>
+
+        <!--   7   -->
+
+            <div class="covid19IndiaReportByDateNewsBlock news-block" id="covid19IndiaReportByDateNewsBlock" style="padding-bottom: 5px;">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 INDIA REPORT BY DATE</h5></center> -->
+                <div class="block-title" style="">
+                      <span># COVID19 REPORT BY DATE</span>
+                </div>
+
+                <div class="" style="  width: 100%;color: #4b4f56;font-size: 16px;height: 35px;margin-top: 20px;margin-top: 10px;padding-top: 10px;">
+                    <div class="" style="  display: inline-block;width: 27%;height: 100%;text-align: center;position: relative;top: -9px;">
+                      <span style="font-size: 16px;padding: 5px 5px 5px 5px;position: relative;top: 8px;">2020</span>
+                    </div>
+                    <div class="" style="display: inline-block;  width: 42%; border-left: 1px solid #4b4f56; border-right: 1px solid #4b4f56; ">
+                          <select id="indiaMonth" onchange="onChangeMonths('india_month')" style="width: 100%; height: 100%;  padding-left: 8%;">
+                            <option value="06">June</option>
+                            <option value="05">May</option>
+                            <option value="04">April</option>
+                            <option value="03">March</option>
+                            <option value="02">February</option>
+                            <option value="01">January</option>
+                          </select>
+                    </div>
+                    <div class="" style="display: inline-block; width: 28%; ">
+                      <select id="indiaDay" onchange="onChangeDays('india_day')" style="width: 100%; height: 100%; padding-left: 20%;"></select>
+                    </div>
+                </div>
+
+
+                <!-- <div id="empty-div-dashed-border" class="empty-div-dashed-border" style="padding-top: 9px;"></div> -->
+                <div id="covid19IndiaReportByDateNewsLoaderBlock" class="init-default-loader-block" >
+                  <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                </div>
+                <div id="covid19IndiaReportByDateNewsTemplate" class="scrollmenu" style="margin-top: 1%;" ></div>
+                <!-- <div id="empty-div-dashed-border" class="empty-div-dashed-border" style=""></div> -->
+            </div>
+
+        <!--   8   -->
+
+            <div class="covid19IndiaReportByDateRangeNewsBlock news-block" id="covid19IndiaReportByDateRangeNewsBlock" style="">
+                  <div class="block-title" style="">
+                        <span># COVID19 REPORT BY DATE RANGE</span>
+                  </div>
+                  <div id="dateRangefromToBlock" class="" style="margin-top: 10px;">
+                    <div class="" style="width: 100%; padding-bottom: 8px;">
+                      <div style="width: 20%; display: inline-block; float: left; display: inline-block; padding-left: 5%;padding-top: 3%;font-weight: 900;color: var(--default-theme-color);"><span>From</span> </div>
+                      <div class=""  style="width: 80%; display: inline-block;">
+
+                          <div class="" style="width: 95%; color: #4b4f56; font-size: 16px; height: 40px; margin-top: 10px; margin-left: 2.5%;">
+                              <div class="" style="display: inline-block; width: 27%; height: 100%; text-align: center; ">
+                                <span style="font-size: 16px; padding: 5px 5px 5px 5px; ">2020</span>
+                              </div>
+                              <div class="" style="display: inline-block; width: 42%; border-left: 1px solid #4b4f56; border-right: 1px solid #4b4f56; padding-left: 8%; ">
+                                    <select id="india_month_range_from" onchange="onChangeMonths('india_month_range_from')" style="width: 100%; height: 100%; ">
+                                      <option value="06">June</option>
+                                      <option value="05">May</option>
+                                      <option value="04">April</option>
+                                      <option value="03">March</option>
+                                      <option value="02">February</option>
+                                      <option value="01">January</option>
+                                    </select>
+                              </div>
+                              <div class="" style="display: inline-block; width: 27%; background: #F7F7F7;">
+                                <select id="india_day_range_from" onchange="onChangeDays('india_day_range_from')" style="width: 100%; height: 100%; background: white; padding-left: 20%;"></select>
+                              </div>
+
+                          </div>
+                          <!--  -->
+                      </div>
+
+                    </div>
+                    <div class="" style="width: 100%; margin-bottom: 16px;">
+                      <div style="width: 20%; display: inline-block; float: left; display: inline-block; padding-left: 5%; padding-top: 3%; font-weight: 900;color: var(--default-theme-color);"><span>To</span> </div>
+                      <div class="" style="width:80%; display: inline-block;">
+
+                        <div class="" style="width: 95%; color: #4b4f56; font-size: 16px; height: 40px; margin-top: 10px; margin-left: 2.5%;">
+                            <div class="" style="display: inline-block; width: 27%; height: 100%; text-align: center; ">
+                              <span style="font-size: 16px; padding: 5px 5px 5px 5px; ">2020</span>
+                            </div>
+                            <div class="" style="display: inline-block; width: 42%;  border-left: 1px solid #4b4f56; border-right: 1px solid #4b4f56; padding-left: 8%; ">
+                                  <select id="india_month_range_to" onchange="onChangeMonths('india_month_range_to')" style="width: 100%; height: 100%; ">
+                                    <option value="06">June</option>
+                                    <option value="06">June</option>
+                                    <option value="05">May</option>
+                                    <option value="04">April</option>
+                                    <option value="03">March</option>
+                                    <option value="02">February</option>
+                                    <option value="01">January</option>
+                                  </select>
+                            </div>
+                            <div class="" style="display: inline-block; width: 27%; ">
+                              <select id="india_day_range_to" onchange="onChangeDays('india_day_range_to')" style="width: 100%; height: 100%; background: white; padding-left: 20%; "></select>
+                            </div>
+                        </div>
+                        <!--  -->
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div id="empty-div-dashed-border" class="empty-div-dashed-border" style=""></div> -->
+
+                  <div id="covid19IndiaReportByDateRangeNewsLoaderBlock" class="init-default-loader-block" style="margin-bottom: 4%;">
+                    <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+                  </div>
+                  <div id="covid19IndiaReportByDateRangeNewsTemplate" class="" style="margin-top: -20px;" ></div>
+            </div>
+
+        <!--   9   -->
+            <div class="covid19GlobalReportByDateRangeNewsBlock news-block" id="covid19GlobalReportByDateRangeNewsBlock" style="padding-bottom: 10px;">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 GLOBAL REPORT BY DATE RANGE</h5></center> -->
+                <div class="block-title" style="">
+                      <span># COVID19 GLOBAL REPORT BY DATE RANGE</span>
+                </div>
+                <div id="dateRangefromToBlock" class="" style="margin-top: 10px;">
+                  <div class="" style="width: 100%; padding-bottom: 8px;">
+                    <div style="width: 20%; display: inline-block; float: left; display: inline-block; padding-left: 6%;padding-top: 3%;font-weight: 900;color: var(--default-theme-color);"><span>From</span> </div>
+                    <div class=""  style="width: 80%; display: inline-block;">
+
+                      <div class="" style="width: 100%; color: #4b4f56; font-size: 16px;height: 30px; margin-top: 10px;">
+                          <div class="" style="display: inline-block; width: 27%; height: 100%; text-align: center; ">
+                            <span style="font-size: 16px; padding: 5px 5px 5px 5px; ">2020</span>
+                          </div>
+                          <div class="" style="display: inline-block; width: 42%; border-left: 1px solid #4b4f56; border-right: 1px solid #4b4f56; padding-left: 8%; ">
+                                <select id="global_month_range_from" onchange="onChangeMonths('global_month_range_from')" style="width: 100%; height: 100%; ">
+                                  <option value="06">June</option>
+                                  <option value="05">May</option>
+                                  <option value="04">April</option>
+                                  <option value="03">March</option>
+                                  <option value="02">February</option>
+                                  <option value="01">January</option>
+                                </select>
+                          </div>
+                          <div class="" style="display: inline-block; width: 27%; background: white;">
+                            <select id="global_day_range_from" onchange="onChangeDays('global_day_range_from')" style="width: 100%; height: 100%;  padding-left: 20%;"></select>
+                          </div>
+
+                      </div>
+                      <!--  -->
+                    </div>
+                  </div>
+                  <div class="" style="width: 100%; margin-bottom: 10px;">
+                    <div style="width: 20%; display: inline-block; float: left; display: inline-block; padding-left: 6%; padding-top: 3%; font-weight: 900;color: var(--default-theme-color);"><span>To</span> </div>
+                    <div class="" style="width:80%; display: inline-block;">
+
+                      <div class="" style="width: 100%; color: #4b4f56; font-size: 16px; height: 30px; margin-top: 10px;">
+                          <div class="" style="display: inline-block; width: 27%; height: 100%; text-align: center; ">
+                            <span style="font-size: 16px; padding: 5px 5px 5px 5px; ">2020</span>
+                          </div>
+                          <div class="" style="display: inline-block; width: 42%; border-left: 1px solid #4b4f56; border-right: 1px solid #4b4f56; padding-left: 8%; ">
+                                <select id="global_month_range_to" onchange="onChangeMonths('global_month_range_to')"  style="width: 100%; height: 100%; ">
+                                  <option value="06">June</option>
+                                  <option value="05">May</option>
+                                  <option value="04">April</option>
+                                  <option value="03">March</option>
+                                  <option value="02">February</option>
+                                  <option value="01">January</option>
+                                </select>
+                          </div>
+                          <div class="" style="display: inline-block; width: 27%; background: #F7F7F7;">
+                            <select id="global_day_range_to" onchange="onChangeDays('global_day_range_to')" style="width: 100%; height: 100%; padding-left: 20%;"></select>
+                          </div>
+                      </div>
+                      <!--  -->
+                    </div>
+                  </div>
+                </div>
+                <!-- <div id="empty-div-dashed-border" class="empty-div-dashed-border" style=""></div> -->
+                <div id="covid19GlobalReportByDateRangeNewsLoaderBlock" class="init-default-loader-block" style="margin-bottom: 4%;">
+                  <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+                </div>
+                <div id="covid19GlobalReportByDateRangeNewsTemplate" class="" style="" ></div>
+                <!-- <div id="empty-div-dashed-border" class="empty-div-dashed-border" style=""></div> -->
+            </div>
+
+        <!--   10   -->
+
+            <div class="covid19IndiaStateWiseReportNewsBlock news-block" id="covid19IndiaStateWiseReportNewsBlock" style="">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 STATE WISE REPORT OF INDIA</h5></center> -->
+                <div class="block-title" style="margin-bottom: 10px;">
+                      <span># COVID19 STATE WISE REPORT OF INDIA</span>
+                </div>
+                <div  id="covid19IndiaStateWiseReportNewsLoaderBlock" class="init-default-loader-block" style="margin-bottom: -2%;">
+                  <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+                </div>
+                <div id="covid19IndiaStateWiseReportTemplate" class="container-fluid scrollmenu" style="" ></div>
+            </div>
+
+        <!--   11   -->
+
+            <div class="covid19CompareStatesRecordNewsBlock news-block" id="covid19CompareStatesRecordNewsBlock" style="padding-bottom: 10px;">
+                <div class="" style="">
+                  <!-- <center><h5 style="text-align: center; font-weight: 900;">GLOBAL COVID19 STATE WISE COMPARISON</h5></center> -->
+                  <div class="block-title" style="">
+                        <span># COVID19 STATE WISE COMPARISON</span>
+                  </div>
+                  <div id="covid19CompareStatesRecordNewsTemplate" class="" style="width: 100%;" >
+                      <div id="covid19CompareStatesOneBlock" class="" style="width: 100%; display: inline-block; float: left; ">
+                          <div id="statesListOne" class="" style="margin: 10px 10px;">
+                            <select id="CompareStateOne" onchange="onChangeListValue('CompareStateOne')"  style="  width: 100%;padding-left: 3%;color: grey;font-size: 17px;height: 40px;background: white;border: 1px solid #eee;"></select>
+                          </div>
+                          <div id="covid19CompareStateOneLoaderBlock" class="init-default-loader-block" style="width: 90%; margin-left: 6%;">
+                            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                          </div>
+                          <div id="covid19CompareStateOneTemplateBlock" class="covid19CompareStateOneTemplateBlock"></div>
+                          <!-- <hr style="margin-top: 20px;margin-bottom: 10px;border: 0;border-top: 1px solid green;margin-left: 25%;margin-right: 25%;"> -->
+                      </div>
+                      <div style="width: 100%;">
+                          <div class="" style="display: inline-block; width: 32%; margin-top: 16px;">
+                            <hr class="compare-hr-separetor-left" style="">
+                          </div>
+                          <div class="" style="display: inline-block; width: 32%; text-align: center; margin-top: 16px;">
+                              <span style="position: relative; top: -16px;">Compare to</span>
+                          </div>
+                          <div class="" style="display: inline-block; width: 32%;margin-top: 16px;">
+                            <hr class="compare-hr-separetor-right" style="">
+                          </div>
+                      </div>
+                      <div id="covid19CompareStateTwoBlock" class="" style="width: 100%; display: inline-block;">
+                          <div id="stateListTwo" class="" style="margin: 10px 10px; ">
+                            <select id="CompareStateTwo" onchange="onChangeListValue('CompareStateTwo')"  style="width: 100%;padding-left: 3%;color: grey;font-size: 17px;height: 40px;background: white;border: 1px solid #eee;"></select>
+
+                          </div>
+                          <div id="covid19CompareStateTwoLoaderBlock" class="init-default-loader-block" style="width: 90%; margin-left: 6%;">
+                            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                          </div>
+                          <div id="covid19CompareStateTwoTemplateBlock" class="covid19CompareStateTwoTemplateBlock" style="margin-left: 0px;"></div>
+                      </div>
+
+                  </div>
+                </div>
+
+            </div>
+
+
+        <!--   12   -->
+
+
+
+            <!-- <div class="covid19IndiaDistrictWiseReportNewsBlock news-block" id="covid19IndiaDistrictWiseReportNewsBlock" style="">
+                <div class="block-title" style="">
+                      <span>COVID-19 DISTRICT WISE REPORT OF INDIA</span>
+                </div>
+                <div id="covid19IndiaDistrictWiseReportNewsLoaderBlock" class="init-default-loader-block"  >
+                </div>
+                <div id="covid19IndiaDistrictWiseReportTemplate" class="" style="margin-top: 12px; overflow: scroll; padding: 0px 10px; height: 600px;" ></div>
+            </div> -->
+
+        <!--   13   -->
+            <div class="covid19IndiaStateWiseTestingLabReportBlock news-block" id="covid19IndiaStateWiseTestingLabReportBlock">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID19 INDIA STATE WISE TESTING LAB DETAILS </h5></center> -->
+                <div class="block-title" style="">
+                      <span># COVID19 STATE WISE ESSENTIALS OF INDIA</span>
+                </div>
+                <div class="" style="margin-top: 12px;">
+                    <div class="" id="covid19IndiaTestingLabStatesNameInfoLoaderBlock" class="init-default-loader-block" >
+                      <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                    </div>
+                    <div id="covid19IndiaTestingLabStatesNameInfoBlock" class=" scrollmenu" style="margin-top: 12px; margin-left: 2%;" ></div>
+                </div>
+                <div class="" style="margin-top: 12px;">
+                  <div class="" id="covid19IndiaStateWiseTestingLabReportLoaderBlock" class="init-default-loader-block" >
+                    <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                  </div>
+                  <div id="covid19IndiaStateWiseTestingLabReportTemplate" class=" scrollmenu" style="" ></div>
+                </div>
+            </div>
+
+            <div class="covid19IndiaStateWiseDeathRecoveriesBlock news-block" id="covid19IndiaStateWiseDeathRecoveriesBlock">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID19 INDIA STATE WISE DEATH RECOVERIES DETAILS </h5></center> -->
+                <div class="block-title" style="">
+                      <span># COVID19 STATE WISE DEATH RECOVERIES</span>
+                </div>
+                <div class="" style="margin-top: 12px;">
+                    <div class="" id="covid19IndiaTestingLabStatesNameInfoLoaderBlock" class="init-default-loader-block" >
+                      <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+                    </div>
+                    <div id="covid19IndiaDeathRecoveriesStatesNameInfoBlock" class=" scrollmenu" style="margin-top: 12px; margin-left: 2%;" ></div>
+                </div>
+                <div class="" style="margin-top: 12px;">
+                  <div class="" id="covid19IndiaStateWiseDeathRecoveriesReportLoaderBlock" class="init-default-loader-block" >
+                    <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                  </div>
+                  <div id="covid19IndiaStateWiseDeathRecoveriesReportTemplate" class=" scrollmenu" style="" ></div>
+                </div>
+            </div>
+
+
+        <!--   14   -->
+
+
+            <div class="whoCovid19QuestionAndAnswerMainBlock news-block" id="whoCovid19QuestionAndAnswerMainBlock" style="">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+                <div class="block-title" style="margin-bottom: 10px">
+                      <span># WHO COVID19 FAQ</span>
+                </div>
+                <div class="" id="whoCovid19QuestionAndAnswerLoaderBlock">
+                  <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+                </div>
+                <div id="whoCovid19QuestionAndAnswerTemplateBlock" class="scrollmenu" style=""></div>
+            </div>
+
+        <!--   15   -->
+
+            <div class="covid19IndiaTimeSeriesReportByIndGovtNewsBlock news-block" id="covid19IndiaTimeSeriesReportByIndGovtNewsBlock" style="">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 TIME SERIES REPORT BY INDIA GOVT.</h5></center> -->
+                <div class="block-title" style="border-bottom: 10px;" >
+                      <span># COVID19 TIME SERIES REPORT OF INDIA</span>
+                </div>
+                <div  id="covid19IndiaTimeSeriesReportByIndGovtNewsLoaderBlock" class="init-default-loader-block" style="margin-bottom: -2%;">
+                  <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+                </div>
+                <div id="covid19IndiaTimeSeriesReportByIndGovtTemplate" class=" scrollmenu" style="margin-top: 10px;" ></div>
+            </div>
+
+        <!--   16   -->
+
+            <div class="covid19IndiaTestingReportByIndGovtNewsBlock news-block" id="covid19IndiaTestingReportByIndGovtNewsBlock" style="">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 TESTING REPORT BY INDIA GOVT.</h5></center> -->
+                <div class="block-title" style="style="border-bottom: 10px;"">
+                      <span># COVID19 TESTING REPORT OF INDIA</span>
+                </div>
+                <div  id="covid19IndiaTestingReportByIndGovtNewsLoaderBlock" class="init-default-loader-block" style="margin-bottom: -2%;">
+                  <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+                </div>
+                <div id="covid19IndiaTestingReportByIndGovtTemplate" class="container-fluid scrollmenu" style="margin-top: 10px;"  ></div>
+            </div>
+
+        <!--   17   -->
+
+            <!-- <div class="covid19PressNewsBlock news-block" id="covid19PressNewsBlock" style="">
+                <div class="block-title" style="">
+                      <span># COVID19 WORLD PRESS RELEASE</span>
+                </div>
+                <div id="covid19PressNewsLoaderBlock" class="init-default-loader-block" style="margin-bottom: -2%;">
+                </div>
+                <div id="covid19PressNewsTemplate" class="scrollmenu" style="margin-top: 12px;" ></div>
+            </div> -->
+
+        <!--   18   -->
+
+            <div class="wallStreetJournalNewsBlock news-block" id="wallStreetJournalNewsBlock">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP ARTICLES BY WALL STREET JOURNAL</h5></center> -->
+                <div class="block-title" style="">
+                      <span># TOP ARTICLES BY WALL STREET JOURNAL</span>
+                </div>
+                <!-- <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+                    <span onclick="onClickOneMinuteNewsPodcasts('wall-street-journal')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+                    <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+
+                </div> -->
+                <div class="" id="wallStreetJournalNewsLoaderBlock" class="init-default-loader-block" >
+                  <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+                </div>
+                <div id="wallStreetJournalNewsTemplate" class=" scrollmenu" style="margin-top: 12px;" ></div>
+            </div>
+
+        <!--   19   -->
+
+            <div class="theNextWebNewsBlock news-block" id="theNextWebNewsBlock">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP HEADLINES BY THE NEXT WEB</h5></center> -->
+                <div class="block-title" style="">
+                      <span># TOP HEADLINES BY THE NEXT WEB</span>
+                </div>
+                <div id="theNextWebNewsLoaderBlock" class="init-default-loader-block"  style="margin-bottom: -2%;">
+                  <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+                </div>
+                <div id="theNextWebNewsTemplate" class=" scrollmenu" style="margin-top: 12px;" >
+
+                </div>
+            </div>
+
+        <!--   20   -->
+
+          <div class="covid19GlobalUpdateNewsBlock news-block" id="covid19GlobalUpdateNewsBlock">
+                    <!-- <center><h5 style="text-align: center; font-weight: 900;">GLOBAL COVID19 UPDATE</h5></center> -->
+                <div class="block-title" style="">
+                      <span># GLOBAL COVID19 UPDATE</span>
+                </div>
+                <div id="covid19GlobalUpdateNewsLoaderBlock" class="init-default-loader-block" style="margin-bottom: -2%;">
+                  <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+                </div>
+                <div id="covid19GlobalUpdateNewsTemplate" class=" scrollmenu" style="margin-top: 12px;" ></div>
+          </div>
+
+        <!--   21   -->
+
+          <div class="covid19GlobalHealthNewsBlock news-block" id="covid19GlobalHealthNewsBlock">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">GLOBAL COVID19 HEALTH UPDATE</h5></center> -->
+                <div class="block-title" style="">
+                      <span># GLOBAL COVID19 HEALTH UPDATE</span>
+                </div>
+                <div id="covid19GlobalHealthNewsLoaderBlock" class="init-default-loader-block" style="margin-bottom: -2%;"></div>
+                <div id="covid19GlobalHealthNewsTemplate" class=" scrollmenu" style="margin-top: 12px;" ></div>
+          </div>
+
+
+
+
+            <!--   22   -->
+
+          <div class="covid19TweetsNewsBlock news-block" id="covid19TweetsNewsBlock" style="margin-bottom: 16px;">
+                <!-- <center><h5 style="text-align: center; font-weight: 900;">Covid19IndiaOrg Tweets </h5></center> -->
+                <div class="block-title" style="">
+                      <span># COVID19 INDIA ORG TWEETS</span>
+                </div>
+                <div class="">
+                    <blockquote class="twitter-tweet"><p lang="en" dir="ltr">We have exposed all the crowdsourced patient details, travel history (published by authorities) and statewise trends in this live API : <a href="https://t.co/tNyhpPYTJD">https://t.co/tNyhpPYTJD</a> A shout-out to all Data Analysts, Planners and Enthusiasts to use this data for helping the containment efforts. <a href="https://twitter.com/_mekin?ref_src=twsrc%5Etfw">@_mekin</a></p>&mdash; covid19indiaorg (@covid19indiaorg) <a href="https://twitter.com/covid19indiaorg/status/1241760885921775619?ref_src=twsrc%5Etfw">March 22, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                </div>
+                <div class="">
+                  <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Aarogya Setu is an important step in our fight against COVID-19. By leveraging technology, it provides important information. As more and more people use it, it’s effectiveness will increase. I urge you all to download it.<a href="https://t.co/VaiPIjhxM2">https://t.co/VaiPIjhxM2</a><a href="https://t.co/8Irj6ApmOQ">https://t.co/8Irj6ApmOQ</a> <a href="https://t.co/L91vaLlCCq">pic.twitter.com/L91vaLlCCq</a></p>&mdash; Narendra Modi (@narendramodi) <a href="https://twitter.com/narendramodi/status/1247816258571165697?ref_src=twsrc%5Etfw">April 8, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                </div>
+
+            </div>
+
+
+            <!-- ===================================  END ::  COVID19 HOME PAGE ==================================== -->
+
+
+        </div>
+
+    <!-- ================================================= START: SINGLE PAGES ============================================================== -->
+
+    <!-- <div class="pressReleaseVerticalMainBlock " id="pressReleaseVerticalMainBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+        <div id="pressReleaseVerticalLoaderBlock" class="init-default-loader-block" >
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="pressReleaseVerticalTemplateBlock" class="vertical-template-block"></div>
+    </div> -->
+
+    <div class="whoCovid19QuestionAndAnswerVerticalMainBlock " id="whoCovid19QuestionAndAnswerVerticalMainBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+        <div class="" id="whoCovid19QuestionAndAnswerVerticalLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="whoCovid19QuestionAndAnswerVerticalTemplateBlock" class="vertical-template-block" style="background-color: white;"></div>
+    </div>
+
+    <div class="covid19GlobalDailyReportVerticalMainBlock" id="covid19GlobalDailyReportVerticalMainBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+        <div class="" id="covid19GlobalDailyReportVerticalLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="covid19GlobalDailyReportVerticalTemplateBlock" class="vertical-template-block"></div>
+    </div>
+
+    <div class="whoCovid19LatestReportIndiaVerticalMainBlock " id="whoCovid19LatestReportIndiaVerticalMainBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+        <div class="" id="whoCovid19LatestReportIndiaVerticalLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="whoCovid19LatestReportIndiaVerticalTemplateBlock" class="vertical-template-block"></div>
+    </div>
+
+    <div class="covid19CountryWiseReportVerticalMainBlock " id="covid19CountryWiseReportVerticalMainBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+        <div class="" id="covid19CountryWiseReportVerticalLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="covid19CountryWiseReportVerticalTemplateBlock" class="vertical-template-block"></div>
+    </div>
+
+    <div class="whoDashboardVerticalMainBlock " id="whoDashboardVerticalMainBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+        <div class="" id="whoDashboardVerticalLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="whoDashboardVerticalTemplateBlock" class="vertical-template-block">
+            <iframe src="https://who.sprinklr.com/" width="" height="" scrolling="yes" style="width: 103%; height: 2000px; border: none !important;"></iframe>
+        </div>
+    </div>
+
+    <div class="indiaGvtHelpLineNumberPdfVerticalMainBlock " id="indiaGvtHelpLineNumberPdfVerticalMainBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+        <div class="" id="indiaGvtHelpLineNumberPdfVerticalLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="indiaGvtHelpLineNumberPdfVerticalTemplateBlock" class="vertical-template-block" style="overflow: scroll;">
+            <canvas id="the-canvas"></canvas>
+        </div>
+    </div>
+
+    <div class="covid19IndiaDistrictWiseReportVerticalMainBlock " id="covid19IndiaDistrictWiseReportVerticalMainBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+        <div class="" id="covid19IndiaDistrictWiseReportVerticalLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="covid19IndiaDistrictWiseReportVerticalTemplateBlock" class="vertical-template-block" style="overflow: scroll;">
+            <canvas id="the-canvas"></canvas>
+        </div>
+    </div>
+
+    <div class="covid19IndiaStatewiseTestingLabDetailsVerticalMainBlock" id="covid19IndiaStatewiseTestingLabDetailsVerticalMainBlock" style="">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 INDIA STATE WISE TESTING LAB'S OF INDIA</h5></center> -->
+        <div class="">
+            <div class="" id="covid19IndiaTestingLabStatesNameInfoVerticalMainLoaderBlock" class="init-default-loader-block" style="display: none;">
+                <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+            </div>
+            <div id="covid19IndiaTestingLabStatesNameInfoVerticalMainBlockTemplate" class=" scrollmenu" style="margin-top: 12px; margin-left: 2%;" ></div>
+        </div>
+        <div id="covid19IndiaStatewiseTestingLabDetailsVerticalLoaderBlock" class=""   style="display: none;">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="covid19IndiaStatewiseTestingLabDetailsVerticalTemplateBlock" class="vertical-template-block" style="margin-top: 12px; padding: 0px 5px;" ></div>
+    </div>
+
+
+
+    <div class="covid19IndiaStateWiseDeathRecoveriesReportVerticalMainBlock " id="covid19IndiaStateWiseDeathRecoveriesReportVerticalMainBlock" style="margin-bottom: 16px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">COVID-19 INDIA STATE WISE TESTING LAB'S OF INDIA</h5></center> -->
+        <div class="">
+            <div class="" id="covid19IndiaDeathRecoveriesStatesNameInfoVerticalMainLoaderBlock" class="init-default-loader-block" style="display: none;">
+                <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+            </div>
+            <div id="covid19IndiaDeathRecoveriesStatesNameInfoVerticalMainBlockTemplate" class=" scrollmenu" style="margin-top: 12px; margin-left: 2%;" ></div>
+        </div>
+        <div id="covid19IndiaStateWiseDeathRecoveriesReportVerticalLoaderBlock" class=""   style="display: none;">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="covid19IndiaStateWiseDeathRecoveriesReportVerticalTemplateBlock" class="vertical-template-block" style="margin-top: 12px; padding: 0px 5px;" ></div>
+    </div>
+
+
+    <div class="covid19CurrentsHealthReportVerticalMainBlock " id="covid19CurrentsHealthReportVerticalMainBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+        <div class="" id="covid19CurrentsHealthReportVerticalLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="covid19CurrentsHealthReportVerticalTemplateBlock" class="vertical-template-block" style="overflow: scroll;">
+            <canvas id="the-canvas"></canvas>
+        </div>
+    </div>
+
+
+    <div class="covid19IndiaStateWiseReportVerticalMainBlock " id="covid19IndiaStateWiseReportVerticalMainBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+        <div class="" id="covid19IndiaStateWiseReportVerticalLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="covid19IndiaStateWiseReportVerticalTemplateBlock" class="vertical-template-block" style=""></div>
+    </div>
+
+    <div class="covid19StateWiseDailyChangesReportVerticalMainBlock " id="covid19StateWiseDailyChangesReportVerticalMainBlock" style="display:none; margin-top: -12px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+        <div class="">
+            <div class="" id="covid19StateWiseDailyChangesReportStatesNameInfoVerticalMainLoaderBlock" class="init-default-loader-block" style="display: none;">
+                <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+            </div>
+            <div id="covid19StateWiseDailyChangesReportStatesNameInfoVerticalMainBlockTemplate" class=" scrollmenu" style="" ></div>
+        </div>
+        <div class="" id="covid19StateWiseDailyChangesReportVerticalLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="covid19StateWiseDailyChangesReportVerticalTemplateBlock" class="vertical-template-block" style=""></div>
+    </div>
+
+    <div class="theNextWebNewsReportVerticalMainBlock " id="theNextWebNewsReportVerticalMainBlock" style="display:none; background: gainsboro; margin-top: -17px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+        <div class="" id="theNextWebNewsReportVerticalLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="theNextWebNewsReportVerticalTemplateBlock" class="vertical-template-block" style=""></div>
+    </div>
+
+    <div class="wallStreetJournalReportVerticalMainBlock " id="wallStreetJournalReportVerticalMainBlock" style="display:none; background: gainsboro; margin-top: -17px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+        <div class="" id="wallStreetJournalReportVerticalLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="wallStreetJournalReportVerticalTemplateBlock" class="vertical-template-block" style=""></div>
+    </div>
+
+    <div class="covid19GlobalHealthNewsReportVerticalMainBlock " id="covid19GlobalHealthNewsReportVerticalMainBlock" style="display:none; background: gainsboro; margin-top: -17px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+        <div class="" id="covid19GlobalHealthNewsReportVerticalLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="covid19GlobalHealthNewsReportVerticalTemplateBlock" class="vertical-template-block" style=""></div>
+    </div>
+
+    <div class="covid19IndiaTestingReportVerticalMainBlock " id="covid19IndiaTestingReportVerticalMainBlock" style="display:none; background: gainsboro; margin-top: -17px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+        <div class="" id="covid19IndiaTestingReportVerticalLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="covid19IndiaTestingReportVerticalTemplateBlock" class="vertical-template-block" style=""></div>
+    </div>
+
+    <div class="covid19IndiaTimeSeriesReportVerticalMainBlock " id="covid19IndiaTimeSeriesReportVerticalMainBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+        <div class="" id="covid19IndiaTimeSeriesReportVerticalLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="covid19IndiaTimeSeriesReportVerticalTemplateBlock" class="vertical-template-block" style=""></div>
+    </div>
+
+
+
+
+    <!-- ================================================== START: SINGLE PAGES ============================================================= -->
+
+    <div class="searchContentsBlock" id="searchContentsBlock" style="display:none;">
+      <div class="" id="">
+        <div id="hintsBlock" class="row hints-block" style="margin-left: 0px; border-bottom: 1px solid #ccc; border-top: 1px solid #ccc; padding-top: 10px;" >
+          <div class="">
+            <label style="margin-left: 10px; color: grey;" for="sel1">RECENT SEARCHES</label>
+          </div>
+
+           <div class="scrollmenu custom-search-hints-layout" id="customSearchHintsTemplateBlock" style="margin-left: 10px;">
+               <a ng-repeat="txt in serachQariesList" id="{{ 'searchHints_' + $index }}" class="hints-item" ng-click="onClickHelpInfoItems(txt, $index)" href="#" style="background-color: #E9EBEE; color: black; border-radius: 20px;">{{txt}}</a>
+           </div>
+           <div class="" id="searchContentLoaderBlock" style="display: block;">
+             <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+           </div>
+           <div id="searchContentTemplateBlock" class="container-fluid vertical-template-block" style="margin-top: 12px;">
+
+           </div>
+        </div>
+      </div>
+    </div>
+
+
+</div>
+
+
+<!-- The Modal -->
+<div class="modal" id="URLModal">
+  <div class="modal-dialog" style="margin-top: 50%;">
+    <div class="modal-content" style="">
+
+      <!-- Modal Header -->
+      <div class="modal-header" style="border: none; padding-bottom: 5px !important; ">
+        <!-- <h4 class="modal-title">Modal Heading</h4> -->
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body" style="padding: 5px; padding-left: 20px;padding-right: 20px;">
+          <iframe id="urlIframe" src="" style="border: none; width: 100%; height: 100%;"></iframe>
+          <div id="modalContent" style="text-align: center; color: gray; font-weight: bold;">
+
+          </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer" style="border: none;">
+        <!-- <center> <button type="button" class="btn btn-danger" style="width: 100%;" data-dismiss="modal">Close</button> <center> -->
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="threeDotsActionModal">
+  <div class="modal-dialog" style="position: absolute; bottom: 0px; width: 100%; margin: 0px;">
+    <div class="modal-content" style="">
+
+      <!-- Modal Header -->
+      <div class="modal-header" style="border: none; padding-bottom: 5px !important; ">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+
+      <div class="modal-body" style="padding: 5px; padding-left: 20px;padding-right: 20px; height: 300px; text-align: center;">
+          <h4 class="modal-title">THREE DOTS ACTION</h4>
+          <h1 class="modal-title">Comming soon...</h1>
+          <div id="threeDotsActionModalContent" style="text-align: center; color: gray; font-weight: bold;">
+
+          </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer" style="border: none;">
+        <!-- <center> <button type="button" class="btn btn-danger" style="width: 100%;" data-dismiss="modal">Close</button> <center> -->
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- The pdf Modal -->
+
+
+<div class="modal" id="openPdfModal">
+  <div class="modal-dialog" style="width: 95%;margin: 0px;margin: 10px 10px 10px 10px;overflow: scroll;height: 85%;margin-top: 10%;">
+    <div class="modal-content" style="">
+
+      <!-- Modal Header -->
+      <div class="modal-header" style="border: none; padding-bottom: 5px !important; ">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body" style="padding: 5px; padding-left: 20px;padding-right: 20px; height: auto; text-align: center;">
+          <h6 class="modal-title" id="modal_title" style="word-break: break-all;"></h6>
+
+          <div id="open_pdf_in_modal_block" class="" style="overflow: scroll;">
+              <canvas id="modal_pdf_canvas"></canvas>
+          </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer" style="border: none;">
+        <!-- <center> <button type="button" class="btn btn-danger" style="width: 100%;" data-dismiss="modal">Close</button> <center> -->
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+  var app = angular.module('nearByApi', []);
+  var modalState = null;
+  var defaultNewsSourceCountry = 'in';
+  let currentBlockId = 'covid19HomeNewsBlock';
+  var serachQariesList = ['corona virus ','corona virus update in kolkata','corona virus update in the world'];
+  var currentSearchSource = 'news_source';
+  var currentCustomSearchSource = 'News';
+  let searchOptionsList = ['News', 'Wikipedia'];
+
+  let currentTestingLabState = "testingLabState_West-Bengal";
+  let currentVerticalTestingLabState = "verticalTestingLabState_West-Bengal";
+
+  let currentDeathRecoveriesState = "deathRecoveries_West-Bengal";
+  let currentVerticalDeathRecoveriesState = "verticalDeathRecoveries_West-Bengal";
+  let currentDistrictWiseReportState = "districtWiseReport_West-Bengal";
+
+  let currentZoneWiseReportState = "zoneWiseReportState_West-Bengal";
+  let currentStateWiseDailyChangesReportState = "stateDailyChangesReportState_West-Bengal_wb";
+
+
+  let currentZoneWiseDefaultState = "West Bengal";
+  let currentStateWiseDailyChangesDefaultState = "West Bengal";
+
+  // let currentStateWiseDailyChangesDefaultState = "West Bengal";
+
+
+  let currentDeathRecoveriesDefaultState = "West Bengal";
+  let currentDistriceWiseDefaultState = "West Bengal";
+  let currentTestingLabDefaultState = "West Bengal";
+  let currentVerticalDeathRecoveriesDefaultState = "West Bengal";
+  let currentVerticalTestingLabDetailsDefaultState = "West Bengal";
+
+  let currentVerticalStateWiseDailyChangesDefaultState = "West Bengal";
+  let currentVerticalStateWiseDailyChangesState = "verticalStateDailyChangesReportState_West-Bengal_wb";
+
+
+// rajib
+
+
+  let isZoneWiseSearchStateNameExpand = false;
+  let isdeathRecoveriesStateNameExpand = false;
+  let isVerticalDeathRecoveriesStateNameExpand = false;
+  let istestingLabSearchStateNameExpand = false;
+  let isVerticalTestingLabSearchStateNameExpand = false;
+  let isdistrictWiseSearchStateNameExpand = false;
+  let isHomeDailyChangesStateNameExpand = false;
+
+
+  var priorityCount = 0;
+  let defaultFbThemeColor = '#4267B2';
+  let isSideBarOpen = false;
+  // let defaultThemeColor = 'rebeccapurple';
+  // let defaultThemeColor = '#4C007C';
+  function hScroll(hScrollBody){
+      return '<div class="scrollmenu">'+hScrollBody+'</div>';
+  }
+
+  function createSearchOptionsList(id, list, defaultItem){
+
+      let template = '';
+      let equalWidth = (100 / list.length);
+      equalWidth = equalWidth+'%;';
+      // console.log("equal width : ", equalWidth);
+      list.forEach((item, i) => {
+        // console.log("index : ", i);
+        if(i === 0){
+          template += '<a id="'+item+'" onclick="onClicCustomSearchSources(\'' + item + '\',)" href="#" class="hints-item " style="width: '+equalWidth+'color: var(--default-theme-color); font-weight: 600; text-align: center; border-bottom: 2px solid var(--default-theme-color);  padding: 8px 12px; border-radius: 0px;">'+item+'</a>';
+        }else{
+          template += '<a id="'+item+'" onclick="onClicCustomSearchSources(\'' + item + '\',)" href="#" class="hints-item " style="width: '+equalWidth+'color: grey; text-align: center;font-weight: 600; padding: 8px 12px;  border-radius: 0px;">'+item+'</a>';
+        }
+      });
+      document.getElementById(id).innerHTML = template;
+      document.getElementById(id).style.display = "none;";
+      // console.log("defaultItem : ", defaultItem);
+  }
+
+  let prevSearchInfoId = 'searchHints_0';
+  function onClicCustomSearchSources(searchSourceName){
+      console.log("== onclick custom search sources == ");
+      console.log("searchSourceName : ", searchSourceName);
+      document.getElementById(currentCustomSearchSource).style.color = "grey";
+      document.getElementById(currentCustomSearchSource).style.borderBottom = "none";
+      currentCustomSearchSource = searchSourceName;
+      document.getElementById(currentCustomSearchSource).style.color = 'var(--default-theme-color)';
+      document.getElementById(currentCustomSearchSource).style.borderBottom = "3px solid var(--default-theme-color)";
+      let helpInfoTxt = serachQariesList[0];
+      socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'searchContentTemplateBlock', loaderId: 'searchContentLoaderBlock', searchQuery: helpInfoTxt, category: 'customSearch', currentCustomSearchSource: currentCustomSearchSource, scrollType: 'vertical'});
+
+  }
+
+  function showPdfFile(pdfURL, targetId){
+          // If absolute URL from the remote server is provided, configure the CORS
+      // header on that server.
+      // let url = 'https://www.mohfw.gov.in/pdf/coronvavirushelplinenumber.pdf';
+
+      let url = pdfURL;
+      // let url = "https://icmr.nic.in/sites/default/files/whats_new/ICMR_testing_update_18April_9PM_IST.pdf";
+      let targetCanvasId = targetId;
+      // Loaded via <script> tag, create shortcut to access PDF.js exports.
+      var pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+      // The workerSrc property shall be specified.
+      pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
+
+      // Asynchronous download of PDF
+      var loadingTask = pdfjsLib.getDocument(url);
+      loadingTask.promise.then(function(pdf) {
+      console.log('PDF loaded');
+
+      // Fetch the first page
+      var pageNumber = 1;
+      pdf.getPage(pageNumber).then(function(page) {
+        console.log('Page loaded');
+
+        var scale = 1.5;
+        var viewport = page.getViewport({scale: scale});
+
+        // Prepare canvas using PDF page dimensions
+        var canvas = document.getElementById(targetCanvasId);
+        var context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        // Render PDF page into canvas context
+        var renderContext = {
+          canvasContext: context,
+          viewport: viewport
+        };
+        var renderTask = page.render(renderContext);
+        renderTask.promise.then(function () {
+          console.log('Page rendered');
+        });
+      });
+      }, function (reason) {
+      // PDF loading error
+      console.error(reason);
+      });
+  }
+
+  function createDayOptions(defaultSelectDay){
+    let template = '';
+    let day = '';
+    for (let i = 0; i < 32; i++) {
+        day = '';
+        if(i < 9){
+            day += '0'+(i+1);
+        }else{
+            day += (i+1);
+        }
+        if(i === defaultSelectDay){
+          template += '<option value="'+day+'" selected>'+day+'</option>';
+        }else{
+          template += '<option value="'+day+'">'+day+'</option>';
+        }
+    }
+    return template;
+  }
+
+  function initialPrimaryPageLoad(){
+      console.log("=========  calling primary page load  1111=========");
+
+      socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_dos', category: "githuib_covid19_dos", resposeTeplateId: 'covid19DosTemplate', loaderId: 'covid19DosLoaderBlock'});
+
+      // socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_donts', category: "githuib_covid19_donts", resposeTeplateId: 'covid19DontsTemplate', loaderId: 'covid19DontsLoaderBlock'});
+
+      // <!--   api-1   -->
+      //socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_global_report', category: "githuib_covid19_global_report", resposeTeplateId: 'covid19GlobalReportNewsTemplate', loaderId: 'covid19GlobalReportNewsLoaderBlock', priority: 1 });
+      // <!--   api-2   -->
+      //  socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_country_wise_report', category: "githuib_covid19_country_wise_report", resposeTeplateId: 'covid19CountryWiseReportNewsTemplate', loaderId: 'covid19CountryWiseReportNewsLoaderBlock', blockId: 'covid19CountryWiseReportNewsBlock', emptySlideDesc: true, emptySlideAction: 'covid19CountryWiseReport', priority: 2});
+
+      // socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'covid19_india_states_daily_changes_report', category: "init_server_data", resposeTeplateId: 'covid19IndiaStateDailyChangesReportNewsTemplate', loaderId: 'covid19IndiaStateDailyChangesReportNewsLoaderBlock', blockId : 'covid19IndiaStateDailyChangesReportNewsBlock', currentZoneWiseDefaultState: currentZoneWiseDefaultState, defaultState: 'wb', emptySlideDesc: true, emptySlideAction: 'covid19StateWiseDailyChangesReport');
+  }
+
+  function initialSecondaryPageLoad(){
+      console.log("==========  calling secondary page load  2222===========");
+
+      //socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'covid19_india_states_daily_changes_report', category: "init_server_data", resposeTeplateId: 'covid19IndiaStateDailyChangesReportNewsTemplate', loaderId: 'covid19IndiaStateDailyChangesReportNewsLoaderBlock', blockId : 'covid19IndiaStateDailyChangesReportNewsBlock', currentZoneWiseDefaultState: currentZoneWiseDefaultState, defaultState: 'wb', emptySlideDesc: true, emptySlideAction: 'covid19StateWiseDailyChangesReport', priority: 8});
+
+      //socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_time_series_by_india_govt_report', category: "githuib_covid19_india_time_series_by_india_govt_report", resposeTeplateId: 'covid19IndiaTimeSeriesReportByIndGovtTemplate', loaderId: 'covid19IndiaTimeSeriesReportByIndGovtNewsLoaderBlock', blockId: 'covid19IndiaTimeSeriesReportByIndGovtNewsBlock', emptySlideDesc: true, emptySlideAction: 'covid19IndiaTimeSeriesReport', priority: 7});
+      // <!--   api-3   -->
+      //socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19CompareCountryTwoTemplateBlock", loaderId: "covid19CompareCountryTwoLoaderBlock", category: 'githuib_covid19_fetch_india_latest', searchQuery: "USA", priority: 3});
+      // <!--   api-4   -->
+      //socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19CompareCountryOneTemplateBlock", loaderId: "covid19CompareCountryOneLoaderBlock", category: 'githuib_covid19_fetch_india_latest', searchQuery: "IND", priority: 4});
+
+      //socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: null, loaderId: null, category: 'init_server_data', apiRef: "init_last_record_date"});
+
+      socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaZoneReportStatesNameInfoBlock", loaderId: "covid19IndiaZoneReportStatesNameInfoLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: "home_zone_wise_report", selectedElement: currentZoneWiseDefaultState, query: null});
+
+      // Zone api implementation
+      socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'covid19_india_zones_report', category: "covid19_india_zones_report", resposeTeplateId: 'covid19IndiaZonesReportNewsTemplate', loaderId: 'covid19IndiaZonesReportNewsLoaderBlock', blockId : 'covid19IndiaZonesReportNewsBlock', currentZoneWiseDefaultState: currentZoneWiseDefaultState, priority: 10});
+
+      socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_district_wise_report_new', category: "githuib_covid19_india_district_wise_report_new", resposeTeplateId: 'newcovid19IndiaDistrictWiseReportTemplate', loaderId: 'newcovid19IndiaDistrictWiseReportNewsLoaderBlock', footer: {footerTemplateId : 'districtWiseReportFooterBlock'}, searchQuery: "West Bengal", priority: 5, currentZoneWiseDefaultState: currentDistriceWiseDefaultState});
+
+      socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_global_daily_report', category: "githuib_covid19_global_daily_report", resposeTeplateId: 'covid19GlobalDailyReportNewsTemplate', loaderId: 'covid19GlobalDailyReportNewsLoaderBlock', blockId: 'covid19GlobalDailyReportNewsBlock',  emptySlideDesc: true, emptySlideAction: 'covid19GlobalDailyReport', priority: 6});
+
+      // <!--   api-5  GLOBAL REPORT BY DATE RANGE  -->
+
+      // <!--   api-6   -->
+
+
+  }
+
+  function initialThirdPageLoad(){
+
+      console.log("===== call initial third page load ===== 3333");
+
+      //socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_latest_report', category: "githuib_covid19_india_latest_report", resposeTeplateId: 'covid19IndiaLatestReportTemplate', loaderId: 'covid19IndiaLatestReportNewsLoaderBlock', blockId: 'covid19IndiaLatestReportNewsBlock',  emptySlideDesc: true, emptySlideAction: 'whoCovid19LatestReportIndia'});
+
+      // <!--   api-10   -->
+      //// socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_state_wise_report', category: "githuib_covid19_india_state_wise_report", resposeTeplateId: 'covid19IndiaStateWiseReportTemplate', loaderId: 'covid19IndiaStateWiseReportNewsLoaderBlock', blockId: 'covid19IndiaStateWiseReportNewsBlock', emptySlideDesc: true, emptySlideAction: 'covid19IndiaStateWiseReport'});
+
+      // <!--   api-12   -->
+      //socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_district_wise_report', category: "githuib_covid19_india_district_wise_report", resposeTeplateId: 'covid19IndiaDistrictWiseReportTemplate', loaderId: 'covid19IndiaDistrictWiseReportNewsLoaderBlock'});
+
+      // <!--   api-13   -->
+      //// socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_state_wise_death_recoveries_report', category: "githuib_covid19_india_state_wise_death_recoveries_report", resposeTeplateId: 'covid19IndiaStateWiseDeathRecoveriesReportTemplate', loaderId: 'covid19IndiaStateWiseDeathRecoveriesReportLoaderBlock', blockId: 'covid19IndiaStateWiseDeathRecoveriesBlock', searchQuery: 'WestBengal', emptySlideDesc: true, emptySlideAction:'covid19IndiaStateWiseDeathRecoveriesReport'});
+
+      // // <!--   api-13   -->
+      //// socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_state_wise_death_recoveries_report', category: "githuib_covid19_india_state_wise_death_recoveries_report", resposeTeplateId: 'covid19IndiaStateWiseDeathRecoveriesReportTemplate', loaderId: 'covid19IndiaStateWiseDeathRecoveriesReportLoaderBlock', searchQuery: 'West Bengal'});
+
+      // <!--   api-14   -->
+      socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_state_wise_testing_lab_report', category: "githuib_covid19_india_state_wise_testing_lab_report", resposeTeplateId: 'covid19IndiaStateWiseTestingLabReportTemplate', loaderId: 'covid19IndiaStateWiseTestingLabReportLoaderBlock', blockId: 'covid19IndiaStateWiseTestingLabReportBlock', searchQuery: 'West Bengal', emptySlideDesc: true, emptySlideAction: 'covid19IndiaStatewiseTestingLabDetails'});
+
+      // <!--   api-15   -->
+      // socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_time_series_by_india_govt_report', category: "githuib_covid19_india_time_series_by_india_govt_report", resposeTeplateId: 'covid19IndiaTimeSeriesReportByIndGovtTemplate', loaderId: 'covid19IndiaTimeSeriesReportByIndGovtNewsLoaderBlock', blockId: 'covid19IndiaTimeSeriesReportByIndGovtNewsBlock', emptySlideDesc: true, emptySlideAction: 'covid19IndiaTimeSeriesReport'});
+
+      // <!--   api-16   -->
+      socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_testing_by_india_govt_report', category: "githuib_covid19_india_testing_by_india_govt_report", resposeTeplateId: 'covid19IndiaTestingReportByIndGovtTemplate', loaderId: 'covid19IndiaTestingReportByIndGovtNewsLoaderBlock', blockId: 'covid19IndiaTestingReportByIndGovtNewsBlock', emptySlideDesc: true, emptySlideAction: 'covid19IndiaTestingReport'});
+
+      // <!--   api-17   -->
+      // socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_press_release', category: "github_covid19_press_release", resposeTeplateId: 'covid19PressNewsTemplate', loaderId: 'covid19PressNewsLoaderBlock', blockId: 'covid19PressNewsBlock', emptySlideDesc: true, emptySlideAction: 'pressRelease'});
+
+      // <!--   api-18   -->
+      socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'wallStreetJournalNewsTemplate', loaderId: 'wallStreetJournalNewsLoaderBlock', blockId: 'wallStreetJournalNewsBlock', category: 'customSearch', currentCustomSearchSource: 'Journal', journalName: 'wsj.com', emptySlideDesc: true, emptySlideAction: 'wallStreetJournalReport'});
+      // <!--   api-19   -->
+      socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'theNextWebNewsTemplate', loaderId: 'theNextWebNewsLoaderBlock', blockId: 'theNextWebNewsBlock', category: 'customSearch', currentCustomSearchSource: 'Journal', journalName: 'thenextweb.com', emptySlideDesc: true, emptySlideAction: 'theNextWebNewsReport'});
+      // <!--   api-20   -->
+      socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'covid19GlobalUpdateNewsTemplate', loaderId: 'covid19GlobalUpdateNewsLoaderBlock', blockId: 'covid19GlobalUpdateNewsBlock', category: 'customSearch', currentCustomSearchSource: 'News', searchQuery: "covid19 global update", emptySlideDesc: true, emptySlideAction: 'covid19GlobalHealthNewsReport'});
+
+      socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'covid19GlobalHealthNewsTemplate', loaderId: 'covid19GlobalHealthNewsLoaderBlock', blockId: 'covid19GlobalHealthNewsBlock', category: 'customSearch', currentCustomSearchSource: 'Currents', searchQuery: 'health', emptySlideDesc: true, emptySlideAction: 'covid19CurrentsHealthReport'});
+
+      socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'whoCovid19QuestionAndAnswerTemplateBlock', loaderId: 'whoCovid19QuestionAndAnswerLoaderBlock', blockId: 'whoCovid19QuestionAndAnswerMainBlock', category: 'who_covid19_question_and_answer', emptySlideDesc: true, emptySlideAction: 'whoCovid19QuestionAndAnswer'});
+
+  }
+
+  function initServerData(){
+    console.log("===== call init server data =====");
+    // socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: null, loaderId: null, category: 'init_server_data', apiRef: "init_last_record_date"});
+    socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaStateDailyChangesReportStatesNameInfoBlock", loaderId: "covid19IndiaStateDailyChangesReportStatesNameInfoLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: "home_states_daily_changes_report", selectedElement: currentStateWiseDailyChangesDefaultState, query: null});
+
+    socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: null, loaderId: null, category: 'init_server_data', apiRef: "fetch_compare_state_list"});
+
+    socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: null, loaderId: null, category: 'init_server_data', apiRef: "fetch_compare_country_list"});
+
+    // socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaTestingLabStatesNameInfoBlock", loaderId: "covid19IndiaTestingLabStatesNameInfoLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", selectedElement: currentDeathRecoveriesDefaultState, query: null}); rajib
+
+    socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaTestingLabStatesNameInfoBlock", loaderId: "covid19IndiaTestingLabStatesNameInfoLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", selectedElement: currentZoneWiseDefaultState, query: null});
+
+    socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaDeathRecoveriesStatesNameInfoBlock", loaderId: "covid19IndiaTestingLabStatesNameInfoLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: "home_death_recoveries", selectedElement: currentZoneWiseDefaultState, query: null});
+
+    socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaDistrictReportStatesNameInfoBlock", loaderId: "covid19IndiaDistrictReportStatesNameInfoLoaderBlock",  category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: "home_district_wise_report", selectedElement: currentTestingLabDefaultState, query: null});
+
+  }
+
+  function initializeAppFeatures(){
+    // Performance test: 361.660888671875ms
+    console.time("Performance test");
+    initialPrimaryPageLoad();
+
+  }
+
+  function onClickViewAllBtnAction(){
+    console.log("calling hi fun ===============");
+    // console.log("this.value :: ", this.value);
+    onClickSideMenu(this.value);
+  }
+
+
+
+  window.onChnageStateDailyChange = function(event){
+    console.log("======= onChnageStateDailyChange ========");
+    // console.log("@@@ this : ", arg);
+    let data = JSON.parse(event.target.attributes[2].value);
+    console.log("@@@ confirmed :: ", data.confirmed);
+    let id = event.target.id;
+    let stateWiseDailyChangesInputId = id.split("_")[0]+'_inputText';
+    let stateWiseDailyChangesConfirmId = id.split("_")[0]+'_confirmData';
+    let stateWiseDailyChangesDeathId = id.split("_")[0]+'_deathData';
+    let stateWiseDailyChangesCounterId = id.split("_")[0]+'_counter';
+    // let minusBtnId = id.split("_")[0]+'_minusBtn';
+
+    // document.getElementById(minusBtnId).style.background = "background-color: rgb(233, 235, 238);";
+    //rajib
+    // document.getElementById(event.target.id).style.background = "var(--default-theme-color)";
+    let newDaysValue = parseInt(document.getElementById(stateWiseDailyChangesInputId).value);
+    let newConfirmedValue = data.totalConfirmed + (data.dailyConfirmed * newDaysValue);
+    let newDeathValue = data.totalDeath + (data.dailyDeath * newDaysValue);
+
+    document.getElementById(stateWiseDailyChangesInputId).value = newDaysValue;
+    document.getElementById(stateWiseDailyChangesConfirmId).innerHTML = newConfirmedValue;
+    document.getElementById(stateWiseDailyChangesDeathId).innerHTML = newDeathValue;
+    document.getElementById(stateWiseDailyChangesCounterId).innerHTML = newDaysValue;
+
+  }
+
+  window.onClickStateWiseDailyChangeDaysMinusBtn = function(event){
+    console.log("====== on click onClickStateWiseDailyChangeDaysMinusBtn =======");
+    console.log("@@@ EVENT :: ", event);
+    console.log("@@@ data :: ", event.target.attributes[2].value);
+    let data = JSON.parse(event.target.attributes[2].value);
+    console.log("@@@ confirmed :: ", data.confirmed);
+    let id = event.target.id;
+    let stateWiseDailyChangesInputId = id.split("_")[0]+'_inputText';
+    let plusBtnId = id.split("_")[0]+'_plusBtn';
+    let stateWiseDailyChangesCounterId = id.split("_")[0]+'_counter';
+    let stateWiseDailyChangesConfirmId = id.split("_")[0]+'_confirmData';
+    let stateWiseDailyChangesDeathId = id.split("_")[0]+'_deathData';
+
+    document.getElementById(plusBtnId).style.background = "background-color: rgb(233, 235, 238);";
+    document.getElementById(event.target.id).style.background = "var(--default-theme-color)";
+    let newDaysValue = parseInt(document.getElementById(stateWiseDailyChangesInputId).value) - 1;
+    let newConfirmedValue = data.totalConfirmed + (data.dailyConfirmed * newDaysValue);
+    let newDeathValue = data.totalDeath + (data.dailyDeath * newDaysValue);
+
+    document.getElementById(stateWiseDailyChangesConfirmId).innerHTML = newConfirmedValue;
+    document.getElementById(stateWiseDailyChangesDeathId).innerHTML = newDeathValue;
+    document.getElementById(stateWiseDailyChangesInputId).value = newDaysValue;
+    document.getElementById(stateWiseDailyChangesCounterId).innerHTML = newDaysValue;
+
+  }
+
+  window.onClickStateWiseDailyChangeDaysPlusBtn = function(event){
+    console.log("====== on click onClickStateWiseDailyChangeDaysPlusBtn =======");
+    console.log("@@@ EVENT :: ", event);
+    console.log("@@@ data :: ", event.target.attributes[2].value);
+    let data = JSON.parse(event.target.attributes[2].value);
+    console.log("@@@ confirmed :: ", data.confirmed);
+    let id = event.target.id;
+    let stateWiseDailyChangesInputId = id.split("_")[0]+'_inputText';
+    let stateWiseDailyChangesConfirmId = id.split("_")[0]+'_confirmData';
+    let stateWiseDailyChangesDeathId = id.split("_")[0]+'_deathData';
+    let stateWiseDailyChangesCounterId = id.split("_")[0]+'_counter';
+    let minusBtnId = id.split("_")[0]+'_minusBtn';
+
+    document.getElementById(minusBtnId).style.background = "background-color: rgb(233, 235, 238);";
+    //rajib
+    document.getElementById(event.target.id).style.background = "var(--default-theme-color)";
+    let newDaysValue = parseInt(document.getElementById(stateWiseDailyChangesInputId).value) + 1;
+    let newConfirmedValue = data.totalConfirmed + (data.dailyConfirmed * newDaysValue);
+    let newDeathValue = data.totalDeath + (data.dailyDeath * newDaysValue);
+
+    document.getElementById(stateWiseDailyChangesInputId).value = newDaysValue;
+    document.getElementById(stateWiseDailyChangesConfirmId).innerHTML = newConfirmedValue;
+    document.getElementById(stateWiseDailyChangesDeathId).innerHTML = newDeathValue;
+    document.getElementById(stateWiseDailyChangesCounterId).innerHTML = newDaysValue;
+
+  }
+
+  window.onClickPrediction = function(event){
+      console.log("===== ******** onClickPrediction is calling ******** ====");
+      let newDaysValue = null;
+      let plusBtnId = null;
+      let minusBtnId = null;
+      let id = event.target.id;
+      let dailyChangeInputId = id.split("_")[0]+'_inputText';
+      let dailyChangeConfirmId = id.split("_")[0]+'_confirmData';
+      let dailyChangeDeathId = id.split("_")[0]+'_deathData';
+      let dailyChangeCounterId = id.split("_")[0]+'_counter';
+      let data = JSON.parse(event.target.attributes[2].value);
+
+      if(id.split("_")[1] === "plusBtn"){
+          document.getElementById(event.target.id).style.backgroundColor = "var(--default-theme-color)";
+          minusBtnId = id.split("_")[0]+'_minusBtn';
+          document.getElementById(minusBtnId).style.backgroundColor = "rgb(233, 235, 238)";
+          newDaysValue = parseInt(document.getElementById(dailyChangeInputId).value) + 1;
+
+      }else if(id.split("_")[1] === "minusBtn"){
+          document.getElementById(event.target.id).style.backgroundColor = "var(--default-theme-color)";
+          plusBtnId = id.split("_")[0]+'_plusBtn';
+          console.log("@@@ plus btn id : ", plusBtnId);
+          document.getElementById(plusBtnId).style.backgroundColor = "rgb(233, 235, 238)";
+          newDaysValue = parseInt(document.getElementById(dailyChangeInputId).value) - 1;
+
+      }else if(id.split("_")[1] === "inputText"){
+          newDaysValue = parseInt(document.getElementById(dailyChangeInputId).value);
+          minusBtnId = id.split("_")[0]+'_minusBtn';
+          document.getElementById(minusBtnId).style.backgroundColor = "rgb(233, 235, 238)";
+          plusBtnId = id.split("_")[0]+'_plusBtn';
+          document.getElementById(plusBtnId).style.backgroundColor = "rgb(233, 235, 238)";
+      }
+      // let newConfirmedValue = data.totalConfirmed + (data.dailyConfirmed * newDaysValue);
+      // let newDeathValue = data.totalDeath + (data.dailyDeath * newDaysValue);
+
+      document.getElementById(dailyChangeInputId).value = newDaysValue;
+      document.getElementById(dailyChangeConfirmId).innerHTML = data.totalConfirmed + (data.dailyConfirmed * newDaysValue);
+      document.getElementById(dailyChangeDeathId).innerHTML = data.totalDeath + (data.dailyDeath * newDaysValue);
+      document.getElementById(dailyChangeCounterId).innerHTML = newDaysValue;
+
+  }
+
+  socket.on("covid19-response-states-daily_changes-completed", () => {
+      console.log("=============== covid19-response-states-daily_changes-completed  ===============");
+      socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_overall_indian_prediction_report', category: "githuib_covid19_overall_indian_prediction_report", resposeTeplateId: 'covid19IndiaPredictionReportNewsTemplate', loaderId: 'covid19IndiaPredictionReportNewsLoaderBlock', blockId: 'covid19IndiaPredictionReportNewsBlock'});
+  });
+
+  initializeAppFeatures();
+  let priorityThreshold = 10;
+  let isContentSectionLoad = false;
+  let isFooterSectionLoad = null;
+  socket.on('github-who-covid19-api-response', function(response){
+      console.log("## response  : ", response);
+      // console.log("## priorityCount ::  ", priorityCount);
+      let loaderId = response.loaderId;
+      let templateId = response.resposeTeplateId;
+      let blockId = response.blockId;
+      // console.log("@@data: ", data);
+      // console.log("@@blockId: ", templateId);
+      // console.log("@@loaderId: ", loaderId);
+      if(response.priority !== null && response.priority !== undefined && isContentSectionLoad === false){
+        priorityCount += response.priority;
+        // console.log("INNER PRIORITY COUNT : ", priorityCount);
+          if(priorityCount === 3){
+                console.timeEnd("Performance test");
+                // console.log("===== start secondary page load =====");
+                initialSecondaryPageLoad();
+                isContentSectionLoad = true;
+                isFooterSectionLoad = false;
+                priorityCount = 0;
+                response.priority = 0;
+          }
+      }
+
+      if(response.priority !== null && response.priority !== undefined && isFooterSectionLoad === false){
+        priorityCount = priorityCount + response.priority;
+          if(priorityCount === 43){
+                // console.log("===== start third page load =====");
+                isFooterSectionLoad = true;
+                initialThirdPageLoad();
+                initServerData();
+                createSearchOptionsList("customSearchOptions", searchOptionsList, searchOptionsList[0]);
+
+          }
+      }
+
+      if(response.footer !== null && response.footer !== undefined){
+        // console.log(" footer object : ", response.footer);
+        let footerId = response.footer.footerTemplateId;
+        let footerTemplate = response.footer.footerTemplate;
+        if((footerId !== null && footerId !== undefined ) && (footerTemplate !== null && footerTemplate !== undefined)){
+          document.getElementById(footerId).innerHTML = '';
+          document.getElementById(footerId).innerHTML = footerTemplate;
+        }
+
+      }
+
+      if(loaderId !== null && templateId !== undefined){
+        if(document.getElementById(loaderId) !== null && document.getElementById(templateId) !== null){
+          document.getElementById(loaderId).style.display = "none";
+          document.getElementById(templateId).style.display = "block";
+          document.getElementById(templateId).innerHTML = '';
+          document.getElementById(templateId).innerHTML = response.returnMsg;
+        }
+
+
+
+        if(response.emptySlideDesc && blockId !== null && blockId !== undefined){
+            // console.log("*******************************************");
+            // console.log("blockId :: ", blockId);
+            var buttonnode= document.createElement('button');
+            // buttonnode.innerHTML = '<span style="color: #4b4f56">View All</span><span class="glyphicon glyphicon-chevron-right" style="color: #4b4f56;font-size: 13px;position: relative;left: 2px;top: 0px;"></span>';
+            buttonnode.innerHTML = '<span style="color: var(--default-theme-color)">View All</span><span class="glyphicon glyphicon-chevron-right" style="color: var(--default-theme-color);font-size: 13px;position: relative;left: 2px;top: 0px;"></span>';
+          	buttonnode.setAttribute('value', response.emptySlideAction);
+          	buttonnode.setAttribute('style','width: 100%; height: 40px; border: none; background: #F7F7F7; color: black; font-size: 16px; outline-color: white !important;');
+            buttonnode.onclick = onClickViewAllBtnAction;
+            let blockToInsert = document.createElement( 'div' ).appendChild(buttonnode);
+            // console.log("blockToInsert : ", blockToInsert);
+            document.getElementById(blockId).append(blockToInsert);
+        }
+
+      }else{
+          if(response.apiRef === "init_last_record_date"){
+              console.log("### init last record date : ", response.last_record_date);
+              let lastDate = new Date(response.last_record_date);
+              let today = lastDate.getUTCDate() - 1;
+
+              let dateBeforeFiveDays = new Date(Date.now() - 4 * 24 * 60 * 60 * 1000);
+              let day = dateBeforeFiveDays.getDate();
+              let month = dateBeforeFiveDays.getMonth();
+              let beforeFiveDaysDate = "2020-"+(month+1)+'-'+day;
+
+              let daysOptionsTemplate = createDayOptions(today);
+              let toRangeDaysOptionsTemplate = createDayOptions(day-1);
+              let lastRecordDate = response.last_record_date;
+              let currentDate = "2020-06-"+today;
+
+
+              console.log("@@ dateBeforeFiveDays : ", dateBeforeFiveDays);
+              // let defaultDateRage = '2020-'+(lastDate.getUTCMonth() + 1)+'-'+(lastDate.getUTCDate() - 5)+'/'+lastRecordDate;
+              let defaultDateRage = beforeFiveDaysDate+'/'+lastRecordDate;
+
+              // console.log("%%%%%%%%% defaultDateRage : ", defaultDateRage);
+              // console.log("%%%%%%%%% currentDate : ", currentDate);
+
+              document.getElementById("indiaDay").innerHTML = daysOptionsTemplate;
+              //document.getElementById("covid19IndiaReportByDateNewsLoaderBlock").style.display = "block";
+                // <!--   api-7   -->
+              socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'covid19IndiaReportByDateNewsTemplate', loaderId: 'covid19IndiaReportByDateNewsLoaderBlock', category: 'githuib_covid19_india_daily_report_by_date', searchQuery: lastRecordDate});
+
+              document.getElementById("globalDay").innerHTML = daysOptionsTemplate;
+              document.getElementById("covid19GlobalReportByDateNewsLoaderBlock").style.display = "block";
+
+              // <!-- api-5  INDIA  REPORT BY DATE RANGE -->
+
+              socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'covid19GlobalReportByDateNewsTemplate', loaderId: 'covid19GlobalReportByDateNewsLoaderBlock', category: 'githuib_covid19_global_daily_report_by_date', searchQuery: lastRecordDate});
+
+              document.getElementById("india_day_range_from").innerHTML = toRangeDaysOptionsTemplate;
+              document.getElementById("india_day_range_to").innerHTML = daysOptionsTemplate;
+              // <!--   api-8   -->
+              socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'covid19IndiaReportByDateRangeNewsTemplate', loaderId: 'covid19IndiaReportByDateRangeNewsLoaderBlock', category: 'githuib_covid19_india_daily_report_by_date_range', searchQuery: defaultDateRage});
+
+              document.getElementById("global_day_range_from").innerHTML = toRangeDaysOptionsTemplate;
+              document.getElementById("global_day_range_to").innerHTML = daysOptionsTemplate;
+                // <!--   api-9   -->
+              socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'covid19GlobalReportByDateRangeNewsTemplate', loaderId: 'covid19GlobalReportByDateRangeNewsLoaderBlock', category: 'githuib_covid19_global_daily_report_by_date_range', searchQuery: defaultDateRage});
+              //================= empty call to gather information at the server side ====================
+          }else if(response.apiRef === "fetch_compare_state_list"){
+              // console.log("======== response fetch country data =========");
+              document.getElementById("CompareStateOne").innerHTML = response.states_option_list.compareFirstStateOptionListTemplate;
+              document.getElementById("CompareStateTwo").innerHTML = response.states_option_list.compareSecondStateOptionListTemplate;
+          }else if(response.apiRef === "fetch_compare_country_list"){
+            console.log("*******************************************************************************");
+              console.log("======== response fetch country data =========");
+              // console.log("country data : ", data.data);
+              // document.getElementById("CompareCountryOne").innerHTML = data.country_option_list.firstCountryOptionList;
+              // document.getElementById("CompareCountryTwo").innerHTML = data.country_option_list.secondCountryOptionList;
+              document.getElementById("CompareCountryOne").innerHTML = response.compare_country_option_list.firstCountryOptionList;
+              document.getElementById("CompareCountryTwo").innerHTML = response.compare_country_option_list.secondCountryOptionList;
+          }
+
+      }
+
+      if(response.category === "githuib_covid19_india_state_wise_report"){
+          // <!--   api-11   -->
+          socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19CompareStateOneTemplateBlock", loaderId: "covid19CompareStateOneLoaderBlock", category: 'githuib_covid19_india_compare_states_data', searchQuery: "West Bengal"});
+          // <!--   api-11   -->
+          socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19CompareStateTwoTemplateBlock", loaderId: "covid19CompareStateTwoLoaderBlock", category: 'githuib_covid19_india_compare_states_data', searchQuery: "Maharashtra"});
+      }
+  });
+
+  window.onClickResetSearchItems =  function(from){
+      console.log("===== onclick reset search items ======");
+      if(from === "home_zone_wise_report"){
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaZoneReportStatesNameInfoBlock", loaderId: "covid19IndiaZoneReportStatesNameInfoLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: "home_zone_wise_report", selectedElement: currentZoneWiseDefaultState, query: null});
+      }else if(from === "home_death_recoveries"){
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaDeathRecoveriesStatesNameInfoBlock", loaderId: "covid19IndiaTestingLabStatesNameInfoLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: "home_death_recoveries", selectedElement: currentDeathRecoveriesDefaultState, query: null});
+
+      }else if(from === "home_district_wise_report"){
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaDistrictReportStatesNameInfoBlock", loaderId: "covid19IndiaDistrictReportStatesNameInfoLoaderBlock",  category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: "home_district_wise_report", selectedElement: currentDistriceWiseDefaultState, query: null});
+
+      }else if(from === "home"){
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaTestingLabStatesNameInfoBlock", loaderId: "covid19IndiaTestingLabStatesNameInfoLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", selectedElement: currentTestingLabDefaultState, query: null});
+
+      }else if(from === "vertical_death_recoveries"){
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaDeathRecoveriesStatesNameInfoVerticalMainBlockTemplate", loaderId: "covid19IndiaDeathRecoveriesStatesNameInfoVerticalMainLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: "vertical_death_recoveries", selectedElement: currentVerticalDeathRecoveriesDefaultState, query: null});
+
+      }else if(from === "vertical"){
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaTestingLabStatesNameInfoVerticalMainBlockTemplate", loaderId: "covid19IndiaTestingLabStatesNameInfoVerticalMainLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: 'vertical', selectedElement: currentVerticalTestingLabDetailsDefaultState, query: null});
+      }
+  }
+
+  window.onClickSearchStates = function(from, searchInputId, searchBlockId, bgColor){
+      console.log("=========== onClickSearchStates =============");
+      let currentExpandedSearch = null;
+      if(from === "home_zone_wise_report"){
+          // currentExpandedSearch = isZoneWiseSearchStateNameExpand;
+          isZoneWiseSearchStateNameExpand = (isZoneWiseSearchStateNameExpand === true) ? false : true;
+          currentExpandedSearch = isZoneWiseSearchStateNameExpand;
+      }else if(from === "home_death_recoveries"){
+          // currentExpandedSearch = isdeathRecoveriesStateNameExpand;
+          isdeathRecoveriesStateNameExpand = (isdeathRecoveriesStateNameExpand === true) ? false : true;
+          currentExpandedSearch = isdeathRecoveriesStateNameExpand;
+      }else if(from === "vertical_death_recoveries"){
+          isVerticalDeathRecoveriesStateNameExpand = (isVerticalDeathRecoveriesStateNameExpand === true) ? false : true;
+          currentExpandedSearch = isVerticalDeathRecoveriesStateNameExpand;
+      }else if(from === "home_district_wise_report"){
+          // currentExpandedSearch = isdistrictWiseSearchStateNameExpand;
+          isdistrictWiseSearchStateNameExpand = (isdistrictWiseSearchStateNameExpand === true) ? false : true;
+          currentExpandedSearch = isdistrictWiseSearchStateNameExpand;
+      }else if(from === "home"){
+          istestingLabSearchStateNameExpand = (istestingLabSearchStateNameExpand === true) ? false : true;
+          currentExpandedSearch = istestingLabSearchStateNameExpand;
+      }else if(from === "vertical"){
+          isVerticalTestingLabSearchStateNameExpand = (isVerticalTestingLabSearchStateNameExpand === true) ? false : true;
+          currentExpandedSearch = isVerticalTestingLabSearchStateNameExpand;
+      }else if(from === "home_states_daily_changes_report"){
+          isHomeDailyChangesStateNameExpand = (isHomeDailyChangesStateNameExpand === true) ? false : true;
+          currentExpandedSearch = isHomeDailyChangesStateNameExpand;
+      }
+
+      if(currentExpandedSearch){
+          // currentExpandedSearch = false;
+          document.getElementById(searchInputId).style.width = "85px";
+          document.getElementById(searchBlockId).style.border = "1px solid "+bgColor;
+          document.getElementById(searchInputId).placeholder = "Search state..";
+          // document.getElementById(searchInputId).addClass.add() = "Search state..";
+          document.getElementById(searchInputId).classList.add("custom-grey-placeholder");
+          document.getElementById(searchInputId).focus();
+
+      }else{
+          // currentExpandedSearch = true;
+          document.getElementById(searchInputId).style.width = "0px";
+          document.getElementById(searchBlockId).style.border = "none";
+          document.getElementById(searchInputId).placeholder = "";
+          document.getElementById(searchInputId).classList.remove("custom-grey-placeholder");
+      }
+  }
+
+  window.onClickSearchStatesName = function(from, search_id, event){
+      console.log("===== on click search states names fun =====");
+      console.log("search_id : ", search_id);
+      let query = document.getElementById(search_id).value;
+      let search_category = '';
+      console.log("query : ", query);
+      if (event.keyCode === 13) {
+         // Cancel the default action, if needed
+         event.preventDefault();
+         console.log("=== enter is clicked ===");
+         search_category = search_id.split("_")[1];
+         if(from === "home_zone_wise_report"){
+           socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaZoneReportStatesNameInfoBlock", loaderId: "covid19IndiaZoneReportStatesNameInfoLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: "home_zone_wise_report", selectedElement: currentZoneWiseDefaultState, query: query});
+         }else if(from === "home_death_recoveries"){
+           socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaDeathRecoveriesStatesNameInfoBlock", loaderId: "covid19IndiaTestingLabStatesNameInfoLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: "home_death_recoveries", selectedElement: currentDeathRecoveriesDefaultState, query: query});
+
+         }else if(from === "home_district_wise_report"){
+           socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaDistrictReportStatesNameInfoBlock", loaderId: "covid19IndiaDistrictReportStatesNameInfoLoaderBlock",  category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: "home_district_wise_report", selectedElement: currentDistriceWiseDefaultState, query: query});
+
+         }else if(from === "home"){
+           socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaTestingLabStatesNameInfoBlock", loaderId: "covid19IndiaTestingLabStatesNameInfoLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", selectedElement: currentTestingLabDefaultState, query: query});
+
+         }else if(from === "vertical_death_recoveries"){
+           // socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaTestingLabStatesNameInfoBlock", loaderId: "covid19IndiaTestingLabStatesNameInfoLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", selectedElement: currentTestingLabDefaultState, query: query});
+           // rajib
+           // socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaDeathRecoveriesStatesNameInfoBlock", loaderId: "covid19IndiaTestingLabStatesNameInfoLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: "vertical_death_recoveries", selectedElement: currentDeathRecoveriesDefaultState, query: query});
+
+           socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaDeathRecoveriesStatesNameInfoVerticalMainBlockTemplate", loaderId: "covid19IndiaDeathRecoveriesStatesNameInfoVerticalMainLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: "vertical_death_recoveries", selectedElement: currentVerticalDeathRecoveriesDefaultState, query: query});
+
+         }else if(from === "vertical"){
+           socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaTestingLabStatesNameInfoVerticalMainBlockTemplate", loaderId: "covid19IndiaTestingLabStatesNameInfoVerticalMainLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: 'vertical', selectedElement: currentVerticalTestingLabDetailsDefaultState, query: query});
+         }
+       }else{
+         console.log("=== key is press ===");
+       }
+  }
+
+ function onClickEmptySlideSubmitBtn(category){
+    console.log("======== calling on click empty slide desc template =========");
+    console.log("===== category :: ", category);
+ }
+
+  function onClickTestingLabStateItem(stateId, from){
+      console.log("===== calling fgun on click testing lab");
+      console.log("itemid : ", stateId);
+      console.log("from : ", from);
+      let state = stateId.split("_")[1];
+      console.log("state : ", state);
+
+      if(from === "home"){
+          document.getElementById(currentTestingLabState).style.backgroundColor = "#E9EBEE";
+          document.getElementById(currentTestingLabState).style.color = "grey";
+          currentTestingLabState = stateId;
+          document.getElementById(currentTestingLabState).style.backgroundColor = "var(--default-theme-color)";
+          document.getElementById(currentTestingLabState).style.color = "white";
+          document.getElementById("covid19IndiaStateWiseTestingLabReportTemplate").innerHTML = "";
+          document.getElementById("covid19IndiaStateWiseTestingLabReportLoaderBlock").style.display = "block";
+          let splittedState = stateId.split('_');
+          stateId = splittedState[1].replace(/\-+/g, ' ');
+          console.log("stateId : ", stateId);
+          currentTestingLabDefaultState = stateId;          // <!--   api-14   -->
+          socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_state_wise_testing_lab_report', category: "githuib_covid19_india_state_wise_testing_lab_report", resposeTeplateId: 'covid19IndiaStateWiseTestingLabReportTemplate', loaderId: 'covid19IndiaStateWiseTestingLabReportLoaderBlock', searchQuery: stateId, emptySlideDesc: true, emptySlideAction:'covid19IndiaStatewiseTestingLabDetails'});
+      }else if(from === "home_death_recoveries"){
+          document.getElementById(currentDeathRecoveriesState).style.backgroundColor = "#E9EBEE";
+          document.getElementById(currentDeathRecoveriesState).style.color = "grey";
+          currentDeathRecoveriesState = stateId;
+          document.getElementById(currentDeathRecoveriesState).style.backgroundColor = "var(--default-theme-color)";
+          document.getElementById(currentDeathRecoveriesState).style.color = "white";
+          document.getElementById("covid19IndiaStateWiseDeathRecoveriesReportTemplate").innerHTML = "";
+          document.getElementById("covid19IndiaStateWiseDeathRecoveriesReportLoaderBlock").style.display = "block";
+          let splittedState = stateId.split('_');
+          stateId = splittedState[1].replace(/\-+/g, ' ');
+          console.log("stateId : ", stateId);
+          currentDeathRecoveriesDefaultState = stateId;
+          socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_state_wise_death_recoveries_report', category: "githuib_covid19_india_state_wise_death_recoveries_report", resposeTeplateId: 'covid19IndiaStateWiseDeathRecoveriesReportTemplate', loaderId: 'covid19IndiaStateWiseDeathRecoveriesReportLoaderBlock', searchQuery: stateId,
+          emptySlideDesc: true, emptySlideAction:'covid19IndiaStateWiseDeathRecoveriesReport'});
+
+          // scrollType: 'vertical'
+
+      }else if(from === "vertical_death_recoveries"){
+          document.getElementById(currentVerticalDeathRecoveriesState).style.backgroundColor = "#E9EBEE";
+          document.getElementById(currentVerticalDeathRecoveriesState).style.color = "grey";
+          currentVerticalDeathRecoveriesState = stateId;
+          document.getElementById(currentVerticalDeathRecoveriesState).style.backgroundColor = "var(--default-theme-color)";
+          document.getElementById(currentVerticalDeathRecoveriesState).style.color = "white";
+          document.getElementById("covid19IndiaStateWiseDeathRecoveriesReportVerticalTemplateBlock").innerHTML = "";
+          document.getElementById("covid19IndiaStateWiseDeathRecoveriesReportVerticalLoaderBlock").style.display = "block";
+          let splittedState = stateId.split('_');
+          console.log("splittedState : ", splittedState[1]);
+          stateId = splittedState[1].replace(/\-+/g, ' ');
+          console.log("@@@ vertical death recoveries state name :: ", stateId);
+          currentVerticalDeathRecoveriesDefaultState = stateId;
+          socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_state_wise_death_recoveries_report', category: "githuib_covid19_india_state_wise_death_recoveries_report", resposeTeplateId: 'covid19IndiaStateWiseDeathRecoveriesReportVerticalTemplateBlock', loaderId: 'covid19IndiaStateWiseDeathRecoveriesReportVerticalLoaderBlock', searchQuery: stateId, scrollType : 'vertical'});
+      }else if(from === "home_district_wise_report"){
+          document.getElementById(currentDistrictWiseReportState).style.backgroundColor = "#E9EBEE";
+          document.getElementById(currentDistrictWiseReportState).style.color = "grey";
+          currentDistrictWiseReportState = stateId;
+          document.getElementById(currentDistrictWiseReportState).style.backgroundColor = "var(--default-theme-color)";
+          document.getElementById(currentDistrictWiseReportState).style.color = "white";
+          document.getElementById("newcovid19IndiaDistrictWiseReportTemplate").innerHTML = "";
+          document.getElementById("newcovid19IndiaDistrictWiseReportNewsLoaderBlock").style.display = "block";
+          let splittedState = stateId.split('_');
+          console.log("splittedState : ", splittedState[1]);
+          stateId = splittedState[1].replace(/\-+/g, ' ');
+          currentDistriceWiseDefaultState = stateId;
+          console.log("state id : ", stateId);
+          socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_district_wise_report_new', category: "githuib_covid19_india_district_wise_report_new", resposeTeplateId: 'newcovid19IndiaDistrictWiseReportTemplate', loaderId: 'newcovid19IndiaDistrictWiseReportNewsLoaderBlock', searchQuery: stateId, footer: {footerTemplateId : 'districtWiseReportFooterBlock'},});
+
+          // socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_district_wise_report_new', category: "githuib_covid19_india_district_wise_report_new", resposeTeplateId: 'newcovid19IndiaDistrictWiseReportTemplate', loaderId: 'newcovid19IndiaDistrictWiseReportNewsLoaderBlock', searchQuery: "West Bengal", priority: 1});
+
+      }else if(from === "home_zone_wise_report"){
+          document.getElementById(currentZoneWiseReportState).style.backgroundColor = "#E9EBEE";
+          document.getElementById(currentZoneWiseReportState).style.color = "grey";
+          currentZoneWiseReportState = stateId;
+          document.getElementById(currentZoneWiseReportState).style.backgroundColor = "var(--default-theme-color)";
+          document.getElementById(currentZoneWiseReportState).style.color = "white";
+          document.getElementById("covid19IndiaZonesReportNewsTemplate").innerHTML = "";
+          document.getElementById("covid19IndiaZonesReportNewsLoaderBlock").style.display = "block";
+          // currentZoneWiseDefaultState = stateId;
+          let splittedState = stateId.split('_');
+          console.log("splittedState : ", splittedState[1]);
+          stateId = splittedState[1].replace(/\-+/g, ' ');
+          console.log("state id : ", stateId);
+          currentZoneWiseDefaultState = stateId;
+          // socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaZonesReportNewsTemplate", loaderId: "covid19IndiaZonesReportNewsLoaderBlock", category: 'covid19_india_zones_report', apiRef: "covid19_india_zones_report", searchQuery: stateId});
+          socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'covid19_india_zones_report', category: "covid19_india_zones_report", resposeTeplateId: 'covid19IndiaZonesReportNewsTemplate', loaderId: 'covid19IndiaZonesReportNewsLoaderBlock', blockId : 'covid19IndiaZonesReportNewsBlock', currentZoneWiseDefaultState: currentZoneWiseDefaultState});
+
+      }else if(from === "home_states_daily_changes_report"){
+          console.log("@@@ currentStateWiseDailyChangesReportState :: ", currentStateWiseDailyChangesReportState);
+          document.getElementById(currentStateWiseDailyChangesReportState).style.backgroundColor = "#E9EBEE";
+          document.getElementById(currentStateWiseDailyChangesReportState).style.color = "grey";
+          currentStateWiseDailyChangesReportState = stateId;
+          document.getElementById(currentStateWiseDailyChangesReportState).style.backgroundColor = "var(--default-theme-color)";
+          document.getElementById(currentStateWiseDailyChangesReportState).style.color = "white";
+          document.getElementById("covid19IndiaStateDailyChangesReportNewsTemplate").innerHTML = "";
+          document.getElementById("covid19IndiaStateDailyChangesReportNewsLoaderBlock").style.display = "block";
+          let stateCode = stateId.split("_")[2];
+          // let splittedState = stateId.split('_');
+          // console.log("splittedState : ", splittedState[1]);
+          // stateId = splittedState[1].replace(/\-+/g, ' ');
+          console.log("@@@ state : ", state);
+          console.log("@@@ state code : ", stateCode);
+          //currentStateWiseDailyChangesReportState = state;
+          //rajib
+          socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'covid19_india_states_daily_changes_report', category: "init_server_data", resposeTeplateId: 'covid19IndiaStateDailyChangesReportNewsTemplate', loaderId: 'covid19IndiaStateDailyChangesReportNewsLoaderBlock', blockId : 'covid19IndiaStateDailyChangesReportNewsBlock', currentZoneWiseDefaultState: currentStateWiseDailyChangesReportState, defaultState: stateCode});
+
+      }else if(from === "vertical_states_daily_changes_report"){
+          console.log("@@@ currentStateWiseDailyChangesReportState :: ", currentVerticalStateWiseDailyChangesState);
+          document.getElementById(currentVerticalStateWiseDailyChangesState).style.backgroundColor = "#E9EBEE";
+          document.getElementById(currentVerticalStateWiseDailyChangesState).style.color = "grey";
+          currentVerticalStateWiseDailyChangesState = stateId;
+          document.getElementById(currentVerticalStateWiseDailyChangesState).style.backgroundColor = "var(--default-theme-color)";
+          document.getElementById(currentVerticalStateWiseDailyChangesState).style.color = "white";
+          document.getElementById("covid19StateWiseDailyChangesReportVerticalTemplateBlock").innerHTML = "";
+          document.getElementById("covid19StateWiseDailyChangesReportVerticalTemplateBlock").style.display = "block";
+          // document.getElementById("covid19StateWiseDailyChangesReportStatesNameInfoVerticalMainBlockTemplate").innerHTML = "";
+
+          let stateCode = stateId.split("_")[2];
+          // let splittedState = stateId.split('_');
+          // console.log("splittedState : ", splittedState[1]);
+          // stateId = splittedState[1].replace(/\-+/g, ' ');
+          console.log("@@@ currentStateWiseDailyChangesReportState :: ", currentVerticalStateWiseDailyChangesState);
+          console.log("@@@ state : ", state);
+          console.log("@@@ state code : ", stateCode);
+          // currentStateWiseDailyChangesReportState = state;
+          //rajib
+          socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'covid19_india_states_daily_changes_report', category: "init_server_data", resposeTeplateId: 'covid19StateWiseDailyChangesReportVerticalTemplateBlock', loaderId: 'covid19StateWiseDailyChangesReportVerticalLoaderBlock', blockId : 'covid19IndiaStateDailyChangesReportNewsBlock', currentZoneWiseDefaultState: currentStateWiseDailyChangesReportState, defaultState: stateCode, scrollType: 'vertical'});
+
+      }else if(from === "vertical"){
+          document.getElementById(currentVerticalTestingLabState).style.backgroundColor = "#E9EBEE";
+          document.getElementById(currentVerticalTestingLabState).style.color = "grey";
+          currentVerticalTestingLabState = stateId;
+          document.getElementById(currentVerticalTestingLabState).style.backgroundColor = "var(--default-theme-color)"; ;
+          document.getElementById(currentVerticalTestingLabState).style.color = "white";
+          document.getElementById("covid19IndiaStateWiseTestingLabReportTemplate").innerHTML = "";
+          document.getElementById("covid19IndiaStateWiseTestingLabReportLoaderBlock").style.display = "block";
+          let splittedState = stateId.split('_');
+          console.log("splittedState : ", splittedState[1]);
+          stateId = splittedState[1].replace(/\-+/g, ' ');
+          console.log("state id : ", stateId);
+          currentVerticalTestingLabDetailsDefaultState = stateId;
+          // <!--   api-14   -->
+          socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_state_wise_testing_lab_report', category: "githuib_covid19_india_state_wise_testing_lab_report", resposeTeplateId: 'covid19IndiaStatewiseTestingLabDetailsVerticalTemplateBlock', loaderId: 'covid19IndiaStatewiseTestingLabDetailsVerticalLoaderBlock', searchQuery: stateId, scrollType: 'vertical'});
+
+      }
+  }
+
+  function onChangeListValue(argument){
+      console.log("======== on chnage list value ==========");
+      console.log("argument : ", argument);
+      let loaderId = '';
+      let templateId = '';
+      let country_code = '';
+      country_code = document.getElementById(argument).value;
+      console.log("country _code : ", country_code);
+      loaderId = 'covid19'+argument+'LoaderBlock';
+      templateId = 'covid19'+argument+'TemplateBlock';
+      if(argument === "CompareCountryTwo" || argument === "CompareCountryOne"){
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: templateId, loaderId: loaderId, category: 'githuib_covid19_fetch_india_latest', searchQuery: country_code});
+      }else if(argument === "CompareStateTwo" || argument === "CompareStateOne"){
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: templateId, loaderId: loaderId, category: 'githuib_covid19_india_compare_states_data', searchQuery: country_code});
+      }
+  }
+
+  let defaultYear = "2020";
+  let currentMonth = "04";
+  let currentDay = "01";
+  let globalMonth = "04";
+  let globalDay = "01";
+  function onChangeMonths(param){
+    console.log("===== calling onChangeMonths ====");
+    console.log("param : ", param);
+    if(param === 'india_month'){
+        let monthsValue = document.getElementById("indiaMonth").value;
+        currentMonth = monthsValue;
+        let currentDate = defaultYear+'-'+currentMonth+'-'+currentDay;
+        document.getElementById("covid19IndiaReportByDateNewsLoaderBlock").style.display = "block";
+          // <!--   api-7   -->
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'covid19IndiaReportByDateNewsTemplate', loaderId: 'covid19IndiaReportByDateNewsLoaderBlock', category: 'githuib_covid19_india_daily_report_by_date', searchQuery: currentDate});
+    }else if(param === 'global_month'){
+        let monthsValue = document.getElementById("globalMonth").value;
+        globalMonth = monthsValue;
+        let currentDate = defaultYear+'-'+globalMonth+'-'+globalDay;
+        document.getElementById("covid19GlobalReportByDateNewsLoaderBlock").style.display = "block";
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'covid19GlobalReportByDateNewsTemplate', loaderId: 'covid19GlobalReportByDateNewsLoaderBlock', category: 'githuib_covid19_global_daily_report_by_date', searchQuery: currentDate});
+    }else if(param === 'india_month_range_from' || param === "india_month_range_to"){
+        document.getElementById("covid19IndiaReportByDateRangeNewsTemplate").innerHTML = "block";
+        document.getElementById("covid19IndiaReportByDateRangeNewsLoaderBlock").style.display = "block";
+        let fromDate = '2020-'+document.getElementById("india_month_range_from").value+'-'+document.getElementById("india_day_range_from").value;
+        let toDate = '2020-'+document.getElementById("india_month_range_to").value+'-'+document.getElementById("india_day_range_to").value;
+        let dateRangeQueryString = fromDate+'/'+toDate;
+        console.log("date range query search : ", fromDate+'/'+toDate);
+        // <!--   api-8   -->
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'covid19IndiaReportByDateRangeNewsTemplate', loaderId: 'covid19IndiaReportByDateRangeNewsLoaderBlock', category: 'githuib_covid19_india_daily_report_by_date_range', searchQuery: dateRangeQueryString});
+
+    }else if(param === 'global_month_range_from' || param === "global_month_range_to"){
+        document.getElementById("covid19GlobalReportByDateRangeNewsTemplate").innerHTML = "block";
+        document.getElementById("covid19GlobalReportByDateRangeNewsLoaderBlock").style.display = "block";
+        let fromDate = '2020-'+document.getElementById("global_month_range_from").value+'-'+document.getElementById("global_day_range_from").value;
+        let toDate = '2020-'+document.getElementById("global_month_range_to").value+'-'+document.getElementById("global_day_range_to").value;
+        let dateRangeQueryString = fromDate+'/'+toDate;
+        console.log("date range query search : ", fromDate+'/'+toDate);
+          // <!--   api-9   -->
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'covid19GlobalReportByDateRangeNewsTemplate', loaderId: 'covid19GlobalReportByDateRangeNewsLoaderBlock', category: 'githuib_covid19_global_daily_report_by_date_range', searchQuery: dateRangeQueryString});
+
+    }
+
+  }
+
+  function onChangeDays(param){
+    console.log("===== calling onChangeDays ====");
+    if(param === "india_day"){
+        let daysValue = document.getElementById("indiaDay").value;
+        console.log("days value : ", daysValue);
+        currentDay = daysValue;
+        let currentDate = defaultYear+'-'+currentMonth+'-'+currentDay;
+        console.log("currentDate: ", currentDate);
+        document.getElementById("covid19IndiaReportByDateNewsLoaderBlock").style.display = "block";
+          // <!--   api-7   -->
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'covid19IndiaReportByDateNewsTemplate', loaderId: 'covid19IndiaReportByDateNewsLoaderBlock', category: 'githuib_covid19_india_daily_report_by_date', searchQuery: currentDate});
+    }else if(param === "global_day"){
+        let daysValue = document.getElementById("globalDay").value;
+        console.log("days value : ", daysValue);
+        globalDay = daysValue;
+        let currentDate = defaultYear+'-'+globalMonth+'-'+globalDay;
+        console.log("global Date: ", currentDate);
+        document.getElementById("covid19GlobalReportByDateNewsLoaderBlock").style.display = "block";
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'covid19GlobalReportByDateNewsTemplate', loaderId: 'covid19GlobalReportByDateNewsLoaderBlock', category: 'githuib_covid19_global_daily_report_by_date', searchQuery: currentDate});
+    }else if(param === 'india_day_range_from' || param === "india_day_range_to"){
+        document.getElementById("covid19IndiaReportByDateRangeNewsTemplate").innerHTML = "block";
+        document.getElementById("covid19IndiaReportByDateRangeNewsLoaderBlock").style.display = "block";
+        let fromDate = '2020-'+document.getElementById("india_month_range_from").value+'-'+document.getElementById("india_day_range_from").value;
+        let toDate = '2020-'+document.getElementById("india_month_range_to").value+'-'+document.getElementById("india_day_range_to").value;
+        let dateRangeQueryString = fromDate+'/'+toDate;
+        console.log("date range query search : ", fromDate+'/'+toDate);
+        // <!--   api-8   -->
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'covid19IndiaReportByDateRangeNewsTemplate', loaderId: 'covid19IndiaReportByDateRangeNewsLoaderBlock', category: 'githuib_covid19_india_daily_report_by_date_range', searchQuery: dateRangeQueryString});
+    }else if(param === 'global_day_range_from' || param === "global_day_range_to"){
+        document.getElementById("covid19GlobalReportByDateRangeNewsTemplate").innerHTML = "block";
+        document.getElementById("covid19GlobalReportByDateRangeNewsLoaderBlock").style.display = "block";
+        let fromDate = '2020-'+document.getElementById("global_month_range_from").value+'-'+document.getElementById("global_day_range_from").value;
+        let toDate = '2020-'+document.getElementById("global_month_range_to").value+'-'+document.getElementById("global_day_range_to").value;
+        let dateRangeQueryString = fromDate+'/'+toDate;
+        console.log("date range query search : ", fromDate+'/'+toDate);
+          // <!--   api-9   -->
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'covid19GlobalReportByDateRangeNewsTemplate', loaderId: 'covid19GlobalReportByDateRangeNewsLoaderBlock', category: 'githuib_covid19_global_daily_report_by_date_range', searchQuery: dateRangeQueryString});
+    }
+
+  }
+
+
+  socket.on("response-one-minute-news-podcasts", function(data){
+      console.log("===  calling response-one-minute-news-podcasts === ");
+      oneMinutePodcasts(data.podcastData);
+  });
+
+
+
+  var textToSpeechSetUpObject = {};
+  function oneMinutePodcasts(textToSpeech){
+    console.log("==== callig textToSpeech fn ====");
+    // console.log("txt : ", textToSpeech);
+    let synth = window.speechSynthesis;
+    if(textToSpeech !== null && textToSpeech !== undefined && textToSpeech.length > 0 ){
+        for (let i = 0; i < textToSpeech.length; i++) {
+            let msg = new SpeechSynthesisUtterance();
+            if(textToSpeechSetUpObject.volume !== null && textToSpeechSetUpObject.volume !== undefined){
+              msg.volume = textToSpeechSetUpObject.volume;
+            }
+            if(textToSpeechSetUpObject.rate !== null && textToSpeechSetUpObject.rate !== undefined){
+              msg.rate = textToSpeechSetUpObject.rate;
+            }
+            if(textToSpeechSetUpObject.pitch !== null && textToSpeechSetUpObject.pitch !== undefined){
+              msg.pitch = textToSpeechSetUpObject.pitch;
+            }
+            let voices = null;
+            if(i % 2 === 0){
+                 voices = synth.getVoices();
+
+                 msg.voice = voices[3];
+                 console.log("x : ", JSON.stringify(msg.voice));
+
+            }else{
+                 voices = synth.getVoices();
+                 msg.voice = voices[5];
+
+            }
+            msg.text = textToSpeech[i];
+            window.speechSynthesis.speak(msg);
+
+        }
+    }
+    msg.onerror = function(event) {
+        console.log("== calling msg.onerror function ==");
+        window.speechSynthesis.end();
+        console.log('An error has occurred with the speech synthesis: ' + event.error);
+    }
+    msg.onstart = function(event) {
+        console.log("== calling msg.onstart function ==");
+        // window.speechSynthesis.end();
+    }
+    msg.onend = function(event) {
+        console.log("== calling msg.end function ==");
+    }
+
+  }
+
+  function onClickOneMinuteNewsPodcasts(newsCategory){
+      console.log("==== onclick onClickOneMinuteNewsPodcasts : ", onClickOneMinuteNewsPodcasts);
+      console.log("==== newsCategory : ", newsCategory);
+      socket.emit("request-one-minute-news-podcasts", {from: 'Api',  category: newsCategory, country: defaultNewsSourceCountry });
+  }
+  // 9836863092
+  function onClickSideMenu(argument){
+      console.log("=== on click side menu fun ===");
+      console.log("=== argument: ", argument);
+      document.getElementById("mySidebar").style.display = "none";
+      document.getElementById(currentBlockId).style.display = "none";
+      if(argument === "home"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'Covid-19 Headlines';
+        document.getElementById("covid19HomeNewsBlock").style.display = "block";
+        currentBlockId = "covid19HomeNewsBlock";
+        // <!--   api-14   -->
+        socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_state_wise_testing_lab_report', category: "githuib_covid19_india_state_wise_testing_lab_report", resposeTeplateId: 'covid19IndiaStateWiseTestingLabReportTemplate', loaderId: 'covid19IndiaStateWiseTestingLabReportLoaderBlock', searchQuery: 'WestBengal'});
+        return ;
+      }
+      let dynamicBlockId = argument+'VerticalMainBlock';
+      let dynamicLoaderId = argument+'VerticalLoaderBlock';
+      let dynamicTemplateId = argument+'VerticalTemplateBlock';
+      currentBlockId = dynamicBlockId;
+      document.getElementById(dynamicBlockId).style.display = "block";
+      document.getElementById("mySidebar").style.display = "none";
+      // if(argument === "pressRelease"){
+      //   document.getElementById("appHeadliesTitle").innerHTML = 'Top Covid-19 Press Release';
+      //   socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'libraries_api', category: "github_covid19_press_release", resposeTeplateId: dynamicTemplateId, loaderId: dynamicLoaderId, scrollType: 'vertical'});
+      // }else
+      if(argument === "whoCovid19QuestionAndAnswer"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'Top Covid-19 General Question And Answer';
+        socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'libraries_api', category: "who_covid19_question_and_answer", resposeTeplateId: dynamicTemplateId, loaderId: dynamicLoaderId, scrollType: 'vertical'});
+      }else if(argument === "whoCovid19LatestReportIndia"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'Covid-19 Time Series Report Of India';
+        socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'libraries_api', category: "githuib_covid19_india_latest_report", resposeTeplateId: dynamicTemplateId, loaderId: dynamicLoaderId, scrollType: 'vertical'});
+      }else if(argument === "covid19GlobalDailyReport"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'Covid-19 Time Series Report Of World';
+        socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'libraries_api', category: "githuib_covid19_global_daily_report", resposeTeplateId: dynamicTemplateId, loaderId: dynamicLoaderId, scrollType: 'vertical'});
+      }else if(argument === "covid19IndiaDistrictWiseReport"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'Covid-19 District Wise Report Of India';
+        socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'libraries_api', category: "githuib_covid19_india_district_wise_report", resposeTeplateId: dynamicTemplateId, loaderId: dynamicLoaderId, scrollType: 'vertical'});
+      }else if(argument === "covid19IndiaStatewiseTestingLabDetails"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'Testing Lab\'s Of India';
+        let = state = currentVerticalTestingLabState.split("_")[1];
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaTestingLabStatesNameInfoVerticalMainBlockTemplate", loaderId: "covid19IndiaTestingLabStatesNameInfoVerticalMainLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: 'vertical', selectedElement: currentTestingLabDefaultState, query: null});
+
+        socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_state_wise_testing_lab_report', category: "githuib_covid19_india_state_wise_testing_lab_report", resposeTeplateId: 'covid19IndiaStatewiseTestingLabDetailsVerticalTemplateBlock', loaderId: 'covid19IndiaStatewiseTestingLabDetailsVerticalLoaderBlock', searchQuery: "West Bengal", scrollType: 'vertical'});
+
+      }else if(argument === "covid19IndiaStateWiseDeathRecoveriesReport"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'Death Recoveries Of India';
+        let = state = currentVerticalTestingLabState.split("_")[1];
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19IndiaDeathRecoveriesStatesNameInfoVerticalMainBlockTemplate", loaderId: "covid19IndiaDeathRecoveriesStatesNameInfoVerticalMainLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: "vertical_death_recoveries", selectedElement: currentZoneWiseDefaultState, query: null});
+
+        socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_state_wise_death_recoveries_report', category: "githuib_covid19_india_state_wise_death_recoveries_report", resposeTeplateId: 'covid19IndiaStateWiseDeathRecoveriesReportVerticalTemplateBlock', loaderId: 'covid19IndiaStateWiseDeathRecoveriesReportVerticalLoaderBlock', searchQuery: "West Bengal", scrollType: 'vertical'});
+
+      }else if(argument === "whoDashboard"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'Covid-19 Who Dashboard';
+        document.getElementById(dynamicLoaderId).style.display = "none";
+        document.getElementById(dynamicTemplateId).style.display = "block";
+      }else if(argument === "indiaGvtHelpLineNumberPdf"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'India Government Helpline Numbers';
+        document.getElementById(dynamicLoaderId).style.display = "none";
+        document.getElementById(dynamicTemplateId).style.display = "block";
+        let url = 'https://www.mohfw.gov.in/pdf/coronvavirushelplinenumber.pdf';
+        showPdfFile(url, "the-canvas");
+      }else if(argument === "covid19CurrentsHealthReport"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'Global Health News';
+        document.getElementById(dynamicLoaderId).style.display = "none";
+        document.getElementById(dynamicTemplateId).style.display = "block";
+        // socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'covid19GlobalHealthNewsTemplate', loaderId: 'covid19GlobalHealthNewsLoaderBlock', category: 'customSearch', currentCustomSearchSource: 'Currents', searchQuery: 'health'});
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: dynamicTemplateId, loaderId: dynamicLoaderId, searchQuery: "health", category: 'customSearch', currentCustomSearchSource: "Currents", scrollType: 'vertical'});
+      }else if(argument === "theNextWebNewsReport"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'The Next Web Journal';
+        document.getElementById(dynamicLoaderId).style.display = "none";
+        document.getElementById(dynamicTemplateId).style.display = "block";
+        // <!--   api-18   -->
+        // socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'wallStreetJournalNewsTemplate', loaderId: 'wallStreetJournalNewsLoaderBlock', blockId: 'wallStreetJournalNewsBlock', category: 'customSearch', currentCustomSearchSource: 'Journal', journalName: 'wsj.com', emptySlideDesc: true, emptySlideAction: 'whoCovid19LatestReportIndia'});
+
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: dynamicTemplateId, loaderId: dynamicLoaderId,  category: 'customSearch', currentCustomSearchSource: 'Journal', journalName: 'thenextweb.com', scrollType: 'vertical'});
+      }else if(argument === "wallStreetJournalReport"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'The Wall Street Journal';
+        document.getElementById(dynamicLoaderId).style.display = "none";
+        document.getElementById(dynamicTemplateId).style.display = "block";
+        // <!--   api-18   -->
+        // socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'wallStreetJournalNewsTemplate', loaderId: 'wallStreetJournalNewsLoaderBlock', blockId: 'wallStreetJournalNewsBlock', category: 'customSearch', currentCustomSearchSource: 'Journal', journalName: 'wsj.com', emptySlideDesc: true, emptySlideAction: 'whoCovid19LatestReportIndia'});
+
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: dynamicTemplateId, loaderId: dynamicLoaderId,  category: 'customSearch', currentCustomSearchSource: 'Journal', journalName: 'wsj.com', scrollType: 'vertical'});
+      }else if(argument === "covid19GlobalHealthNewsReport"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'Covid19 Global Health Update';
+        document.getElementById(dynamicLoaderId).style.display = "none";
+        document.getElementById(dynamicTemplateId).style.display = "block";
+        // <!--   api-18   -->
+        // socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'wallStreetJournalNewsTemplate', loaderId: 'wallStreetJournalNewsLoaderBlock', blockId: 'wallStreetJournalNewsBlock', category: 'customSearch', currentCustomSearchSource: 'Journal', journalName: 'wsj.com', emptySlideDesc: true, emptySlideAction: 'whoCovid19LatestReportIndia'});
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: dynamicTemplateId, loaderId: dynamicLoaderId,  category: 'customSearch', currentCustomSearchSource: 'News',  searchQuery: "covid19 global update", scrollType: 'vertical'});
+      }else if(argument === "covid19IndiaStateWiseReport"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'Covid19 State Wise Report Of India';
+        document.getElementById(dynamicLoaderId).style.display = "none";
+        document.getElementById(dynamicTemplateId).style.display = "block";
+        // <!--   api-18   -->
+        // socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'wallStreetJournalNewsTemplate', loaderId: 'wallStreetJournalNewsLoaderBlock', blockId: 'wallStreetJournalNewsBlock', category: 'customSearch', currentCustomSearchSource: 'Journal', journalName: 'wsj.com', emptySlideDesc: true, emptySlideAction: 'whoCovid19LatestReportIndia'});
+        socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_state_wise_report', category: "githuib_covid19_india_state_wise_report", resposeTeplateId: dynamicTemplateId, loaderId: dynamicLoaderId, scrollType: 'vertical'});
+      }else if(argument === "covid19StateWiseDailyChangesReport"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'Covid19 State Wise Daily Changes Report Of India';
+        document.getElementById(dynamicLoaderId).style.display = "none";
+        document.getElementById(dynamicTemplateId).style.display = "block";
+        // <!--   api-18   -->
+        // rajib
+        socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: "covid19StateWiseDailyChangesReportStatesNameInfoVerticalMainBlockTemplate", loaderId: "covid19StateWiseDailyChangesReportStatesNameInfoVerticalMainLoaderBlock", category: 'init_server_data', apiRef: "init_testing_lab_states_names_info", scrollType: "vertical_states_daily_changes_report", selectedElement: currentVerticalStateWiseDailyChangesDefaultState, query: null});
+
+        socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'covid19_india_states_daily_changes_report', category: "init_server_data", resposeTeplateId: dynamicTemplateId, loaderId: dynamicLoaderId, currentZoneWiseDefaultState: currentZoneWiseDefaultState, defaultState: 'wb', scrollType: "vertical"});
+
+        // socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_state_wise_report', category: "githuib_covid19_india_state_wise_report", resposeTeplateId: dynamicTemplateId, loaderId: dynamicLoaderId, scrollType: 'vertical'});
+      }else if(argument === "covid19IndiaTestingReport"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'Covid19 Testing Report Of India';
+        document.getElementById(dynamicLoaderId).style.display = "none";
+        document.getElementById(dynamicTemplateId).style.display = "block";
+        // <!--   api-18   -->
+        // socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'wallStreetJournalNewsTemplate', loaderId: 'wallStreetJournalNewsLoaderBlock', blockId: 'wallStreetJournalNewsBlock', category: 'customSearch', currentCustomSearchSource: 'Journal', journalName: 'wsj.com', emptySlideDesc: true, emptySlideAction: 'whoCovid19LatestReportIndia'});
+        socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_testing_by_india_govt_report', category: "githuib_covid19_india_testing_by_india_govt_report", resposeTeplateId: dynamicTemplateId, loaderId: dynamicLoaderId, scrollType: 'vertical'});
+      }else if(argument === "covid19IndiaTimeSeriesReport"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'Covid19 Time Series Report Of India';
+        document.getElementById(dynamicLoaderId).style.display = "none";
+        document.getElementById(dynamicTemplateId).style.display = "block";
+        // <!--   api-18   -->
+        // socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'wallStreetJournalNewsTemplate', loaderId: 'wallStreetJournalNewsLoaderBlock', blockId: 'wallStreetJournalNewsBlock', category: 'customSearch', currentCustomSearchSource: 'Journal', journalName: 'wsj.com', emptySlideDesc: true, emptySlideAction: 'whoCovid19LatestReportIndia'});
+        socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_time_series_by_india_govt_report', category: "githuib_covid19_india_time_series_by_india_govt_report", resposeTeplateId: dynamicTemplateId, loaderId: dynamicLoaderId, scrollType: 'vertical'});
+      }else if(argument === "covid19CountryWiseReport"){
+        document.getElementById("appHeadliesTitle").innerHTML = 'Covid19 Country Wise Report Of World';
+        document.getElementById(dynamicLoaderId).style.display = "none";
+        document.getElementById(dynamicTemplateId).style.display = "block";
+        // <!--   api-18   -->
+        // socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'wallStreetJournalNewsTemplate', loaderId: 'wallStreetJournalNewsLoaderBlock', blockId: 'wallStreetJournalNewsBlock', category: 'customSearch', currentCustomSearchSource: 'Journal', journalName: 'wsj.com', emptySlideDesc: true, emptySlideAction: 'whoCovid19LatestReportIndia'});
+        socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_country_wise_report', category: "githuib_covid19_country_wise_report", resposeTeplateId: dynamicTemplateId, loaderId: dynamicLoaderId, scrollType: 'vertical'});
+
+        // // <!--   api-2   -->
+        // socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_country_wise_report', category: "githuib_covid19_country_wise_report", resposeTeplateId: 'covid19CountryWiseReportNewsTemplate', loaderId: 'covid19CountryWiseReportNewsLoaderBlock', blockId: 'covid19CountryWiseReportNewsBlock', priority: 2, emptySlideDesc: true, emptySlideAction: 'whoCovid19LatestReportIndia'});
+
+      }
+  }
+
+  // <!--   api-10   -->
+  // socket.emit("github-who-covid19-api-request", {from: 'Api', apiRef: 'githuib_covid19_india_state_wise_report', category: "githuib_covid19_india_state_wise_report", resposeTeplateId: 'covid19IndiaStateWiseReportTemplate', loaderId: 'covid19IndiaStateWiseReportNewsLoaderBlock', blockId: 'covid19IndiaStateWiseReportNewsBlock', emptySlideDesc: true, emptySlideAction: 'covid19IndiaStateWiseReport'});
+
+
+  var isLanguageActive = false;
+  function onClickLanguageIcon(){
+      console.log("==== calling language icon ====");
+      if(isLanguageActive){
+          isLanguageActive = false;
+          document.getElementById("searchIcon").style.display = "block";
+          document.getElementById("searchPersonalizedNews").style.display = "block";
+          document.getElementById("languageIcon").style.color = 'var(--default-theme-color)';
+          document.getElementById("google_translate_element").style.display = "none";
+      }else{
+        isLanguageActive = true;
+        document.getElementById("google_translate_element").style.display = "block";
+        document.getElementById("searchIcon").style.display = "none";
+        document.getElementById("searchPersonalizedNews").style.display = "none";
+        document.getElementById("languageIcon").style.color = 'var(--default-theme-color)';
+        new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        setTimeout(function(){
+          console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+          document.querySelector(".goog-te-combo").style.width = "90% !important";
+          document.querySelector(".goog-te-combo").style.border = "none";
+          document.querySelector(".goog-te-combo").style.color = "var(--default-theme-color) !important";
+          document.querySelector(".goog-te-combo").style.fontWeight = "500";
+          document.querySelector(".goog-te-combo").style.background = "white !important";
+
+          document.querySelector(".goog-logo-link").style.display = "none";
+          document.querySelector(".goog-te-banner-frame").style.display = "none";
+          document.getElementById("goog-gt-tt").style.display = "none !important";
+          document.querySelector(".skiptranslate").style.color = "white !important";
+          document.querySelector(".goog-te-gadget").style.color = "white !important";
+          document.querySelector(".skiptranslate").style.display = "none !important";
+        }, 700);
+      }
+  }
+
+  function onClickMicrophoneIcon(){
+      console.log("==== calling microphone icon ====");
+
+  }
+  // function createSearchHintsTemplate(targetId){
+  //     let template = '';
+  //       for (var i = 0; i < array.length; i++) {
+  //           template += '<a ng-repeat="txt in serachQariesList" ng-click="onClickHelpInfoItems(txt)" href="#" id="searchHints_"+ class="hints-item">{{txt}}</a>';
+  //       }
+  //       searchHints
+  //     return template;
+  // }
+
+  let defaultSearchHelpInfoId = "searchHints_0";
+  function onClickPersonalizedSearch(){
+      console.log("== on click onClickPersonalizedSearch fun ==");
+
+      document.getElementById("appHeadliesTitle").innerHTML = 'Search Covid19 Related News';
+      // document.getElementById("searchPersonalizedNews").focus();
+      document.getElementById(currentBlockId).style.display = "none";
+      document.getElementById("searchContentsBlock").style.display = "block";
+      document.getElementById("menuIcon").style.display = "none";
+      document.getElementById("searchBackIcon").style.display = "inline-block";
+      document.getElementById("customSearchOptions").style.display = "block";
+      document.getElementById(defaultSearchHelpInfoId).style.backgroundColor = 'var(--default-theme-color)';
+      document.getElementById(defaultSearchHelpInfoId).style.color = "white";
+
+      currentBlockId = "searchContentsBlock";
+      let helpInfoTxt = serachQariesList[0];
+      console.log("helpInfoTxt: ", helpInfoTxt);
+      socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'searchContentTemplateBlock', loaderId: 'searchContentLoaderBlock', searchQuery: helpInfoTxt, category: 'customSearch', currentCustomSearchSource: currentCustomSearchSource, scrollType: 'vertical'});
+
+  }
+
+  function onClickSearchBackBtn(){
+      console.log("== on click onClickSearchBackBtn ==");
+      document.getElementById("appHeadliesTitle").innerHTML = 'Covid19 Headlines';
+
+      document.getElementById(currentBlockId).style.display = "none";
+      document.getElementById("covid19HomeNewsBlock").style.display = "block";
+      document.getElementById("menuIcon").style.display = "inline-block";
+      document.getElementById("searchBackIcon").style.display = "none";
+      document.getElementById("customSearchOptions").style.display = "none";
+      currentBlockId = "covid19HomeNewsBlock";
+      document.getElementById("covid19HomeNewsBlock").style.display = 'block';
+  }
+
+
+  function onSearchHelpInfoTextColor(){
+    console.log("===== onclick on search help info text color =====");
+    for (var i = 0; i < window.serachQariesList.length-1; i++) {
+        let id = 'searchHints_'+i;
+        document.getElementById(id).style.backgroundColor = '#E9EBEE';
+        document.getElementById(id).style.color = 'black';
+    }
+    setTimeout(function(){
+       document.getElementById("searchHints_0").style.backgroundColor = 'var(--default-theme-color)';
+       document.getElementById("searchHints_0").style.color = 'white';
+
+    }, 300);
+  }
+
+
+  app.controller('nearByApiController', function($scope){
+
+    function onClickSideMenu(argument){
+        console.log("=== on click side menu fun ===");
+        console.log("=== argument: ", argument);
+        // document.getElementById(argument).style.backgroundColor = "#4267B2";
+    }
+
+
+    $scope.onClickHelpInfoItems = function(helpInfoTxt, helpInfoIndex){
+      console.log("help txt : ", helpInfoTxt);
+      console.log("helpInfoIndex : ", helpInfoIndex);
+      document.getElementById(defaultSearchHelpInfoId).style.backgroundColor = "#E9EBEE";
+      document.getElementById(defaultSearchHelpInfoId).style.color = "black";
+
+      let helpInfoDynamicId = "searchHints_"+helpInfoIndex;
+      defaultSearchHelpInfoId = helpInfoDynamicId;
+
+      document.getElementById(defaultSearchHelpInfoId).style.backgroundColor = 'var(--default-theme-color)';
+      document.getElementById(defaultSearchHelpInfoId).style.color = "white";
+
+      // document.getElementById("searchResultsContentsLoaderBlock").style.display = "block";
+      // document.getElementById("searchResultsBlock").style.display = "block";
+      document.getElementById("searchPersonalizedNews").value = "";
+      document.getElementById("searchContentTemplateBlock").innerHTML = '';
+      // socket.emit("open-source-api-request", {from: 'Api', resposeTeplateId: 'searchContentTemplateBlock', loaderId: 'searchContentLoaderBlock', searchQuery: helpInfoTxt, category: 'customSearch', country: defaultNewsSourceCountry, scroll: 'vertical'});
+
+      socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'searchContentTemplateBlock', loaderId: 'searchContentLoaderBlock', searchQuery: helpInfoTxt, category: 'customSearch', currentCustomSearchSource: currentCustomSearchSource, scrollType: 'vertical'});
+
+      // socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchContentTemplateBlock', loaderId: 'searchContentLoaderBlock', searchQuery: helpInfoTxt, category: 'customSearch', country: defaultNewsSourceCountry, scroll: 'vertical'});
+    }
+
+    $scope.serachQariesList = ['corona virus ','corona virus update in kolkata','corona virus update in the world'];
+
+    $scope.searchPersonalizedNews = function(){
+        let queryMsg = document.getElementById("searchPersonalizedNews").value;
+        // console.log("@@@ search value : ", queryMsg);
+        // console.log("@@@ defaultSearchHelpInfoId : ", defaultSearchHelpInfoId);
+        queryMsg = queryMsg.replace(/\s\s+/g, ' ');
+        if($scope.serachQariesList.indexOf(queryMsg) === -1){
+            $scope.serachQariesList.unshift(queryMsg);
+            window.serachQariesList.unshift(queryMsg);
+            // console.log("@@@ serachQariesList : ", window.serachQariesList);
+        }
+
+        document.getElementById("searchResultsContentsLoaderBlock").style.display = "block";
+        document.getElementById("searchResultsBlock").style.display = "block";
+        document.getElementById("searchPersonalizedNews").value = "";
+        document.getElementById("searchResultsContentsTemplate").innerHTML = '';
+
+
+        // document.getElementById(defaultSearchHelpInfoId).style.backgroundColor = '#E9EBEE';
+        // document.getElementById(defaultSearchHelpInfoId).style.color = 'black';
+        // document.getElementById("searchHints_0").style.backgroundColor = '#4267B2';
+        // document.getElementById("searchHints_0").style.color = 'white';
+
+        // if(currentSearchSource !== 'wikipedia'){
+        //     socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: queryMsg, category: 'customSearch', country: defaultNewsSourceCountry, scroll: 'vertical'});
+        // }else{
+        //     console.log("==== callingf wikipedia search news ====");
+        //     socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: query, filterBy: "wikipedia_search", category: 'news_by_filter', scroll: 'vertical'});
+        // }
+        // socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: queryMsg, category: 'customSearch', country: defaultNewsSourceCountry, scroll: 'vertical'});
+    }
+
+    $scope.sendMsgByEnter = function(keyEvent, queryMsg, source){
+          console.log("=== call send msg by enter ===");
+         if (keyEvent.which === 13 || source === "send"){
+                 queryMsg = queryMsg.replace(/\s\s+/g, ' ');
+                 if($scope.serachQariesList.indexOf(queryMsg) === -1){
+                     $scope.serachQariesList.unshift(queryMsg);
+                     window.serachQariesList.unshift(queryMsg);
+                 }
+                 // document.getElementById("searchResultsContentsLoaderBlock").style.display = "block";
+                 // document.getElementById("searchResultsBlock").style.display = "block";
+                 document.getElementById("searchPersonalizedNews").value = "";
+                 document.getElementById("searchContentTemplateBlock").innerHTML = '';
+                 // console.log("@@@@ queryMsg : ", queryMsg);
+                 // console.log("@@@ defaultSearchHelpInfoId : ", defaultSearchHelpInfoId);
+                 // console.log("@@@ window.serachQariesList :: ", window.serachQariesList);
+
+                 onSearchHelpInfoTextColor();
+                 socket.emit("github-who-covid19-api-request", {from: 'Api', resposeTeplateId: 'searchContentTemplateBlock', loaderId: 'searchContentLoaderBlock', searchQuery: queryMsg, category: 'customSearch', currentCustomSearchSource: currentCustomSearchSource, scrollType: 'vertical'});
+
+         }
+
+    }
+
+    // ==== ON BACKSPACE :  enable diseable mike or send icon ====
+    $scope.onClickBackSpace = function(keyEvent, queryMsg){
+      console.log("============ on click  onClickBackSpacebutton action ==============");
+
+      // if (keyEvent.which === 8){
+      //     queryMsg = queryMsg.replace(/\s\s+/g, ' ');
+      //     document.getElementById("searchResultsBlock").style.display = "block";
+      //     document.getElementById("searchPersonalizedNews").value = "";
+      //     if(document.getElementById("searchPersonalizedNews") !== null && undefined){
+      //        document.getElementById("searchPersonalizedNews").innerHTML = '';
+      //     }
+      //     socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: queryMsg, category: 'customSearch', country: defaultNewsSourceCountry, scroll: 'vertical'});
+      // }
+    }
+
+    window.onClickButtonAction = function(bookIsbn, bookTitle, bookImg, api){
+      console.log("============ on click onClickButtonAction button action ==============");
+      // console.log("isbn: ", bookIsbn);
+      // console.log("title: ", bookTitle);
+      // console.log("bookImg : ", bookImg);
+      // console.log("@@@@ api : ", onClickButtonAction);
+      if(bookTitle === "HACKER-NEWS:topstories"){
+
+      }else{
+        client.emit("add-book-to-shelf",{from: 'Gini', bookIsbn: bookIsbn, bookTitle: bookTitle, bookImg:bookImg, api: api});
+      }
+    }
+
+    function textToSpeech(txt){
+      // console.log("==== callig textToSpeech fn ====");
+      let msg = new SpeechSynthesisUtterance();
+      let synth = window.speechSynthesis;
+      if(textToSpeechSetUpObject.volume !== null && textToSpeechSetUpObject.volume !== undefined){
+        msg.volume = textToSpeechSetUpObject.volume;
+      }
+      if(textToSpeechSetUpObject.rate !== null && textToSpeechSetUpObject.rate !== undefined){
+        msg.rate = textToSpeechSetUpObject.rate;
+      }
+      if(textToSpeechSetUpObject.pitch !== null && textToSpeechSetUpObject.pitch !== undefined){
+        msg.pitch = textToSpeechSetUpObject.pitch;
+      }
+      if(textToSpeechSetUpObject.voice !== null && textToSpeechSetUpObject.voice !== undefined){
+        msg.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name === textToSpeechSetUpObject.voice; })[0];
+      }else{
+        let voices = synth.getVoices();
+        msg.voice = voices[4];
+      }
+      msg.text = txt;
+      window.speechSynthesis.resume();
+      window.speechSynthesis.speak(msg);
+    }
+
+
+    window.onClickBody = function(){
+      // console.log("==== on click body element ====");
+      if(isSideBarOpen){
+          document.getElementById("mySidebar").style.display = "none";
+          isSideBarOpen = false;
+      }
+
+    }
+
+    window.onOpenModal = function(url, type){
+        console.log("==== call open modal function ====");
+        console.log("== href value :: ", url);
+        console.log("== type value :: ", type);
+        let dynId = '';
+        let playId = '';
+        let pauseId = '';
+        if(type === 'newWindow'){
+          window.open(url);
+        }if(type === 'textToSpeech'){
+          // console.log("============== textToSpeech ==============");
+          dynId = url.replace(/\s/g, '');
+          dynId = dynId.replace(/-/g, '');
+          dynId = dynId.replace(/,/g, '');
+          playId = 'play:'+dynId;
+          pauseId = 'pause:'+dynId;
+          // console.log("play id : ", playId);
+          // console.log("play id : ", pauseId);
+          // window.speechSynthesis.resume();
+
+          textToSpeech(url);
+          // document.getElementById(playId).style.display = "none";
+          // document.getElementById(pauseId).style.display = "block";
+        }else if(type === 'textToPause'){
+          // console.log("== href value :: ", url);
+          // console.log("== type value :: ", type);
+          dynId = url.replace(/\s/g, '');
+          dynId = dynId.replace(/-/g, '');
+          dynId = dynId.replace(/,/g, '');
+          playId = 'play:'+dynId;
+          pauseId = 'pause:'+dynId;
+          window.speechSynthesis.pause();
+          // document.getElementById(pauseId).style.display = "none";
+          // document.getElementById(playId).style.display = "block";
+        }else if(type === 'openModalWithContent'){
+          modalState = type;
+          socket.emit("open-modal-with-content-request", {url : url});
+        }else if(type === "open_pdf_in_modal"){
+          // document.getElementById("threeDotsActionModalContent").innerHTML = '';
+          $("#openPdfModal").modal();
+          document.getElementById("modal_title").innerHTML = url;
+          showPdfFile(url, "modal_pdf_canvas");
+
+        }else{
+          document.getElementById("urlIframe").style.display = "none";
+          document.getElementById("modalContent").innerHTML = url;
+          $("#URLModal").modal();
+        }
+
+    }
+
+    window.onOpenThreeDotsActionModal = function(){
+        // console.log("@@@@@@@@@ oclick onOpenThreeDotsActionModal @@@@@@@@@@");
+        document.getElementById("threeDotsActionModalContent").innerHTML = '';
+        $("#threeDotsActionModal").modal();
+    }
+
+    window.getNewsByCustomFilter = function(filterName, api){
+       console.log("call get products by id : ", filterName);
+       console.log("call get products by api : ", api);
+       if(api === "NEWSAPI:country"){
+           document.getElementById("searchResultsContentsLoaderBlock").style.display = "block";
+           document.getElementById("searchResultsBlock").style.display = "block";
+           document.getElementById("searchPersonalizedNews").value = "";
+           document.getElementById("searchResultsContentsTemplate").innerHTML = '';
+           socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: filterName, filterBy: api, category: 'news_by_filter', scroll: 'vertical'});
+       }else if(api === "NEWSAPI:language"){
+           document.getElementById("searchResultsContentsLoaderBlock").style.display = "block";
+           document.getElementById("searchResultsBlock").style.display = "block";
+           document.getElementById("searchPersonalizedNews").value = "";
+           document.getElementById("searchResultsContentsTemplate").innerHTML = '';
+           socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: filterName, filterBy: api, category: 'news_by_filter', scroll: 'vertical'});
+       }else if(api === "NEWSAPI:newsByCategory"){
+           document.getElementById("searchResultsContentsLoaderBlock").style.display = "block";
+           document.getElementById("searchResultsBlock").style.display = "block";
+           document.getElementById("searchPersonalizedNews").value = "";
+           document.getElementById("searchResultsContentsTemplate").innerHTML = '';
+           socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: filterName, filterBy: api, category: 'news_by_filter', scroll: 'vertical'});
+       }else if(api === "NEWSAPI:newsBySource"){
+           filterName = filterName.replace(/ /g,'-');
+           console.log("@@@ filtername : ", filterName);
+           if(filterName.indexOf('(') !== -1){
+             filterName = filterName.replace('(','');
+           }
+           if(filterName.indexOf(')') !== -1){
+             filterName = filterName.replace(')','');
+           }
+           document.getElementById("searchResultsContentsLoaderBlock").style.display = "block";
+           document.getElementById("searchResultsBlock").style.display = "block";
+           document.getElementById("searchPersonalizedNews").value = "";
+           document.getElementById("searchResultsContentsTemplate").innerHTML = '';
+           socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: filterName, filterBy: api, category: 'news_by_filter', scroll: 'vertical'});
+       }
+    }
+
+    // DQ0KKFk gaja key
+
+
+    window.webShare = function(title, text, url){
+      // console.log("title : ", title);
+      //   console.log("=== calling web share function ===");
+      //   console.log("title : ", title);
+      //   console.log("text : ", text);
+      //   console.log("url : ", url);
+
+        if(navigator.share){
+            console.log("==== supported web share ====");
+            navigator.share({
+              title : title,
+              text : text,
+              url : url,
+            }).then((data) => {
+                console.log("thanks for sharingthe data.");
+                console.log("data : ", data);
+            })
+            .catch((err) => {
+                console.log("error occured when we are sharing the post.");
+            })
+        }
+    }
+
+    socket.on("open-modal-with-content-response", function(data){
+        // console.log("==== call open modal with content response ====");
+        // console.log("open-modal-with-content-response :: ", data.template);
+        if(modalState === 'openModalWithContent'){
+            document.getElementById("urlIframe").style.display = "none";
+            document.getElementById("modalContent").innerHTML = data.template;
+            $("#URLModal").modal();
+        }
+        modalState = null;
+    })
+  });
+</script>
+
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+  setTimeout(function(){
+    // layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
+    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    // document.querySelector(".goog-te-combo").style.width = "90% !important";
+    // document.querySelector(".goog-te-combo").style.border = "none";
+    // document.querySelector(".goog-te-combo").style.color = "orange";
+    // document.querySelector(".goog-te-combo").style.fontWeight = "600";
+    document.querySelector(".goog-te-combo").style.width = "90% !important";
+    document.querySelector(".goog-te-combo").style.border = "none";
+    document.querySelector(".goog-te-combo").style.color = "var(--default-theme-color) !important";
+    document.querySelector(".goog-te-combo").style.fontWeight = "500";
+    document.querySelector(".goog-te-combo").style.background = "white !important";
+
+    document.querySelector(".goog-logo-link").style.display = "none";
+    document.querySelector(".goog-te-banner-frame").style.display = "none";
+    document.getElementById("goog-gt-tt").style.display = "none !important";
+    document.querySelector(".goog-te-gadget").style.color = "white !important";
+    document.querySelector(".skiptranslate").style.display = "none !important";
+
+
+  }, 700);
+}
+
+
+
+
+
+</script>
+<script>
+  function w3_open() {
+    document.getElementById("mySidebar").style.display = "block";
+    isSideBarOpen = true;
+  }
+
+  function w3_close() {
+    document.getElementById("mySidebar").style.display = "none";
+  }
+</script>
+
+
+
+</body>
+</html>

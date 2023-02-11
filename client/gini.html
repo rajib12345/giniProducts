@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Gini</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="static/favicon/marijuana-leaf-green-120-277751.png" type="image/x-icon">
+  <!-- EXTERNAL CSS  FILES -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.css"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="static/css/giniHome.style.css">
+
+  <!-- EXTERNAL JAVASCRIPT FILES  -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script type="text/javascript" src="static/js/shake.js"></script>
+  <script type="text/javascript" src="https://www.google.com/books/jsapi.js"></script>
+
+  <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.js"></script> -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="static/controllers/giniHomeController.js"></script>
+
+  <style>
+
+
+          /* div.scrollmenu a:hover {
+            background-color: #777;
+          } */
+          /* .ellipse{
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+          .ellipse:hover{
+            overflow: visible;
+            color: blue;
+
+          } */
+
+          input:focus::-webkit-input-placeholder {
+              color: black;
+          }
+          .custom-placeholder::-webkit-input-placeholder {
+              color: white;
+           }
+
+
+  </style>
+
+
+</head>
+
+<body class="body-layout">
+
+<div  ng-app="myApp" ng-controller="giniHomeController">
+    <div class="container-fluid" style="">
+        <div class="row chat-container">
+          <div class="col-md-3"></div>
+            <div class="col-md-6 chat-block " class="">
+               <div id="chatContainer" >
+                   <div ng-repeat="chat in chatContainer track by $index" my-repeat-directive>
+                       <div class="chat-layout" >
+                          <div class="" ng-if="chat.input.length > 0 && chat.input !== '' ">
+                             <div class="input" >
+
+                                <div ng-bind-html="chat.input | unsafe">
+
+                                </div>
+                             </div>
+
+                          </div>
+                          <div class="" ng-if="chat.output.length > 0">
+                             <div id="output" class="output" >
+                                 <div ng-bind-html="chat.output | unsafe">
+
+                                 </div>
+                             </div>
+                          </div>
+                       </div>
+
+                   </div>
+                   <div id="emptydiv">
+
+                   </div>
+               </div>
+
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+
+        <div class="query-block" >
+             <div id="hintsBlock" class="row hints-block">
+                <div class="scrollmenu">
+                    <a ng-repeat="txt in helpInfoItems" ng-click="onClickHelpInfoItems(txt)" href="#" class="hints-item">{{txt}}</a>
+                </div>
+             </div>
+             <!-- <div class=" btn-group btn-group-justified ">
+                  <div class="btn-group " style="width:70%;">
+                      <input type="text" class="form-control query"  name="query" id="chatQuery" ng-model="query" ng-keypress='sendMsgByEnter($event, query, "enter")' ng-keydown='onClickBackSpace($event, query)'  placeholder="Type a qery...">
+                  </div>
+
+                   <div class="btn-group " style="width:30%;">
+                     <button type="button" class="btn send-btn"  name="button" ng-click='sendMsgByEnter($event, query, "send")' >
+                       <i class="fa fa-paper-plane send-icon" aria-hidden="true"  ></i>
+                       <img ng-if="showLoader" class="loader-img" src="static/images/blue-loader.gif"  alt="">
+                       <span class="send-btn-txt" >Send</span>
+                     </button>
+                   </div>
+             </div> -->
+             <div class="row query-div-row">
+                 <div class="col-md-9 col-lg-9 col-sm-9 col-xs-9 query-div-pad" id="querySection">
+                   <input type="text" class="query-form-control form-control query "  name="query" id="query" ng-model="query" ng-keypress='sendMsgByEnter($event, query, "enter")' ng-keydown='onClickBackSpace($event, query)'  placeholder="Type a qery...">
+                   <!-- <img class="loader-img" src="static/images/loader.gif"  alt=""> -->
+                   <!-- <img ng-if="showLoader" class="loader-img" src="static/images/blue-loader.gif"  alt=""> -->
+
+                 </div>
+                 <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 send-div-pad" >
+                   <button type="button" class="btn send-btn" name="button" ng-click='sendMsgByEnter($event, query, "send")' >
+                     <i class="fa fa-paper-plane send-icon" aria-hidden="true"  ></i>
+                     <span class="send-btn-txt" >Send</span>
+                     <!-- <i ng-if="showMike" class="fa fa-microphone mike-icon" aria-hidden="true"></i> Send -->
+                     <!-- <i ng-if="!showMike" class="fa fa-paper-plane send-icon" aria-hidden="true" ng-click='sendMsgByEnter($event, query, "send")' ></i> -->
+
+                   </button>
+                 </div>
+             </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- OPEN MODAL FUNCTIONALITY  -->
+
+  <div class="modal" id="URLModal">
+    <div class="modal-dialog" id="modalDialog">
+      <div class="modal-content" id="modalContentBlock" style="width: 432px;">
+
+        <!-- Modal Header -->
+        <div class="modal-header" style="border: none;">
+          <!-- <h4 class="modal-title">Modal Heading</h4> -->
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body" style="padding: 5px;">
+            <iframe id="urlIframe" src="" style="border: none; width: 350px; height: 500px;"></iframe>
+            <div id="modalContent" style="padding-left: 20px; padding-right: 20px;">
+
+            </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer" id="modalFooter" style="border: none;">
+          <center> <button type="button" id="modalCloseBtn" class="btn btn-danger" style="width: 100%;" data-dismiss="modal">Close</button> <center>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!--    BOOKS PREVIEW USING GOOGLE BOOKS PREVIEW WEB APIS  -->
+
+  <div class="modal" id="GOOGLE_BOOKS_PREVIEW">
+    <div class="modal-dialog" stle="margin: auto;">
+      <div class="modal-content" style="width: 430px;">
+
+        <!-- Modal Header -->
+        <div class="modal-header" style="border: none;">
+          <!-- <h4 class="modal-title">Modal Heading</h4> -->
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body" style="padding: 1px;">
+            <div id="viewerCanvas" style="width: auto; height: 600px"></div>
+
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer" style="border: none;">
+          <center> <button type="button" class="btn btn-danger" style="width: 100%;" data-dismiss="modal">Close</button> <center>
+        </div>
+
+      </div>
+    </div>
+  </div>
+ <!--    BOOKS PREVIEW    -->
+
+ <div class="modal" id="URLModal">
+   <div class="modal-dialog">
+     <div class="modal-content" style="width: 345px;">
+
+       <!-- Modal Header -->
+       <div class="modal-header" style="border: none;">
+         <!-- <h4 class="modal-title">Modal Heading</h4> -->
+         <button type="button" class="close" data-dismiss="modal">&times;</button>
+       </div>
+
+       <!-- Modal body -->
+       <div class="modal-body" style="padding: 1px;">
+           <iframe id="urlIframe" src="" style="border: none; width: 100%; height: 500px;"></iframe>
+           <div id="modalContent" style="padding-left:50px;">
+
+           </div>
+       </div>
+
+       <!-- Modal footer -->
+       <div class="modal-footer" style="border: none;">
+         <center> <button type="button" class="btn btn-danger" style="width: 100%;" data-dismiss="modal">Close</button> <center>
+       </div>
+
+     </div>
+   </div>
+ </div>
+
+
+
+ <script type="text/javascript">
+   google.books.load();
+   function initialize() {
+     var viewer = new google.books.DefaultViewer(document.getElementById('viewerCanvas'));
+     viewer.load('ISBN:1449355870');
+
+   }
+   google.books.setOnLoadCallback(initialize);
+ </script>
+</body>
+</html>

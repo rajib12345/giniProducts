@@ -1,0 +1,603 @@
+/*start CSM-18643 @gibs*/
+.mov-input_date::-ms-clear {
+    display: none;
+}
+/*end CSM-18643 @gibs*/
+
+/*start CSM-18553 @gibs*/
+.forceCommunityOmniBox.selfServiceSearchWrapper .search-button span.label {
+    display: none;
+}
+/*end CSM-18553 @gibs*/
+
+/*start CSM-17375 CSM-18542 @gibs @ed*/
+.forceCommunityNavigationMenuItemTriggerLink .triggerLabel {
+    max-width: none !important;
+}
+/*end CSM-17375 CSM-18542 @gibs @ed*/
+
+/*start CSM-15541 @gibs*/
+.mov-button:hover,
+.mov-button:focus,
+.mov-button:active {
+    color: #FF5113 !important;
+}
+/*end CSM-15541 @gibs*/
+
+.loginWrapper.selfServiceProfileMenu {
+    display: none;
+}
+
+form.search-wrapper.has-input {
+    z-index: 10000;
+}
+
+body .slds-button.slds-button--neutral:hover {
+    color: #ff5114;
+}
+
+/* start CSM- @gibs */
+.forceCommunityOmniBox .no-assigned-image .default-bg-overlay { background: #ffffff; }
+.comm-navigation {
+    align-items: center;
+    background-color: #58595b;
+    border-top: none;
+    border-bottom: none;
+    color: #ffffff;
+    min-height: 70px;
+    position: relative;
+    padding: 0px;
+    padding-top: 8px;
+}
+
+.loginWrapper.selfServiceProfileMenu {
+    display:block;
+}
+
+.selfServiceProfileMenu .login .linkLabel {
+    color: #333 !important;
+    text-shadow: none !important;
+    font-weight: bold !important;
+}
+
+.loginWrapper.selfServiceProfileMenu {
+    width: 300px;
+    margin-left: -200px;
+    font-size: 16px;
+}
+
+.loginWrapper.selfServiceProfileMenu {
+    width: 300px;
+    margin-left: -200px;
+    font-size: 16px;
+}
+
+@media only screen and (max-width: 1024px) {
+    .siteforceNapiliBody .cProfileCon div.selfServiceProfileMenu .login {
+        padding-top: 10px;
+    }
+
+    .loginWrapper.selfServiceProfileMenu {
+        width: auto;
+    }
+}
+
+/* end CSM- @gibs */
+
+.result-container {
+    position: absolute;
+    width: 100%;
+}
+
+.profileName {
+    color: #000000;
+    display: inline-block;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+/*
+.selfServiceProfileMenu {
+width: 250px;
+}*/
+.selfServiceProfileMenuTrigger {
+    margin-left: -75px;
+}
+
+.search-field {
+    height: 44px !important;
+    border: 2px solid #323232 !important;
+    border-radius: 30px !important;
+    position: relative !important;
+    padding: 6px 12px 6px 48px !important;
+    box-shadow: none !important;
+    font-size: 17px !important;
+}
+
+.search-field-group.uilabel {
+    display: block;
+}
+.search-button {
+    width: 1px !important;
+    height: 1px !important;
+    display:block;
+}
+
+.comm-navigation .comm-navigation__list > .slds-list__item > button:hover {
+    background: #ff5114 !important;
+    border-radius: 30px !important;
+    transition: 0.5s !important;
+    font-family: Open Sans !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    vertical-align: bottom !important;
+    outline: 0 !important;
+    max-width: 12.37rem !important;
+    text-decoration: none;
+    /*color: #ffffff;*/
+}
+.comm-navigation .comm-navigation__list > .slds-list__item > button:active {
+    background: #ff5114 !important;
+    border-radius: 30px !important;
+    transition: 0.5s !important;
+    font-family: Open Sans !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    vertical-align: bottom !important;
+    outline: 0 !important;
+    max-width: 12.37rem !important;
+    text-decoration: none;
+    color: #ffffff !important
+}
+
+.comm-navigation .comm-navigation__list > .slds-list__item > .slds-is-active .comm-navigation .comm-navigation__list > .slds-list__item > button {
+    background: #ff5114 !important;
+    border-radius: 30px !important;
+    transition: 0.5s !important;
+    font-family: Open Sans !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    vertical-align: bottom !important;
+    outline: 0 !important;
+    max-width: 12.37rem !important;
+    text-decoration: none;
+    color: #ffffff !important
+}
+.comm-navigation .comm-navigation__list > .slds-list__item > button:hover,
+.comm-navigation .comm-navigation__list > .slds-list__item > button:focus,
+.comm-navigation .comm-navigation__list > .slds-list__item > button.triggerLink:hover,
+.comm-navigation .comm-navigation__list > .slds-list__item > button.triggerLink:focus,
+.forceCommunityNavigationMenu .menuItem.current .menuItemLink,
+.forceCommunityNavigationMenu .menuItem.current .menuItemLink.triggerLink {
+    background: #ff5114 !important;
+    border-radius: 30px !important;
+    transition: 0.5s !important;
+    font-family: Open Sans !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    vertical-align: bottom !important;
+    outline: 0 !important;
+    max-width: 12.37rem !important;
+    text-decoration: none;
+    color: #ffffff !important;
+}
+
+.navigationMenuWrapper {
+    /*height: 70px;*/
+    padding: 0;
+}
+
+.navigationMenu .navigationMenuNode {
+    padding: 12px 0;
+}
+
+
+
+
+
+
+.forceCommunityNavigationMenu .navigationMenu > li:first-child {
+    display: none;
+}
+
+.comm-navigation .comm-navigation__item a[data-type="home"]{
+    display: none;
+}
+
+.forceCommunityOmniBox .has-input .search-container {
+    box-shadow: 0 0 0 transparent;
+}
+
+.search-field:focus {
+    border-color: #ff5114 !important;
+}
+
+.navigationMenuNode .menuItem .menuItemLink,
+.navigationMenuNode .menuItem .menuItemLink:hover,
+.forceCommunityNavigationMenu .menuItem.current .menuItemLink,
+.menuItem.uiMenu .menuItemLink {
+    font-family: 'Open Sans';
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    margin-right: 10px;
+    padding: 12px 10px !important;
+    transition: none !important;
+}
+
+.forceTopicFeaturedTopics .topicContent {
+    background-color: grey !important;
+    margin: 0 auto;
+    border-radius: 12px;
+    -webkit-box-shadow: 5px 5px 10px 1px rgba(150,150,150,.3);
+    -moz-box-shadow: 5px 5px 10px 1px rgba(150,150,150,.3);
+    box-shadow: 5px 5px 10px 1px rgba(150,150,150,.3);
+    z-index: 999;
+    padding:10px;
+    width:95% !important;
+    height:95% !important;
+}
+
+.forceTopicFeaturedTopics .topicContent:hover {
+    background-color: rgba(255, 126, 14, 0.5) !important;
+    transition: 0.5s !important;
+    margin: 0 auto;
+    z-index: 999;
+}
+
+.forceTopicFeaturedTopicItem .topicImage {
+    width:95% !important;
+    height:95% !important;
+    border-radius: 12px;
+}
+
+.forceTopicFeaturedTopics .topicLabel {
+    padding-top: 50% !important;
+}
+
+.headlineTitleText {
+    display: block;
+    position: absolute;
+}
+
+.forceCommunityHeadline .headlineTitle {
+    margin-bottom: 15px;
+}
+
+section.forceCommunityHeadline {
+    min-height: 70px;
+}
+/*
+.selfServiceProfileMenu .menuList ul li {
+display: none !important;
+}
+
+.selfServiceProfileMenu .menuList ul li:last-child {
+display: block !important;
+}
+
+.subMenu .subMenuItem a {
+border-radius: 30px;
+background-color:#ff5114;
+margin-top: 5px;
+transition: 1s;
+padding: 10px !important;
+font-size: 12px !important;
+color: white !important;
+font-weight: bold !important;
+}
+
+.subMenu .subMenuItem a:hover,
+.subMenu .subMenuItem a:focus,
+.subMenuItem.current a[aria-disabled=false] {
+background-color:#d54003 !important;
+border-radius: 30px !important;
+}
+
+.forceCommunityNavigationMenu .subMenu.uiMenuList {
+box-shadow: 0 0 0 !important;
+background-color: transparent;
+}*/
+
+.subMenu > ul > li.subMenuItem a {
+    background-color: #58595b;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 15px !important;
+}
+
+.subMenu.popupTargetContainer {
+    margin-top: 12px;
+}
+
+.userSettings.uiMenuItem,
+.myAccount.uiMenuItem,
+.contactSupport.uiMenuItem {
+	display: none;
+}
+
+.subMenuItem a:hover,
+.subMenuItem a[aria-disabled=false]:focus,
+.subMenuItem.current a[aria-disabled=false]{
+    background-color: #ff5114 !important;
+}
+
+.forceCommunityHeadline .headlineInfo,
+.changeRecordTypeLink,
+.forceCommunityHeadline .headlineIcon.forceIcon .slds-icon {
+    display:none !important;
+}
+
+.selfServiceTopicTrendingArticles,
+.selfServiceSimilarArticles {
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: .25rem;
+    border: 1px solid transparent;
+    -webkit-box-shadow: 0px 0px 20px 1px rgba(150,150,150,.2);
+    -moz-box-shadow: 0px 0px 20px 1px rgba(150,150,150,.2);
+    box-shadow: 0px 0px 20px 1px rgba(150,150,150,.2);
+}
+
+.selfServiceTopicTrendingArticles .base-items-header,
+.selfServiceSimilarArticles .base-items-header {
+    font-size: 21px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ff5114;
+    font-weight: 600;
+}
+
+.selfServiceArticleLayout {
+    background-color: #ffffff;
+    padding: 0 2rem;
+    border-radius: .25rem;
+    border: 1px solid transparent;
+    -webkit-box-shadow: 0 0 20px 1px rgba(150,150,150,.2);
+    -moz-box-shadow: 0 0 20px 1px rgba(150,150,150,.2);
+    box-shadow: 0 0 20px 1px rgba(150,150,150,.2);
+}
+
+.selfServiceArticleListItem .footer {
+    background: white;
+    height: 5px !important;
+    min-height: 5px;
+    padding: 0 20px;
+}
+
+.selfServiceArticleListItem .article-link {
+    padding: 0 20px;
+}
+
+.topicRelatedArticleList {
+    background-color: #ffffff;
+    border-radius: .25rem;
+    border: none;
+    -webkit-box-shadow: 0px 0px 20px 1px rgba(150,150,150,.2);
+    -moz-box-shadow: 0px 0px 20px 1px rgba(150,150,150,.2);
+    box-shadow: 0px 0px 20px 1px rgba(150,150,150,.2);
+}
+
+.article-item .footer > span:nth-child(odd) {
+    border-right: 1px solid #929292;
+    color: #929292;
+    font-size: 12px !important;
+    padding: 0 8px;
+}
+
+.article-item .footer > span:last-child {
+    border-right: none;
+}
+
+.article-item .footer > span.dot {
+    display: none;
+}
+
+.headlineTitleText {
+    font-weight: 600;
+}
+
+h1.article-head, .selfServiceArticleHeaderDetail {
+    /*color: #ff5114 !important;*/
+    font-size: 20px !important;
+    margin-bottom: 12px;
+}
+
+.article-link h1.article-head, .article-link .selfServiceArticleHeaderDetail {
+    color: #ff5114 !important;
+}
+
+.selfServiceArticleHeaderDetail > span {
+    font-size: 12px;
+    color: #929292;
+}
+
+h1.article-head.selfServiceArticleHeaderDetail {
+    margin-bottom: 0 !important;
+}
+
+h1.article-head.selfServiceArticleHeaderDetail + p {
+    margin: 0;
+}
+
+.upload-photo img {
+    border-radius: 25rem !important;
+}
+
+a:focus {
+    box-shadow: 0 0 0 0 #fc4c04 !important;
+}
+
+.selfServiceBaseSimpleItem .item-title-link:focus {
+    border-radius: 0;
+}
+
+.listContent ul.base-items li:last-child > *,
+.listContent ul.base-items li:last-child {
+    border-bottom: 0;
+}
+
+.listContent ul.base-items li > * {
+    border-bottom: 1px solid #ededed;
+}
+
+.selfServiceBaseSimpleItems .base-simple-item {
+    border-bottom: none;
+}
+
+.listContent ul.base-items li .viewCount {
+    font-weight: normal;
+}
+
+.viewCount svg.slds-icon.slds-icon--small.slds-icon {
+    width: 15px;
+}
+
+.listContent .base-items .item-title-link {
+    color: #323232;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.selfServiceBaseSimpleItems .base-simple-item {
+    border-bottom: 0;
+}
+
+.forceCommunityNavigationMenu .subMenu.uiMenuList {
+    z-index: 1000 !important;
+}
+
+.selfServiceProfileMenuTrigger a {
+    text-shadow: 0 0 1px transparent !important;
+}
+
+/*====*/
+.slds-icon-waffle_container{display: none !important;}
+
+/*====*/
+@media screen and (max-width: 767px) {
+    .forceCommunityOmniBox.focused .body-search {
+        width: 75%;
+        margin-top: 12px;
+        margin-left: -10px;
+        background-color: transparent;
+    }
+
+    .forceCommunityOmniBox.focused .close-button.uiButton {
+        height: 40px;
+        margin-top: 2px;
+        border-radius: 0 20px 20px 0;
+        margin-right: 2px;
+        border-left-color: rgba(80,80,80,.7);
+    }
+
+    .forceCommunityNavigationMenu .menuItemLink:hover,
+    .forceCommunityNavigationMenu .menuItemLink:focus,
+    .forceCommunityNavigationMenu .menuItemLink.triggerLink:hover,
+    .forceCommunityNavigationMenu .menuItemLink.triggerLink:focus,
+    .forceCommunityNavigationMenu .menuItem.current .menuItemLink,
+    .forceCommunityNavigationMenu .menuItem.current .menuItemLink.triggerLink
+    {
+        border-radius: 0 !important;
+        max-width: 100% !important;
+        margin-right: 0;
+    }
+
+    .navigationMenu .navigationMenuNode {
+        padding: 0;
+    }
+
+    .subMenu.popupTargetContainer {
+        margin: 0;
+    }
+
+    span.slds-icon_container.slds-icon-utility-search.search-button-icon.slds-button__icon.forceIcon {
+        margin-left: 20px;
+        margin-top: 7px;
+    }
+
+    .selfServiceProfileMenu .menuList {
+        left: 0;
+        width: 120px;
+    }
+
+    .body-search {
+            z-index: 1000 !important;
+    }
+}
+
+.itemTitle mark {
+    background-color: inherit;
+    color: inherit;
+}
+
+.kbResultStencil .slds-tile .slds-tile__detail + .resultBody mark {
+    background-color: inherit;
+}
+
+.resultBody {
+    color: #333;
+}
+
+/* START CSM-17257 EEisma 02/19/2018 */
+.selfServiceSearchWrapper .search-field {
+    opacity: 1 !important;
+}
+/* END CSM-17257 EEisma 02/19/2018 */
+
+/* START CSMCW-167 Fix magnifying glass icon issue EEisma 07/04/2018 */
+span.search-input-group svg {
+display: none !important;
+}
+/* END CSMCW-167 Fix magnifying glass icon issue EEisma 07/04/2018 */
+
+/* START CSMCW-212 CCapagas 8/03/2018 */
+.slds-truncate {
+    color: #ff5113 !important;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.forceTopicSubTopicNavigation .topic-subNavContainer  {
+    color: black !important;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 50px !important;
+    text-align: left !important;
+}
+.forceTopicSubTopicNavigation .topic-subNavList.topic-nowrap a{
+    color: #ff5113 !important;
+    font-size: 20px;
+    font-weight: bold;
+}
+.forceTopicSubTopicNavigation .topic-subTopicItem:not(.topic-last):after {
+            color: black;
+            font-size: 1.2rem;
+}
+/* END CSMCW-212 CCapagas 8/03/2018 */
+/* START CG Release 3.3 RDefeo 02/12/2019 - Removed Title and URL */
+.slds-grid.slds-gutters_small.full.cols-1.forcePageBlockSectionRow:nth-of-type(1){
+    display : none;
+}
+.slds-grid.slds-gutters_small.full.cols-1.forcePageBlockSectionRow:nth-of-type(2){
+    display : none;
+}
+.slds-grid:nth-child(3) .slds-form-element__label{
+    display : none;
+}
+/* END CG Release 3.3 RDefeo 02/12/2019 - Removed Title and URL */

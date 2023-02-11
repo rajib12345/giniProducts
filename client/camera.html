@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>new article test </title>
+    <link rel="icon" href="static/favicon/marijuana-leaf-green-120-277751.png" type="image/x-icon">
+    <!-- EXTERNAL CSS  FILES -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="static/css/gini-experiment.css">
+
+    <!-- EXTERNAL JAVASCRIPT FILES  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script type="text/javascript" src="static/js/shake.js"></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tracking.js/1.1.3/tracking-min.js"></script> -->
+    <!-- <script src="static/js/tracking/build/tracking.js"></script> -->
+
+    <script src="/socket.io/socket.io.js"></script>
+
+  </head>
+  <body>
+
+    <div class="" style="text-align: center;">
+        <!-- <h1>SELFIE TESTING</h1> -->
+    </div>
+    <div class="" style="margin-left: 5rem;">
+      <video id="videoTag"  controls style=""></video>
+      <br>
+      <canvas id="canvasTag"  style="display:none; height: 200px; width:200px;" ></canvas>
+      <br>
+      <img src="" id="selfie" alt="" style="">
+    </div>
+
+    <hr>
+
+    <br>
+    <!-- <video src="" id="selfie" alt=""> -->
+    <div class="" style="">
+      <button type="button" class="btn btn-primary" name="button" style=" padding:60px; padding-right: 100px; padding-left:100px; float:left; font-size: 60px;" onclick="test()">Take Selfie</button>
+      <a download="selfie.png" href="#" id="selfieBtn" style="display:block; background-color: #337ab7; border-color: #337ab7; color: white; padding:60px; padding-right: 100px; padding-left:100px; margin-right: -40rem; float:right; font-size: 60px;"  >Save Selfie</a> <br><br>
+
+    </div>
+    <hr>
+    <div>
+      <p id="rgbColorTest">THIS IS VIRTUAL REALITY TESTING</p>
+    </div>
+
+
+
+
+    <!-- <form action="/uploads" method="post" enctype="multipart/form-data" >
+      Select a file: <input type="file" name="avatar" ><br><br>
+      <input type="submit">
+    </form> -->
+
+    <div class="" id="test">
+
+    </div>
+
+    <script type="text/javascript">
+        var client = io();
+        console.log("client :: ", client);
+        client.emit("test", {data : "testing..."})
+        //listen to shake event
+
+        //check if shake is supported or not.
+        if(!("ondevicemotion" in window)){alert("Not Supported");}
+
+        const media = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+        const mediaOption = {audio : false, video: {height: 1280, width:720}, facingMode: "environment"};
+        const webURL = window.URL || window.webkitURL;
+        // navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+        var videoConstraints = {};
+        var constraints = {};
+        videoConstraints.width = {min: 640, ideal: 1280, max: 1920};
+        videoConstraints.height  = {min: 720, ideal: 1280, max: 1920}
+        var shakeEvent = new Shake({threshold: 15});
+        var isShaked = false;
+        shakeEvent.start();
+        window.addEventListener('shake', function(){
+            isShaked = !isShaked;
+            if(isShaked){
+                // alert("shaked");
+                console.log("isshaked : ", isShaked);
+                videoConstraints.facingMode = "user";
+                constraints = {
+                   video: videoConstraints,
+                   audio: false
+                };
+                playCamera();
+            }else{
+                constraints = {
+                   video: videoConstraints,
+                   audio: false
+                };
+                videoConstraints.facingMode = "environment";
+                playCamera();
+            }
+//            videoConstraints.facingMode = "environment";
+        }, false);
+
+        //stop listening
+        function stopShake(){
+            shakeEvent.stop();
+        }
+
+
+        constraints = {
+           video: videoConstraints,
+           audio: false
+        };
+        videoConstraints.facingMode = "environment";
+
+        function playCamera(){
+          console.log("===== caling play camera fun =====");
+          console.log("constraints :: ", constraints);
+          if(media){
+              navigator.getUserMedia(constraints,
+                function(stream){
+                  // var videoUrl = window.URL.createObjectURL(stream);
+
+                  let videoTag = document.getElementById("videoTag");
+                  videoTag.srcObject = stream;
+                  videoTag.play();
+                }, function(error){
+                  console.log("%c error occured while accessing webcam.", 'color: red;');
+                });
+          }else{
+              console.log("get user media not supported in this browser.");
+          }
+        }
+        playCamera();
+        setTimeout(function(){
+            test();
+        }, 5000);
+        function test(){
+          console.log("%c click fun is calling.", 'color: red;');
+          let canvas = document.querySelector('canvas');
+          let videoTag = document.getElementById("videoTag");
+          let selfie = document.getElementById("selfie");
+          let selfieBtn = document.getElementById("selfieBtn");
+
+          let canvasWidth = videoTag.videoWidth;
+          let canvasHeight = videoTag.videoHeight;
+          console.log("video width :: ", canvasWidth);
+          console.log("video height :: ", canvasHeight);
+
+          let context = canvas.getContext("2d");
+          //=========================================================================================
+          var rgbColor = "";
+          var imgData = context.getImageData(0,0, 200, 200);
+           console.log("@@@@@@  imgData length @@@@@@\n", imgData.data.length);
+          //invert colors
+          let imgDataHalfLength = imgData.data.length/2;
+          console.log("!!! imgDataHalfLength :: ", imgDataHalfLength);
+          for (let i = 0; i < imgData.data.length; i += 4) {
+
+
+            // imgData.data[i] = 255 - imgData.data[i];
+            // imgData.data[i+1] = 255 - imgData.data[i+1];
+            // imgData.data[i+2] = 255 - imgData.data[i+2];
+            // imgData.data[i+3] = 255;
+            //if(i === 100){
+              // console.log("image data : [i+1]", imgData.data[i]);
+              // console.log("image data : [i+1]", imgData.data[i+1]);
+              // console.log("image data : [i+1]", imgData.data[i+2]);
+
+
+              // if( i === imgDataHalfLength ){
+              //     rgbColor = "rgb(";
+              //     rgbColor += imgData.data[i] + ', ';
+              //     rgbColor += imgData.data[i+1] + ', ';
+              //     rgbColor += imgData.data[i+2];
+              //     rgbColor += ')';
+              //     console.log("#### rgbColor :: ", rgbColor);
+              // }
+
+              // document.getElementById("rgbColorTest").style.backgroundColor = rgbColor;
+
+
+            //}
+          }
+          document.body.style.backgroundColor = rgbColor;
+
+
+          //=========================================================================================
+          canvas.style.width = canvasWidth;
+          canvas.style.height = canvasHeight;
+          canvas.setAttribute("width", canvasWidth);
+          canvas.setAttribute("height", canvasHeight);
+
+          context.drawImage(videoTag, 0, 0, canvasWidth, canvasHeight );
+          // let capturedImage  = canvas.toDataURL('image/png');
+
+          var imageDataURL = canvas.toDataURL('image/png');
+          // console.log("=============== imageDataURL ===============\n", imageDataURL);
+
+          document.querySelector('#selfieBtn').href = imageDataURL;
+
+          // console.log("%c captured image data : ", canvas.toDataURL('image/png'));
+          selfie.setAttribute("src", imageDataURL);
+          selfieBtn.setAttribute("href", imageDataURL);
+
+
+          // console.log("selfie source :: ", selfie.src);
+          // client.emit("send-image-data", {imgData : imageDataURL})
+        }
+
+
+
+
+    </script>
+
+    <script>
+
+    </script>
+  <script type="text/javascript">
+
+
+  </script>
+  </body>
+</html>

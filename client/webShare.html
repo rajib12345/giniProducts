@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        div.scrollmenu {
+          /* background-color: #333; */
+          overflow: auto;
+          white-space: nowrap;
+        }
+
+        div.scrollmenu a {
+          display: inline-block;
+          color: white;
+          /* text-align: center; */
+          /* padding: 14px; */
+          text-decoration: none;
+        }
+
+        /* div.scrollmenu a:hover {
+          background-color: #777;
+        } */
+        /* .ellipse{
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        .ellipse:hover{
+          overflow: visible;
+          color: blue;
+
+        } */
+    .ellipse {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: relative;
+      /* line-height: 1rem; */
+      pointer-events:none;
+    }
+
+    .ellipse:after {
+      content:"";
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 48px;
+      height: 48px;
+      z-index: 1;
+      pointer-events:initial;
+    }
+
+    .ellipse:hover:after{
+      cursor: pointer;
+      visibility: visible;
+    }
+
+    .tooltip {
+      width: 45%;
+      visibility: hidden;
+      background-color: teal;
+      border: 2px solid white;
+      color: white;
+      padding: 5px;
+      -webkit-box-shadow: 0 0 50px 0 rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+
+    .ellipse:hover + .tooltip {
+      visibility: visible;
+      transition: opacity 0.5s ease;
+      opacity: 1;
+    }
+
+    </style>
+    <script>
+      var client = io();
+    </script>
+
+  </head>
+  <body ng-app="webShareApi" ng-controller="webShareApiController">
+      <h1 style="text-align: center;">Web Share Api</h1>
+      <hr>
+      <div class="" id="share">
+
+      </div>
+
+
+
+      <script type="text/javascript">
+        var app = angular.module('webShareApi', []);
+        var modalState = null;
+        app.controller('webShareApiController', function($scope){
+
+          client.emit("fetch-web-share-btn-request", {});
+
+
+
+          client.on("fetch-web-share-btn-response", function(data){
+              let template = data.template;
+              document.getElementById("share").innerHTML = data.template;
+          });
+
+          window.webShare = function(){
+              console.log("=== calling web share function ===");
+              if(navigator.share){
+                  console.log("==== supported web share ====");
+                  navigator.share({
+                    title : 'Testing web share',
+                    text : '<div style="color: teal; height: 200px; width: 200px; text-align: center;">Web share testing...</div>',
+                    url : 'https:gini-assistant.herokuapp.com'
+                  }).then((data) => {
+                      console.log("thanks for sharingthe data.");
+                      console.log("data : ", data);
+                  })
+                  .catch((err) => {
+                      console.log("error occured when we are sharing the post.");
+                  })
+              }
+          }
+
+        });
+      </script>
+
+
+
+  </body>
+</html>

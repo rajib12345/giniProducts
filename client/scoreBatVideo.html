@@ -1,0 +1,252 @@
+<!DOCTYPE html><html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        div.scrollmenu {
+          /* background-color: #333; */
+          overflow: auto;
+          white-space: nowrap;
+        }
+
+        div.scrollmenu a {
+          display: inline-block;
+          color: white;
+          /* text-align: center; */
+          /* padding: 14px; */
+          text-decoration: none;
+        }
+
+        .ellipse {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          position: relative;
+          /* line-height: 1rem; */
+          pointer-events:none;
+        }
+
+        .ellipse:after {
+          content:"";
+          display: block;
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 48px;
+          height: 48px;
+          z-index: 1;
+          pointer-events:initial;
+        }
+
+        .ellipse:hover:after{
+          cursor: pointer;
+          visibility: visible;
+        }
+
+        .tooltip {
+          width: 45%;
+          visibility: hidden;
+          background-color: teal;
+          border: 2px solid white;
+          color: white;
+          padding: 5px;
+          -webkit-box-shadow: 0 0 50px 0 rgba(0,0,0,0.3);
+          opacity: 0;
+          transition: opacity 0.5s ease;
+        }
+
+        .ellipse:hover + .tooltip {
+          visibility: visible;
+          transition: opacity 0.5s ease;
+          opacity: 1;
+        }
+
+        ::-webkit-scrollbar {
+          width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+          /* background: #e9ebee; */
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          /* background: #e9ebee; */
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: #e9ebee;
+        }
+
+        /*  */
+        .WidgetFt{
+          display: none !important;
+        }
+
+    </style>
+
+    <script>
+      var client = io();
+    </script>
+
+  </head>
+  <body ng-app="booksApi" ng-controller="scoreBatApiController">
+      <h1 style="text-align: center;">SCORE VIDEO</h1>
+      <hr>
+      <center>
+          <p>score ighlight video</p>
+      </center>
+      <div id="scoreBatVideo" class="container-fluid scrollmenu">
+
+      </div>
+      <hr>
+      <!-- <center><p>sciece fictionn books are here</p></center>
+      <div id="booksBySubject" class="container-fluid scrollmenu">
+
+      </div>
+      <hr>
+      <center><p>books search by name amgularjs</p></center>
+      <div id="booksByName" class="container-fluid scrollmenu">
+
+      </div> -->
+
+
+       <!--    BOOKS PREVIEW USING GOOGLE BOOKS PREVIEW WEB APIS  -->
+
+       <div class="modal" id="GOOGLE_BOOKS_PREVIEW">
+         <div class="modal-dialog">
+           <div class="modal-content" style="width: 345px;">
+
+             <!-- Modal Header -->
+             <div class="modal-header" style="border: none;">
+               <!-- <h4 class="modal-title">Modal Heading</h4> -->
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+             </div>
+
+             <!-- Modal body -->
+             <div class="modal-body" style="padding: 1px;">
+                 <div id="viewerCanvas" style="width: a; height: 500px"></div>
+
+             </div>
+
+             <!-- Modal footer -->
+             <div class="modal-footer" style="border: none;">
+               <center> <button type="button" class="btn btn-danger" style="width: 100%;" data-dismiss="modal">Close</button> <center>
+             </div>
+
+           </div>
+         </div>
+       </div>
+      <!--    BOOKS PREVIEW    -->
+
+      <div class="modal" id="URLModal">
+        <div class="modal-dialog" stle="margin: 3px !important;">
+          <div class="modal-content" style="width: 365px;">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="border: none;">
+              <!-- <h4 class="modal-title">Modal Heading</h4> -->
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" style="padding: 1px;">
+                <iframe id="urlIframe" src="" style="border: none; width: 100%; height: 500px;"></iframe>
+                <div id="modalContent" style="padding-left:50px;">
+
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer" style="border: none;">
+              <center> <button type="button" class="btn btn-danger" style="width: 100%;" data-dismiss="modal">Close</button> <center>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+        var app = angular.module('booksApi', []);
+        app.controller('scoreBatApiController', function($scope){
+
+        client.emit("request-score-highlight-video", {from: 'Api'})
+
+        client.on("response-score-highlight-video", (data) => {
+          console.log("=== score bat highlight video response ===");
+          document.getElementById("scoreBatVideo").innerHTML = data.returnMsg;
+        })
+
+        // client.emit("request-books-by-subject", {from: 'Api'})
+        //
+        // client.on("response-books-by-subject", (data) => {
+        //   console.log("=== books by subject response ===");
+        //   document.getElementById("booksBySubject").innerHTML = data.returnMsg;
+        // })
+        //
+        // client.emit("request-search-books-by-name", {from: 'Api'});
+        //
+        // client.on("response-search-books-by-name", (data) => {
+        //     console.log("==== request-books-by-name ====");
+        //     // console.log("data.returnmsg :: ", data.returnMsg);
+        //     document.getElementById("booksByName").innerHTML = data.returnMsg;
+        // })
+
+
+        window.getProductsById = function(id, api){
+           console.log("call get products by id : ", id);
+           console.log("call get products by api : ", api);
+           client.emit("find-products-by-id-request", {id : id , api: api, from: 'Api'})
+        }
+
+        window.getScoreBatPreview = function(id, api){
+            console.log("===============================");
+            console.log("call get products by id : ", id);
+            console.log("call get products by api : ", api);
+            // let booksPreviewUrl = "https://archive.org/details/"+id+"/page/n1";
+            document.getElementById("urlIframe").src = '';
+            document.getElementById("urlIframe").src = id;
+            $("#URLModal").modal();
+        }
+
+
+
+        window.onOpenModal = function(url, type, api){
+            console.log("==== call open modal function ====");
+            console.log("== href value :: ", url);
+            console.log("== type value :: ", type);
+            console.log("== api name : ", api);
+
+            if(type !== undefined && type !== null && type === 'newWindow'){
+              window.open(url);
+            }else if(type !== undefined && type !== null && type === 'openModalWithContent'){
+              modalState = type;
+              client.emit("open-modal-with-content-request", {url : url, api: api});
+            }else if(type === "here map"){
+               client.emit("here-map-api-request", {from : 'gini', placesCategory : url});
+            }else{
+              document.getElementById("urlIframe").src = url;
+              $("#URLModal").modal();
+            }
+
+        }
+
+
+
+        });
+      </script>
+
+
+
+  </body>
+</html>

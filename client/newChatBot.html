@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<title>GINI</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="icon" type="image/png" href="static/images/pwc.png"> -->
+  <!-- EXTERNAL CSS  FILES -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="static/css/giniHome.style.css">
+
+  <!-- EXTERNAL JAVASCRIPT FILES  -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="static/controllers/giniHomeController.js"></script>
+
+<style>
+
+</style>
+<body>
+
+<div ng-app="myApp" ng-controller="giniHomeController" >
+
+    <!--  CHAT NAVIGATION BAR -->
+      <!-- <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">Gini</a>
+            </div>
+            <ul class="nav navbar-nav">
+              <li class="active" onloadeddata="" ng-click="openChatOptions('ChatBot')"><a href="#">Home</a></li>
+              <li ng-click="openChatOptions('LiveChat')"><a href="#">LIVE CHAT</a></li>
+              <li ng-click="openChatOptions('ChatRoom')"><a href="#">CHAT ROOM</a></li>
+            </ul>
+          </div>
+      </nav> -->
+
+    <!-- CHAT CONTAINER -->
+    <div   ng-if="ChatRoomHome" class="container-fluid" style="" ng-cloak>
+	      <!-- <div class="col-md-3"></div> -->
+        <!-- data-ng-init="calculateHeight()" -->
+          <div class="row">
+            <div id="chatRoom" class="col-md-12 col-xs-12 col-sm-12 col-lg-12" style="">
+             <div id="chatContainer" class="chatContainer" style=" " my-main-directive>
+                 <div ng-repeat="chat in chatContainer track by $index" my-repeat-directive>
+                     <div style="margin-top : 10px;">
+                        <div class="" ng-if="chat.input.length > 0 && chat.input !== '' ">
+                           <div class="input" style="">
+
+                              <div ng-bind-html="chat.input | unsafe">
+
+                              </div>
+                           </div>
+
+                        </div>
+                        <div class="output" ng-if="chat.output.length > 0">
+                           <div  class="" style="">
+                               <div ng-bind-html="chat.output | unsafe">
+
+                               </div>
+                           </div>
+
+                        </div>
+                     </div>
+
+                 </div>
+
+                 <!-- RESET CHAT CONTAINER -->
+                 <!-- <div class="" style="position: fixed; right:8px; top:407px; color: #a32020;" ng-click="resetChat()">Reset Chat</div> -->
+
+
+             </div>
+             <!-- TYPE QUERY SECTION  -->
+             <div class="send-query-container">
+                 <!-- <div class="loader-section" ng-if="showLoader">
+                      <img class="loader-img" src="static/images/loader.gif" style="" alt="">
+                 </div> -->
+                 <!-- <div class="loader-section" >
+                      <img class="loader-img" src="static/images/loader.gif" style="" alt="">
+                 </div> -->
+                 <div class="send-query-section" style="">
+                      <div class="row send-query-section-row" style="">
+                          <div class="col-md-11 col-lg-10 col-sm-10 col-xs-10 send-query-section-row-pd-rt" style="">
+                            <input type="text" class="form-control query" id="botQuery" ng-model="query" ng-keypress='sendMsgByEnter($event, query, "enter")' ng-keydown='onKeyDown($event, query)' style="" placeholder="Type a query">
+                            <img ng-if="showLoader" class="loader-img" src="static/images/loader.gif" style="" alt="">
+                          </div>
+                          <div class="col-md-1 col-lg-2 col-sm-2 col-xs-2" style="">
+                            <div class="mike-send-layout" style=" ">
+	                               <i class="fa fa-paper-plane send-icon" aria-hidden="true" ng-click='sendMsgByEnter($event, query, "send")' style=""></i>
+                                 <!-- <i ng-if="showMike" class="fa fa-microphone mike-icon" aria-hidden="true" style=""></i> -->
+                            </div>
+
+                            <!-- <i class="fa fa-paper-plane" aria-hidden="true" ng-click='sendMsgByEnter($event, query, "send")' style="transform: rotate(62deg); color: blue; font-size: 25px; margin-top: 5px; margin-left: 0px;"></i> -->
+                          </div>
+                      </div>
+
+
+                          <!-- <div class="input-group-btn">
+                             <button class="btn btn-default" ng-click='sendMsgByEnter($event, query, "send")'>
+                                <i class="fa fa-paper-plane" aria-hidden="true" style="transform: rotate(55deg); color: blue; font-size:17px;"></i>
+                             </button>
+                          </div> -->
+                 </div>
+             </div>
+            </div>
+          </div>
+
+    </div>
+
+
+    <!-- LIVE CHAT CONTAINER -->
+    <!-- <div ng-if="liveChatRoom" class="" ng-cloak>
+        live chat go here...
+    </div> -->
+    <!-- - -->
+
+    <!-- LIVE CHAT CONTAINER -->
+    <!-- <div ng-if="groupChatRoom" class="" ng-cloak>
+        chat room go here...
+    </div> -->
+    <!-- - -->
+
+</div>
+
+<script type="text/javascript">
+  $('#chatContainer').mCustomScrollbar({
+        theme:"dark-3"
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://cdn.cloudmersive.com/js/email-validate-widget.js?4a95cd2a-efdc-4dd1-a4b8-d4ca27bd90fe" type="text/javascript"></script>
+    <script type="text/javascript" src="https://www.footballwidgets.com/js/widgets.js" async="async"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+
+    </style>
+    <script>
+
+    </script>
+  </head>
+  <body>
+    <!-- <div class="main-content" ng-app="quizApi" ng-controller="quizApiController"> -->
+
+    <div class="main-content" >
+      <!-- THIS CODE IS FOR EMAIL VERIFICATION  -->
+      <!-- <input class="cloudmersiveEmailValidator" type="text" name="MyEmailField" id="MyEmail" /> -->
+
+      <div class="container-fluid">
+            <center><h3>Soccer Widget Maker</h3></center>
+
+            <hr>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="sel1">Select Country</label>
+                  <select class="form-control" id="country" onchange="onChangeCountry()">
+                    <option value="" >Select country</option>
+                    <option value="England" >England</option>
+                    <option value="Spain">Spain</option>
+                    <option value="Italy" >Italy</option>
+                    <option value="France">France</option>
+                    <option value="Germany" >Germany</option>
+                    <option value="Argentina">Argentina</option>
+                    <option value="Brazil">Brazil</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="sel1">Select Ligue</label>
+                  <div class="" id="ligueOptions">
+
+                  </div>
+                </div>
+              </div>
+              <hr>
+
+            </div>
+
+            <hr>
+
+            <div id="ligueTable" class="" style="display: none;">
+                <div class="tlds_widget" data-widget="table" data-theme="dark" data-comp="82"></div>
+                <div class="tlds_widget" data-widget="table" data-theme="default" data-comp="82"></div>
+
+
+            </div>
+
+      </div>
+    </div>
+
+      <!-- <script>
+
+          var app = angular.module('quizApi', []);
+          app.controller('quizApiController', function($scope){
+            var socket = io();
+
+          });
+
+
+
+      </script> -->
+
+        <script>
+            var dataCompCombinations = {
+              "england:Championship": 82,
+              "england:PremierLeague": 4,
+              "Spain:LaLiga": 68,
+              "Spain:LaLiga2": 104,
+              "Italy:SeriesA": 19,
+              "Italy:SeriesB": 84,
+              "France:Ligue1": 61,
+              "France:Ligue2": 88,
+              "Germany:Bundesliga1": 1,
+              "Germany:Bundesliga1": 24,
+              "Germany:3rdLiga": 513,
+              "argentina:Superliga": 667,
+              "Brazil:SerieA": 133,
+              "Brazil:SerieB": 136,
+          }
+
+          var countryWiseCompetition = {
+              "England" : ["Premier League", "Championship"],
+              "Spain" : ["LaLiga", "LaLiga2"],
+              "Italy" : ["Series A", "Series B"],
+              "France" : ["Ligue 1", "Ligue 2"],
+              "Germany" : ["Bundesliga 1", "Bundesliga 2", "3rd Liga"],
+              "Argentina" : ["Superliga"],
+              "Brazil" : ["Serie A", "Serie B"],
+          }
+
+          document.getElementById("ligueOptions").innerHTML = getLigueOptionsTemplate(countryWiseCompetition["England"]);
+          let soccerUrl = 'https://www.footballwidgets.com/table.asp';
+          function getLigueOptionsTemplate(options){
+              console.log("== call getLigueOptionsTemplate fun ===");
+              let optionTemplate = '<select class="form-control" id="ligue" onchange="onChangeLigue()">';
+              optionTemplate += '<option value="Select">select item</option>';
+              for (let i = 0; i < options.length; i++) {
+                  optionTemplate += '<option value="'+options[i]+'">'+options[i]+'</option>';
+              }
+              optionTemplate += '</select>';
+
+              return optionTemplate;
+          }
+
+          function getLigueTableWidgetTemplate(options){
+              console.log("== call getLigueTableWidgetTemplate fun ===");
+              let template = '';
+              let country = document.getElementById("country").value;
+              let ligue = document.getElementById("ligue").value;
+              let dataCompCombinationStr = country+':'+ligue;
+              let dataCompValue = dataCompCombinations[dataCompCombinationStr];
+              console.log("== selected data comp value : ", dataCompValue);
+
+              // template += '<div class="tlds_widget" data-widget="table" data-theme="default" data-comp="'+dataCompValue+'"></div>';
+              template += '<div class="tlds_widget" data-widget="table" data-theme="default" data-comp="4"></div>';
+
+              console.log("@@ template : ", template);
+              return template;
+
+          }
+
+          function onChangeCountry() {
+            console.log("===== call onchangeCountry function  ======");
+              var x = document.getElementById("country").value;
+              console.log("== selected country : ", x);
+              var ligues = countryWiseCompetition[x];
+              console.log("selected country ligue is : ", ligues);
+              document.getElementById("ligueOptions").innerHTML = getLigueOptionsTemplate(ligues);
+
+          }
+
+
+
+          function onChangeLigue() {
+            console.log("===== call onChangeLigue function  ======");
+              var y = document.getElementById("ligue").value;
+              console.log("== ligue value : ", y);
+              document.getElementById("ligueTable").style.display = "block";
+              // document.getElementById("ligueTable").innerHTML = getLigueTableWidgetTemplate();
+
+          }
+        </script>
+
+
+
+
+  </body>
+</html>

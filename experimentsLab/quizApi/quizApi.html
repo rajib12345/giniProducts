@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://cdn.cloudmersive.com/js/email-validate-widget.js?4a95cd2a-efdc-4dd1-a4b8-d4ca27bd90fe" type="text/javascript"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+      div.scrollmenu {
+        /* background-color: #333; */
+        overflow: auto;
+        white-space: nowrap;
+      }
+
+      div.scrollmenu a {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        /* padding: 14px; */
+        text-decoration: none;
+      }
+
+      div.scrollmenu a:hover {
+        /* background-color: #777; */
+      }
+      .btn{
+        /* background-color: white; */
+      }
+      .one-line-ellipse-hscroll-bar{
+        white-space: nowrap;
+        /* width: auto; */
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+</style>
+    <script>
+
+    </script>
+  </head>
+  <body>
+
+    <div class="main-content" ng-app="quizApi" ng-controller="quizApiController">
+      <!-- THIS CODE IS FOR EMAIL VERIFICATION  -->
+      <!-- <input class="cloudmersiveEmailValidator" type="text" name="MyEmailField" id="MyEmail" /> -->
+
+      <div class="container-fluid">
+            <center><h3>Quiz api preview</h3></center>
+            <div class="row">
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                <div id="quizTemplate" class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+            </div>
+
+      </div>
+    </div>
+
+      <script>
+
+          var app = angular.module('quizApi', []);
+          app.controller('quizApiController', function($scope){
+            var socket = io();
+            var quizCorrectAnswers = [];
+            var quizUserCorrectAnswers = [];
+            socket.emit("fetch-quiz-api", {});
+
+            socket.on("quiz-api-template", function(data){
+                // console.log("quiz response template :: ", data.template);
+                document.getElementById("quizTemplate").innerHTML = data.template;
+                quizCorrectAnswers = data.quizCorrectAnswers;
+                console.log("quiz correct answers : ", quizCorrectAnswers);
+            })
+
+            var blockIdRefrence = null;
+            window.onClickBlock = function(blockData, blockId){
+                console.log("calling on click block fun ");
+                console.log("clicked blockData :: ", blockData);
+                console.log("clicked blockId :: ", blockId);
+                if(blockIdRefrence){
+                  document.getElementById(blockIdRefrence).style.backgroundColor = "white";
+                  document.getElementById(blockIdRefrence).style.color = "grey";
+                }
+
+                blockIdRefrence = blockId;
+                document.getElementById(blockId).style.backgroundColor = "darkcyan";
+                document.getElementById(blockId).style.color = "white";
+
+                // socket.emit("fetch-quiz-data-by-category", {data : blockData});
+            }
+
+            window.onclickRadioBtn = function(api, itemIndex, value){
+                console.log("apiname :: ", api);
+                console.log("index :: ", itemIndex);
+                console.log("value :: ", value);
+                //quizUserCorrectAnswers[itemIndex] = value;
+                let userRadioResponse = {};
+                // let prevSelection = null;
+                userRadioResponse.api = api;
+                userRadioResponse.itemIndex = itemIndex;
+                userRadioResponse.value = value;
+                userRadioResponse.prevSelection = 'radioLabel-'+value;
+                // quizUserCorrectAnswers.push(userRadioResponse);
+
+
+                if(quizUserCorrectAnswers[itemIndex] !== undefined){
+                  prevSelection = quizUserCorrectAnswers[itemIndex].prevSelection;
+                  document.getElementById(prevSelection).style.color = "grey";
+                }
+                quizUserCorrectAnswers[itemIndex] = userRadioResponse;
+                document.getElementById(userRadioResponse.prevSelection).style.color = "blue";
+                console.log("user correct answers : ", quizUserCorrectAnswers);
+                let radioLabelId = "radioLabel-"+value;
+                console.log("radio label value :: ", radioLabelId);
+
+            }
+            var quizAnalysis = {correct : 0}
+            window.onClickEmptySlideSubmitBtn = function(apiName, idIndex){
+                if(apiName === "quizApi"){
+                  console.log("quizCorrectAnswers : ", quizUserCorrectAnswers);
+
+                    console.log("quizAnalysis : ", quizAnalysis);
+                    console.log("quizUserCorrectAnswers : ", quizUserCorrectAnswers);
+                    let submitBtnId = 'quizApi-submitbtn-'+idIndex;
+                    let submitBtnResponseId = 'quizApi-submitbtn-response-'+idIndex;
+                    let submitBtnResponseTemplate = '';
+                    let successFactors = ((quizAnalysis.correct * 100) / quizCorrectAnswers.length);
+                    submitBtnResponseTemplate += `
+                        <div style="color: teal;">
+                            <center>YOUR QUIZ SCORE</center>
+                            <div style="margin-top: 10px;">
+                                <div>Correct Answers : `+quizAnalysis.correct+`</div>
+                                <div>Inorrect Answers : `+(quizCorrectAnswers.length - quizAnalysis.correct)+`</div>
+                                <div>Success % : `+successFactors+`</div>
+                            </div>
+                        </div>
+                    `;
+                    quizUserCorrectAnswers.forEach((item, index) => {
+                        if(typeof(item) === 'object'){
+                            let id = item.prevSelection;
+                            document.getElementById(id).style.color = "red";
+                        }
+                    });
+
+                    for (var i = 0; i < quizUserCorrectAnswers.length; i++) {
+                        let radioLabelId = 'radioLabel-'+quizCorrectAnswers[i];
+                        document.getElementById(radioLabelId).style.color = "green";
+                        if(typeof(quizUserCorrectAnswers[i]) === 'object' && (quizCorrectAnswers[i] === quizUserCorrectAnswers[i].value)){
+                            quizAnalysis.correct = quizAnalysis.correct+1;
+                        }
+                    }
+
+                    document.getElementById(submitBtnId).style.display = "none";
+                    document.getElementById(submitBtnResponseId).style.display = "block";
+                    document.getElementById(submitBtnResponseId).innerHTML = submitBtnResponseTemplate;
+
+                }
+            }
+
+          });
+
+
+
+      </script>
+
+
+  </body>
+</html>

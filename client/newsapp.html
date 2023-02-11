@@ -1,0 +1,2030 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta charset="utf-8">
+<title>News App</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<style>
+    div.scrollmenu {
+      /* background-color: #333; */
+      overflow: auto;
+      white-space: nowrap;
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+      transition: 0.3s;
+    }
+
+    div.scrollmenu:hover {
+      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+
+    /* div.scrollmenu a {
+      display: inline-block;
+      color: white;
+      text-decoration: none;
+    } */
+    div.scrollmenu a {
+      display: inline-block;
+      /* color: white; */
+      /* text-align: center; */
+      /* padding: 14px; */
+      text-decoration: none;
+      vertical-align: top;
+      color: grey;
+    }
+
+    /* div.scrollmenu a:hover {
+      background-color: #777;
+    } */
+    /* .ellipse{
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .ellipse:hover{
+      overflow: visible;
+      color: blue;
+
+    } */
+.ellipse {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  /* line-height: 1rem; */
+  pointer-events:none;
+}
+
+.ellipse:after {
+  content:"";
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 48px;
+  height: 48px;
+  z-index: 1;
+  pointer-events:initial;
+}
+
+.ellipse:hover:after{
+  cursor: pointer;
+  visibility: visible;
+}
+
+.tooltip {
+  width: 45%;
+  visibility: hidden;
+  background-color: black;
+  border: 2px solid white;
+  color: white;
+  padding: 5px;
+  -webkit-box-shadow: 0 0 50px 0 rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+
+.ellipse:hover + .tooltip {
+  visibility: visible;
+  transition: opacity 0.5s ease;
+  opacity: 1;
+}
+.tooltip{
+    display: none !important;
+}
+.custom-link{
+  text-decoration: none;
+}
+.w3-button:hover {
+  text-decoration: none;
+}
+.w3-container, .w3-panel {
+    padding: 0px !important;
+}
+.loader-img{
+  height: 125px;
+  margin-left: 30%;
+}
+.hints-item{
+  padding: 10px 12px !important; margin-right:5px; border-radius: 5px; background-color: white;
+}
+.custom-search-hints-layout{box-shadow: 0 -1px 0px 0px rgba(0,0,0,0.2) !important}
+.news-block{border-bottom: 10px solid gainsboro;}
+.glyphicon-play-circle{color: grey !important;}
+h5{color: grey; margin-top: 20px;}
+.container-fluid{padding-left: 5px !important; padding-right: 5px !important;}
+
+
+</style>
+
+<script>
+  var socket = io();
+</script>
+<body ng-app="nearByApi" ng-controller="nearByApiController">
+
+<!-- Sidebar -->
+
+
+<div class="w3-sidebar w3-bar-block w3-dark-grey w3-animate-left" style="display:none; z-index: 99; background-color: gainsboro !important; color: grey !important;" id="mySidebar">
+  <button onclick="w3_close()" class="w3-bar-item w3-button w3-large">Close &times;</button>
+  <a href="#" onclick="onClickSideMenu('search')" class="w3-bar-item w3-button custom-link">Search Personalized News</a>
+
+  <a href="#" onclick="onClickSideMenu('all news')" class="w3-bar-item w3-button custom-link">Top News</a>
+  <a href="#" onclick="onClickSideMenu('top latest news')" class="w3-bar-item w3-button custom-link">Top Latest News</a>
+  <a href="#" onclick="onClickSideMenu('sports')" class="w3-bar-item w3-button custom-link">Top Sports News</a>
+  <a href="#" onclick="onClickSideMenu('business')" class="w3-bar-item w3-button custom-link">Top Business News</a>
+  <a href="#" onclick="onClickSideMenu('entertainment')" class="w3-bar-item w3-button custom-link">Top Entertainment News</a>
+  <a href="#" onclick="onClickSideMenu('science')" class="w3-bar-item w3-button custom-link">Top Science News</a>
+  <a href="#" onclick="onClickSideMenu('health')" class="w3-bar-item w3-button custom-link">Top Health News</a>
+  <a href="#" onclick="onClickSideMenu('technology')" class="w3-bar-item w3-button custom-link">Top Technology News</a>
+
+  <a href="#" onclick="onClickSideMenu('programming')" class="w3-bar-item w3-button custom-link">Top Entertainment News</a>
+
+  <a href="#" onclick="onClickSideMenu('hacker news top stories')" class="w3-bar-item w3-button custom-link">Hacker News Top Stories</a>
+
+  <a href="#" onclick="onClickSideMenu('abp live')" class="w3-bar-item w3-button custom-link">  Abp Live</a>
+  <a href="#" onclick="onClickSideMenu('cricket live')" class="w3-bar-item w3-button custom-link">  Cricket Live</a>
+  <a href="#" onclick="onClickSideMenu('football live')" class="w3-bar-item w3-button custom-link"> Football Live</a>
+
+
+
+  <a href="#" onclick="onClickSideMenu('settings')" class="w3-bar-item w3-button custom-link">settings</a>
+
+  <a href="#" onclick="onClickSideMenu('source')" class="w3-bar-item w3-button custom-link">Top News Sources</a>
+  <a href="#" onclick="onClickSideMenu('english news source')" class="w3-bar-item w3-button custom-link">Top News Sources With English Language</a>
+  <a href="#" onclick="onClickSideMenu('indian english news source')" class="w3-bar-item w3-button custom-link">Top Indian News Sources With English Language</a>
+  <a href="#" onclick="onClickSideMenu('country')" class="w3-bar-item w3-button custom-link">News Source Country List</a>
+  <a href="#" onclick="onClickSideMenu('news language')" class="w3-bar-item w3-button custom-link">News Source Languages List</a>
+
+</div>
+
+
+<!-- Page Content -->
+  <div class="w3-teal" style="background-color: white!important;">
+    <div id="searchInputBlock" class="" style="border-bottom: 1px solid #ccc;">
+      <span style="width: 10%;">
+        <span>
+          <button id="menuIcon" class="w3-button w3-xlarge" style="color: grey; background-color: white; padding: 3px 16px;" onclick="w3_open()">
+            ☰
+          </button>
+        </span>
+        <span>
+          <button id="searchBackIcon" class="w3-button w3-xlarge" style="display: none; color: grey; background-color: white; padding: 3px 16px;" onclick="onClickSearchBackBtn()">
+            <span class="glyphicon glyphicon-menu-left"></span>
+            <!-- <span><i class="fad fa-chevron-left"></i></span> -->
+          </button>
+        </span>
+      </span>
+      <span style="width: 80%; top: 0px; display: inline-block; margin-left: -14px;">
+        <span style="color: grey; position: absolute; top: 13px; padding-left: 4px;" class="glyphicon glyphicon-search"></span>
+        <!-- <input type="text" id="searchPersonalizedNews" placeholder="Search personalized news..." > -->
+
+        <!--  onclick="onClickPersonalizedSearch()" ng-model="query" ng-keypress='sendMsgByEnter($event, query, "enter")' ng-keydown='onClickBackSpace($event, query)' -->
+        <input type="text" id="searchPersonalizedNews"  onclick="onClickPersonalizedSearch()"  onclick="onClickPersonalizedSearch()" ng-model="query" ng-keypress='sendMsgByEnter($event, query, "enter")' ng-keydown='onClickBackSpace($event, query)' placeholder="Search news by keywords..." name=""  style="color: grey; padding-left: 16px; width: 100%;padding: 10px;border: none; outline: none !important; padding-left: 30px;">
+        <span style="color: grey; position: absolute; top: 8px; font-size: 24px; right: 8px;" class="glyphicon glyphicon-volume-down"></span>
+      </span>
+
+    </div>
+    <div class="w3-container" id="appHeadliesBlock" style="background-color: white!important; text-align: center; color: grey;">
+      <div class="">
+        <h1 id="appHeadliesTitle">News Headlines</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-container" >
+
+    <div class="topNewsContentsBlock" id="topNewsContentsBlock">
+
+        <div class="allNewsContentsBlock" id="allNewsContentsBlock" style="display:none;">
+          <div class="" id="topNewsContentsBlock">
+
+            <center><h5 style="text-align: center; font-weight: 900;">TOP ALL NEWS</h5></center>
+            <div class="" id="allNewsContentsLoaderBlock">
+              <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+            </div>
+            <div id="allNewsContentsTemplate" class="container-fluid scrollmenu">
+
+            </div>
+          </div>
+        </div>
+
+        <div class="wallStreetJournalNewsBlock news-block" id="wallStreetJournalNewsBlock">
+            <center><h5 style="text-align: center; font-weight: 900;">TOP ARTICLES BY WALL STREET JOURNAL</h5></center>
+            <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+                <span onclick="onClickOneMinuteNewsPodcasts('wall-street-journal')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+                <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+
+            </div>
+            <div class="" id="wallStreetJournalNewsLoaderBlock" >
+              <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+            </div>
+            <div id="wallStreetJournalNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;" >
+
+            </div>
+        </div>
+
+        <div class="theNextWebNewsBlock news-block" id="theNextWebNewsBlock">
+            <center><h5 style="text-align: center; font-weight: 900;">TOP HEADLINES BY THE NEXT WEB</h5></center>
+            <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+                <span onclick="onClickOneMinuteNewsPodcasts('the-next-web')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+                <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+
+            </div>
+            <div class="" id="theNextWebNewsLoaderBlock" >
+              <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+            </div>
+            <div id="theNextWebNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;" >
+
+            </div>
+        </div>
+
+        <!-- <div class="techcrunchNewsBlock news-block" id="techcrunchNewsBlock">
+            <center><h5 style="text-align: center; font-weight: 900;">TOP HEADLINES BY TECHCRUNCH </h5></center>
+            <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+                <span onclick="onClickOneMinuteNewsPodcasts('techcrunch')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+                <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+
+            </div>
+            <div class="" id="techcrunchNewsLoaderBlock" >
+              <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+            </div>
+            <div id="techcrunchNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;" >
+
+            </div>
+        </div> -->
+
+        <div class="currentsLatestNewsBlock news-block" id="currentsLatestNewsBlock">
+            <center><h5 style="text-align: center; font-weight: 900;">TOP LATEST NEWS</h5></center>
+            <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+                <span onclick="onClickOneMinuteNewsPodcasts('currents-latest-news')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+                <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+
+            </div>
+            <div class="" id="currentsLatestNewsLoaderBlock" >
+              <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+            </div>
+            <div id="currentsLatestNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;" >
+
+            </div>
+        </div>
+
+
+
+        <div class="topProgrammingNewsBlock news-block" id="topProgrammingNewsBlock">
+          <center><h5 style="text-align: center; font-weight: 900;">TOP PROGRAMMING NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+            <span onclick="onClickOneMinuteNewsPodcasts('programming')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+            <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+
+          </div>
+          <div class="" id="topProgrammingNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topProgrammingNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <div class="news-block" id="topPoliticsNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP POLITICAL NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('politics')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topPoliticsNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topPoliticsNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <div class="news-block" id="topBusinessNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP BUSINESS NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('business')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topBusinessNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topBusinessNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+
+
+        <div class="news-block" id="topEntrepreneurNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP ETREPRENEUR NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('entrepreneur')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topEntrepreneurNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topEntrepreneurNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <div class="news-block" id="topEducationNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP EDUCATION NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('education')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topEducationNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topEducationNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <!-- <hr> -->
+        <div class="news-block" id="topCelebrityNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP CELEBRITY NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('celebrity')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topCelebrityNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topCelebrityNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <!-- <hr> -->
+
+        <!-- <hr> -->
+        <div class="news-block" id="topEntertainmentNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP ENTERTAINMENT NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('entertainment')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topEntertainmentNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topEntertainmentNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <!-- <hr> -->
+
+        <!-- <hr> -->
+        <div class="news-block" id="topTelevisionNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP TELEVISION NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('television')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topTelevisionNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topTelevisionNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <!-- <hr> -->
+
+        <div class="news-block" id="topHealthNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP HEALTH NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('health')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topHealthNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topHealthNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <div class="news-block" id="topMedicalNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP MEDICAL NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('medical')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topMedicalNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topMedicalNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <div class="news-block" id="topEnvironmentNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP ENVIRONMENT NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('environment')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topEnvironmentNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topEnvironmentNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+
+        <!-- <hr> -->
+        <div class="news-block" id="topScienceNewsBlock4">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP SCIENCE NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('science')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topScienceNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topScienceNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <div class="topTechnologyNewsBlock news-block" id="topTechnologyNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP TECHNOLOGY NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('technology')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topTechnologyNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topTechnologyNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <!-- <hr> -->
+        <div class="topMobileNewsBlock news-block" id="topMobileNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP MOBILE NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('mobile')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topMobileNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topMobileNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <!-- <hr> -->
+
+        <!-- <hr> -->
+        <div class="topAutoNewsBlock news-block" id="topAutoNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP AUTOMOBILE NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('auto')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topAutoNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topAutoNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <!-- <hr> -->
+
+        <!-- <hr> -->
+        <div class="topGadgetsNewsBlock news-block" id="topGadgetsNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP GADGET NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('gadgets')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topGadgetsNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topGadgetsNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <!-- <hr> -->
+
+        <!-- <hr> -->
+        <div class="topSportsNewsBlock news-block" id="topSportsNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('sports')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topSportsNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topSportsNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <!-- <hr> -->
+
+        <!-- <hr> -->
+        <div class="topTravelNewsBlock news-block" id="topTravelNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP TRAVEL NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('travel')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topTravelNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topTravelNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <!-- <hr> -->
+
+        <!-- <hr> -->
+        <div class="topMusicNewsBlock news-block" id="topMusicNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP MUSIC NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('music')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topMusicNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topMusicNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <!-- <hr> -->
+
+        <!-- <hr> -->
+        <div class="topMovieNewsBlock news-block" id="topMovieNewsBlock">
+
+          <center><h5 style="text-align: center; font-weight: 900;">TOP MOVIE NEWS</h5></center>
+          <div class="" style="margin-left: 16px; margin-bottom: 32px;">
+              <span onclick="onClickOneMinuteNewsPodcasts('movie')" style="float: left; font-size: 45px; margin-right: 12px;" class="glyphicon glyphicon-play-circle"></span>
+
+              <span style="position: relative;top: 13px;color: #616161;">HEADLINES IN A MINUTE </span>
+          </div>
+          <div class="" id="topMovieNewsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topMovieNewsTemplate" class="container-fluid scrollmenu" style="margin-top: 12px;">
+
+          </div>
+        </div>
+
+        <!-- <hr> -->
+
+        <div class="hackerNewsJobStoriesBlock news-block" id="hackerNewsJobStoriesBlock" >
+
+          <center><h5 style="text-align: center; font-weight: 900;">HACKER NEWS JOB STORIES</h5></center>
+          <div class="" id="hackerNewsJobStoriesLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="hackerNewsJobStoriesTemplate" class="container-fluid scrollmenu">
+
+          </div>
+        </div>
+
+        <div class="hackerNewsTopStoriesBlock news-block" id="hackerNewsTopStoriesBlock" >
+
+          <center><h5 style="text-align: center; font-weight: 900;">HACKER NEWS TOP STORIES</h5></center>
+          <div class="" id="hackerNewsTopStoriesLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="hackerNewsTopStoriesTemplate" class="container-fluid scrollmenu">
+
+          </div>
+        </div>
+
+        <div class="hackerNewsBestStoriesBlock news-block" id="hackerNewsBestStoriesBlock" >
+
+          <center><h5 style="text-align: center; font-weight: 900;">HACKER NEWS BEST STORIES</h5></center>
+          <div class="" id="hackerNewsBestStoriesLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="hackerNewsBestStoriesTemplate" class="container-fluid scrollmenu">
+
+          </div>
+        </div>
+
+        <div class="hackerNewsNewStoriesBlock news-block" id="hackerNewsNewStoriesBlock" >
+
+          <center><h5 style="text-align: center; font-weight: 900;">HACKER NEWS NEW STORIES</h5></center>
+          <div class="" id="hackerNewsNewStoriesLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="hackerNewsNewStoriesTemplate" class="container-fluid scrollmenu">
+
+          </div>
+        </div>
+
+        <!-- <div class="hackerNewsAsksStoriesBlock" id="hackerNewsAsksStoriesBlock" >
+
+          <center><h5 style="text-align: center; font-weight: 900;">HACKER NEWS ASKS STORIES</h5></center>
+          <div class="" id="hackerNewsAsksStoriesLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="hackerNewsAsksStoriesTemplate" class="container-fluid scrollmenu">
+
+          </div>
+        </div> -->
+
+
+        <!-- <hr> -->
+        <div class="" id="topNewsSourcesBlock">
+          <center><h5 style="text-align: center; font-weight: 900;">TOP NEWS SOURCES</h5></center>
+          <div class="" id="topNewsSourcesLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topNewsSourcesTemplate" class="container-fluid scrollmenu">
+
+          </div>
+        </div>
+
+        <!-- <hr> -->
+        <div class="" id="topIndianEnglishNewsSourcesBlock">
+          <center><h5 style="text-align: center; font-weight: 900;">TOP INDIAN NEWS SOURCES WITH ENGLISH LANGUAGE</h5></center>
+          <div class="" id="topIndianEnglishNewsSourcesLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topIndianEnglishNewsSourcesTemplate" class="container-fluid scrollmenu">
+
+          </div>
+        </div>
+
+        <!-- <hr> -->
+        <div class="" id="topEnglishNewsSourcesBlock">
+          <center><h5 style="text-align: center; font-weight: 900;">TOP NEWS SOURCES WITH ENGLISH LANGUAGE</h5></center>
+          <div class="" id="topEnglishNewsSourcesLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+          <div id="topEnglishNewsSourcesTemplate" class="container-fluid scrollmenu">
+
+          </div>
+        </div>
+
+    </div>
+
+<!-- ============================================================================================================== -->
+
+    <div class="allNewsContentsBlock" id="allNewsContentsBlock" style="display:none;">
+      <div class="" id="topNewsContentsBlock">
+
+        <center><h5 style="text-align: center; font-weight: 900;">TOP NEWS</h5></center>
+        <div class="" id="allNewsContentsLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="allNewsContentsTemplate" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+    </div>
+
+    <div class="topSportsNewsContentsBlock" id="topSportsNewsContentsBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+
+      <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SPORTS NEWS</h5></center> -->
+      <div class="" id="topSportsNewsContentsLoaderBlock">
+        <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+      </div>
+      <div id="topSportsNewsContentsTemplate" class="">
+
+      </div>
+    </div>
+
+    <div class="topBusinessNewsContentsBlock" id="topBusinessNewsContentsBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+
+      <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP BUSINESS NEWS</h5></center> -->
+      <div class="" id="topBusinessNewsContentsLoaderBlock">
+        <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+      </div>
+      <div id="topBusinessNewsContentsTemplate" class="">
+
+      </div>
+    </div>
+
+    <div class="" id="topEntertainmentNewsContentsBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+
+      <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP ENTERTAINMENT NEWS</h5></center> -->
+      <div class="" id="topEntertainmentNewsContentsLoaderBlock">
+        <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+      </div>
+      <div id="topEntertainmentNewsContentsTemplate" class="">
+
+      </div>
+    </div>
+
+    <div class="topScienceNewsContentsBlock" id="topScienceNewsContentsBlock"  style="display:none; background: gainsboro; margin-top: -12px;">
+
+      <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP SCIENCE NEWS</h5></center> -->
+      <div class="" id="topScienceNewsContentsLoaderBlock">
+        <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+      </div>
+      <div id="topScienceNewsContentsTemplate" class="">
+
+      </div>
+    </div>
+
+    <div class="topHealthNewsContentsBlock" id="topHealthNewsContentsBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+
+      <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP HEALTH NEWS</h5></center> -->
+      <div class="" id="topHealthNewsContentsLoaderBlock">
+        <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+      </div>
+      <div id="topHealthNewsContentsTemplate" class="">
+
+      </div>
+    </div>
+
+    <div class="topTechnologyNewsContentsBlock" id="topTechnologyNewsContentsBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+
+      <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP TECHNOLOGY NEWS</h5></center> -->
+      <div class="" id="topTechnologyNewsContentsLoaderBlock">
+        <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+      </div>
+      <div id="topTechnologyNewsContentsTemplate" class="">
+
+      </div>
+    </div>
+
+    <div class="topProgrammingNewsContentsBlock" id="topProgrammingNewsContentsBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+
+      <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP TECHNOLOGY NEWS</h5></center> -->
+      <div class="" id="topProgrammingNewsContentsLoaderBlock">
+        <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+      </div>
+      <div id="topProgrammingNewsContentsTemplate" class="">
+
+      </div>
+    </div>
+
+    <div class="hackerNewsTopStoriesContentsBlock" id="hackerNewsTopStoriesContentsBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+
+      <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP TECHNOLOGY NEWS</h5></center> -->
+      <div class="" id="hackerNewsTopStoriesContentsLoaderBlock">
+        <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+      </div>
+      <div id="hackerNewsTopStoriesContentsTemplate" class="">
+
+      </div>
+    </div>
+
+    <div class="abpLiveContentsBlock" id="abpLiveContentsBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+
+      <!-- <center><h5 style="text-align: center; font-weight: 900;">TOP TECHNOLOGY NEWS</h5></center> -->
+      <div class="abp-live" id="abpLive" style="margin-top: 5px;">
+        <center><h5>ABP LIVE</h5></center>
+        <iframe width="100%" height="400px;" style="border: none;" src="https://www.youtube.com/embed/M-NTT1rvuZM">
+        </iframe>
+      </div>
+      <hr>
+      <div class="abp-live" id="abpAnandaLive" style="margin-top: 5px;">
+        <center><h5>ABP ANANDA LIVE</h5></center>
+        <iframe width="100%" height="400px;" style="border: none;" src="https://www.youtube.com/embed/Ojl5_LjSe7k">
+        </iframe>
+      </div>
+
+    </div>
+
+    <div class="cricketLiveContentsBlock" id="cricketLiveContentsBlock" style="display:none; background: gainsboro; margin-top: -12px;">
+      <div class="abp-live" id="cricketPlaerDetailsLiveWidget" style="margin-top: 5px;">
+        <center><h5>CRICKET LIVE </h5></center>
+        <div>
+          <script type="text/javascript">
+            app="www.cricwaves.com"; mo='Cbox'; mats =''; tor =''; Width='640px'; Height='552px'; co ='ext';
+          </script><script type="text/javascript" src="//www.cricwaves.com/cricket/widgets/script/scoreWidgets.js?v=1.2"></script>
+        </div>
+      </div>
+
+
+      <div class="abp-live" id="cricketPlaerDetailsLiveWidget" style="margin-top: 5px;">
+        <center><h5>CRICKET LIVE </h5></center>
+        <div>
+          <script type="text/javascript">
+          app=www.cricwaves.com"; mo="f1_zd"; nt="ban"; mats =""; tor =""; Width='302px'; Height='252px'; wi ="w";
+           co ="ban"; ad="1";
+          </script>
+          <script type="text/javascript" src="//www.cricwaves.com/cricket/widgets/script/scoreWidgets.js"></script>
+        </div>
+      </div>
+      <center><h5 style="text-align: center; font-weight: 900;">CRICKET LIVE SCORE</h5></center>
+      <div class="abp-live" id="cricketLiveWidget" style="margin-top: 5px;">
+        <script style="border: none;"> app="www.cricwaves.com"; mo="1"; nt="n"; TID="173"; wi="w"; co="new"; ad="2"; <script> app="www.cricwaves.com"; mo="Z_W"; nt="n"; Width='100%'; Height='350px'; co ="aus"; ad="1"; </script><script type="text/javascript" src="//www.cricwaves.com/cricket/widgets/script/scoreWidgets.js?v=0.1"></script>
+      </div>
+      <hr>
+      <div class="abp-live" id="cricketPlaerDetailsLiveWidget" style="margin-top: 5px;">
+        <center><h5>CRICKET LIVE </h5></center>
+        <iframe width="100%" height="1000px;" style="border: none;" src="https://www.cricwaves.com/cricket/16/rt-ponting/PlayerDetails.html">
+        </iframe>
+      </div>
+      <hr>
+
+      <div class="abp-live" id="cricketPlaerDetailsLiveWidget" style="margin-top: 5px;">
+        <center><h5>CRICKET LIVE </h5></center>
+        <div>
+            <script> app="www.cricwaves.com"; mo="1"; nt="n"; wi ="0"; co ="2"; ad="1"; </script><script type="text/javascript" src="//www.cricwaves.com/cricket/widgets/script/scoreWidgets.js"></script>
+        </div>
+      </div>
+      <hr>
+
+      <div class="abp-live" id="cricketPlaerDetailsLiveWidget" style="margin-top: 5px;">
+        <center><h5>CRICKET LIVE </h5></center>
+        <div>
+          <script type="text/javascript"> app="www.cricwaves.com"; mo="f1_kzd"; nt="flash"; mats =""; tor =""; Width='302px'; Height='252px'; wi ="w"; co ="flash"; ad="1"; </script><script type="text/javascript" src="//www.cricwaves.com/cricket/widgets/script/scoreWidgets.js"></script>
+        </div>
+      </div>
+      <div class="abp-live" id="cricketPlaerDetailsLiveWidget" style="margin-top: 5px;">
+        <center><h5>CRICKET LIVE </h5></center>
+        <div>
+          <script> app="www.cricwaves.com"; mo="1"; nt="n"; wi ="0"; co ="2"; ad="1"; </script><script type="text/javascript" src="//www.cricwaves.com/cricket/widgets/script/scoreWidgets.js"></script>
+        </div>
+      </div>
+    </div>
+
+    <div class="footballLiveContentsBlock" id="footballLiveContentsBlock" style="display: none;">
+      <center><h5 style="text-align: center; font-weight: 900;">BRAZILIAN FOOTBALL LEAGUE</h5></center>
+      <div id="footballLiveContentsBlockTemplate" class="">
+        <iframe frameborder="0"  scrolling="no" width="520" height="700" src="https://www.fctables.com/europeanchampionship/iframe/?type=table&lang_id=2&country=12&stage=29211&team=&timezone=Pacific/Midway&time=24&po=1&ma=1&wi=1&dr=1&los=1&gf=1&ga=1&gd=1&pts=1&ng=1&form=1&width=520&height=700&font=Verdana&fs=12&lh=22&bg=FFFFFF&fc=333333&logo=1&tlink=1&scfs=22&scfc=333333&scb=1&sclg=1&teamls=80&ths=1&thb=1&thba=FFFFFF&thc=000000&bc=dddddd&hob=f5f5f5&hobc=ebe7e7&lc=333333&sh=1&hfb=1&hbc=3bafda&hfc=FFFFFF"></iframe><div style="text-align:center;"></div><a href="https://www.fctables.com/europeanchampionship/" rel="nofollow">FcTables.com</a>
+
+      </div>
+
+      <hr>
+      <center><h5 style="text-align: center; font-weight: 900;">BRAZILIAN FOOTBALL LEAGUE</h5></center>
+      <div id="footballLiveContentsBlockTemplate" class="">
+        <iframe frameborder="0"  scrolling="no" width="520" height="700" src="https://www.fctables.com/brazil/serie-a/iframe/?type=table&lang_id=2&country=29&template=182&timezone=Pacific/Midway&time=24&po=1&ma=1&wi=1&dr=1&los=1&gf=1&ga=1&gd=1&pts=1&ng=1&form=1&width=520&height=700&font=Verdana&fs=12&lh=22&bg=FFFFFF&fc=333333&logo=1&tlink=1&scfs=22&scfc=333333&scb=1&sclg=1&teamls=80&ths=1&thb=1&thba=FFFFFF&thc=000000&bc=dddddd&hob=f5f5f5&hobc=ebe7e7&lc=333333&sh=1&hfb=1&hbc=3bafda&hfc=FFFFFF"></iframe><div style="text-align:center;"></div><a href="https://www.fctables.com/brazil/serie-a/" rel="nofollow">FcTables.com</a>
+      </div>
+
+      <hr>
+
+      <center><h5 style="text-align: center; font-weight: 900;">ARGENTINIAN FOOTBALL LEAGUE</h5></center>
+      <div id="footballLiveContentsBlockTemplate" class="">
+      <iframe frameborder="0"  scrolling="no" width="520" height="700" src="https://www.fctables.com/brazil/serie-a/iframe/?type=table&lang_id=2&country=9&template=182&team=&timezone=Pacific/Midway&time=24&po=1&ma=1&wi=1&dr=1&los=1&gf=1&ga=1&gd=1&pts=1&ng=1&form=1&width=520&height=700&font=Verdana&fs=12&lh=22&bg=FFFFFF&fc=333333&logo=1&tlink=1&scfs=22&scfc=333333&scb=1&sclg=1&teamls=80&ths=1&thb=1&thba=FFFFFF&thc=000000&bc=dddddd&hob=f5f5f5&hobc=ebe7e7&lc=333333&sh=1&hfb=1&hbc=3bafda&hfc=FFFFFF"></iframe><div style="text-align:center;"></div><a href="https://www.fctables.com/brazil/serie-a/" rel="nofollow">FcTables.com</a>
+      </div>
+
+      <hr>
+      <center><h5 style="text-align: center; font-weight: 900;">CHAMPIONS LEAGUE</h5></center>
+      <div id="footballLiveContentsBlockTemplate" class="">
+        <iframe frameborder="0"  scrolling="no" width="520" height="700" src="https://www.fctables.com/championsleague/iframe/?type=table&lang_id=2&country=5&stage=29211&timezone=Pacific/Midway&time=24&po=1&ma=1&wi=1&dr=1&los=1&gf=1&ga=1&gd=1&pts=1&ng=1&form=1&width=520&height=700&font=Verdana&fs=12&lh=22&bg=FFFFFF&fc=333333&logo=1&tlink=1&scfs=22&scfc=333333&scb=1&sclg=1&teamls=80&ths=1&thb=1&thba=FFFFFF&thc=000000&bc=dddddd&hob=f5f5f5&hobc=ebe7e7&lc=333333&sh=1&hfb=1&hbc=3bafda&hfc=FFFFFF"></iframe><div style="text-align:center;"></div><a href="https://www.fctables.com/championsleague/" rel="nofollow">FcTables.com</a>
+      </div>
+
+      <hr>
+      <center><h5 style="text-align: center; font-weight: 900;">COPA AMERICA</h5></center>
+      <div id="footballLiveContentsBlockTemplate" class="">
+        <iframe frameborder="0"  scrolling="no" width="520" height="700" src="https://www.fctables.com/copaamerica/iframe/?type=table&lang_id=2&country=7&template=12&team=184237&timezone=Pacific/Midway&time=24&po=1&ma=1&wi=1&dr=1&los=1&gf=1&ga=1&gd=1&pts=1&ng=1&form=1&width=520&height=700&font=Verdana&fs=12&lh=22&bg=FFFFFF&fc=333333&logo=1&tlink=1&scfs=22&scfc=333333&scb=1&sclg=1&teamls=80&ths=1&thb=1&thba=FFFFFF&thc=000000&bc=dddddd&hob=f5f5f5&hobc=ebe7e7&lc=333333&sh=1&hfb=1&hbc=3bafda&hfc=FFFFFF"></iframe><div style="text-align:center;"></div><a href="https://www.fctables.com/copaamerica/" rel="nofollow">FcTables.com</a>
+      </div>
+
+
+
+
+
+
+    </div>
+
+    <div class="topNewsSourcesContentsBlock" id="topNewsSourcesContentsBlock" style="display: none;">
+      <center><h5 style="text-align: center; font-weight: 900;">TOP NEWS SOURCES</h5></center>
+      <div class="" id="topNewsSourcesContentsLoaderBlock">
+        <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+      </div>
+      <div id="topNewsSourcesContentsTemplate" class="">
+
+      </div>
+    </div>
+
+    <div class="currentsLatestNewsContentsBlock" id="currentsLatestNewsContentsBlock" style="display: none;">
+      <center><h5 style="text-align: center; font-weight: 900;">TOP LATEST NEWS</h5></center>
+      <div class="" id="currentsLatestNewsContentsLoaderBlock">
+        <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+      </div>
+      <div id="currentsLatestNewsContentsTemplate" class="">
+
+      </div>
+    </div>
+
+    <div class="topIndianEnglishNewsSourcesContentsBlock" id="topIndianEnglishNewsSourcesContentsBlock" style="display:none;">
+      <div class="" id="">
+        <center><h5 style="text-align: center; font-weight: 900;">TOP INDIAN NEWS SOURCES WITH ENGLISH LANGUAGE</h5></center>
+        <div class="" id="topIndianEnglishNewsSourcesContentsLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="topIndianEnglishNewsSourcesContentsTemplate" class="">
+
+        </div>
+      </div>
+    </div>
+
+    <div class="topEnglishNewsSourcesContentsBlock" id="topEnglishNewsSourcesContentsBlock" style="display:none;">
+      <div class="" id="">
+
+        <center><h5 style="text-align: center; font-weight: 900;">TOP NEWS SOURCE</h5></center>
+        <div class="" id="topEnglishNewsSourcesContentsLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="topEnglishNewsSourcesContentsTemplate" class="">
+
+        </div>
+      </div>
+    </div>
+
+    <div class="topNewsSourcesCountryContentsBlock" id="topNewsSourcesCountryContentsBlock" style="display:none;">
+      <div class="" id="">
+
+        <center><h5 style="text-align: center; font-weight: 900;">COUNTRY LIST</h5></center>
+        <div class="" id="topNewsSourcesCountryContentsLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="topNewsSourcesCountryContentsTemplate" class="container-fluid scrollmenu">
+
+        </div>
+      </div>
+    </div>
+
+    <div class="topNewsSourcesLanguageContentsBlock" id="topNewsSourcesLanguageContentsBlock" style="display:none;">
+      <div class="" id="">
+
+        <center><h5 style="text-align: center; font-weight: 900;">LANGUAGE LIST</h5></center>
+        <div class="" id="topNewsSourcesLanguageContentsLoaderBlock">
+          <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        </div>
+        <div id="topNewsSourcesLanguageContentsTemplate" class="">
+
+        </div>
+      </div>
+    </div>
+
+    <div class="settingsContentsBlock" id="settingsContentsBlock" style="display:none;">
+      <div class="" id="">
+
+        <div class="settingsTextToSpeechContentsBlock" id="settingsTextToSpeechContentsBlock" >
+
+          <div class="" id="" style="padding: 16px;">
+            <center><h5 style="text-align: center; font-weight: 900;">TEXT TO SPEECH DEMO</h5></center>
+              <p id="msg"></p>
+
+              <div class="option">
+                <label for="voice">Message</label>
+                <input type="text" placeholder="Enter message to test..." class="form-control" name="speech-msg" id="speech-msg" x-webkit-speech>
+              </div>
+              <div class="option">
+                <label for="voice">Voice</label>
+                <select class="form-control" name="voice" id="voice"></select>
+              </div>
+              <div class="option">
+                <label for="volume">Volume</label>
+                <input class="form-control" type="range" min="0" max="1" step="0.1" name="volume" id="volume" value="1">
+              </div>
+              <div class="option">
+                <label for="rate">Rate</label>
+                <input class="form-control" type="range" min="0.1" max="10" step="0.1" name="rate" id="rate" value="1">
+              </div>
+              <div class="option">
+                <label for="pitch">Pitch</label>
+                <input class="form-control" type="range" min="0" max="2" step="0.1" name="pitch" id="pitch" value="1">
+              </div>
+
+              <button class="btn btn-primary btn-block" id="speak">Speak</button>
+              <script>
+              /*
+                * Check for browser support
+                */
+                let supportMsg = document.getElementById('msg');
+
+                if ('speechSynthesis' in window) {
+                supportMsg.innerHTML = 'Your browser <strong>supports</strong> speech synthesis.';
+                } else {
+                supportMsg.innerHTML = 'Sorry your browser <strong>does not support</strong> speech synthesis.<br>Try this in <a href="https://www.google.co.uk/intl/en/chrome/browser/canary.html">Chrome Canary</a>.';
+                supportMsg.classList.add('not-supported');
+                }
+
+
+                // Get the 'speak' button
+                let button = document.getElementById('speak');
+
+                // Get the text input element.
+                let speechMsgInput = document.getElementById('speech-msg');
+
+                // Get the voice select element.
+                let voiceSelect = document.getElementById('voice');
+
+                // Get the attribute controls.
+                let volumeInput = document.getElementById('volume');
+                let rateInput = document.getElementById('rate');
+                let pitchInput = document.getElementById('pitch');
+
+
+                // Fetch the list of voices and populate the voice options.
+                function loadVoices() {
+                // Fetch the available voices.
+                let voices = speechSynthesis.getVoices();
+
+                // Loop through each of the voices.
+                voices.forEach(function(voice, i) {
+                  // Create a new option element.
+                  let option = document.createElement('option');
+
+                  // Set the options value and text.
+                  option.value = voice.name;
+                  option.innerHTML = voice.name;
+
+                  // Add the option to the voice selector.
+                  voiceSelect.appendChild(option);
+                });
+                }
+
+                // Execute loadVoices.
+                loadVoices();
+
+                // Chrome loads voices asynchronously.
+                window.speechSynthesis.onvoiceschanged = function(e) {
+                loadVoices();
+                };
+
+
+                // Create a new utterance for the specified text and add it to
+                // the queue.
+                function speak(text) {
+                // Create a new instance of SpeechSynthesisUtterance.
+                let msg = new SpeechSynthesisUtterance();
+
+                // Set the text.
+                msg.text = text;
+
+                // Set the attributes.
+                textToSpeechSetUpObject.volume = parseFloat(volumeInput.value);
+                textToSpeechSetUpObject.rate = parseFloat(rateInput.value);
+                textToSpeechSetUpObject.pitch = parseFloat(pitchInput.value);
+                textToSpeechSetUpObject.voice = voiceSelect.value;
+
+
+                msg.volume = parseFloat(volumeInput.value);
+                msg.rate = parseFloat(rateInput.value);
+                msg.pitch = parseFloat(pitchInput.value);
+
+                // If a voice has been selected, find the voice and set the
+                // utterance instance's voice attribute.
+                if (voiceSelect.value) {
+                  msg.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name == voiceSelect.value; })[0];
+                }
+
+                // Queue this utterance.
+                window.speechSynthesis.speak(msg);
+                }
+
+
+                // Set up an event listener for when the 'speak' button is clicked.
+                button.addEventListener('click', function(e) {
+                if (speechMsgInput.value.length > 0) {
+                  speak(speechMsgInput.value);
+                }
+                });
+
+              </script>
+
+          </div>
+        </div>
+
+          <div class="settingsTopNewsSourcesContentsBlock" id="settingsTopNewsSourcesContentsBlock" style="margin-top: 16px;">
+            <center><h5 style="text-align: center; font-weight: 900;">TOP NEWS SOURCES</h5></center>
+            <div class="" id="settingsTopNewsSourcesContentsLoaderBlock">
+              <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+            </div>
+            <div id="settingsTopNewsSourcesContentsTemplate" class="container-fluid scrollmenu">
+
+            </div>
+          </div>
+
+          <div class="settingsTopIndianEnglishNewsSourcesContentsBlock" id="settingsTopIndianEnglishNewsSourcesContentsBlock" style="margin-top: 16px;">
+            <div class="" id="">
+              <center><h5 style="text-align: center; font-weight: 900;">TOP INDIAN NEWS SOURCES WITH ENGLISH LANGUAGE</h5></center>
+              <div class="" id="settingsTopIndianEnglishNewsSourcesContentsLoaderBlock">
+                <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+              </div>
+              <div id="settingsTopIndianEnglishNewsSourcesContentsTemplate" class="container-fluid scrollmenu">
+
+              </div>
+            </div>
+          </div>
+
+          <div class="settingsTopEnglishNewsSourcesContentsBlock" id="settingsTopEnglishNewsSourcesContentsBlock" style="margin-top: 16px;">
+            <div class="" id="">
+
+              <center><h5 style="text-align: center; font-weight: 900;">TOP NEWS SOURCE</h5></center>
+              <div class="" id="settingsTopEnglishNewsSourcesContentsLoaderBlock">
+                <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+              </div>
+              <div id="settingsTopEnglishNewsSourcesContentsTemplate" class="container-fluid scrollmenu">
+
+              </div>
+            </div>
+          </div>
+
+          <div class="settingsTopNewsSourcesCountryContentsBlock" id="settingsTopNewsSourcesCountryContentsBlock" style="margin-top: 16px;">
+            <div class="" id="">
+
+              <center><h5 style="text-align: center; font-weight: 900;">COUNTRY LIST</h5></center>
+              <div class="" id="settingsTopNewsSourcesCountryContentsLoaderBlock">
+                <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+              </div>
+              <div id="settingsTopNewsSourcesCountryContentsTemplate" class="container-fluid scrollmenu">
+
+              </div>
+            </div>
+          </div>
+
+          <div class="settingsTopNewsSourcesLanguageContentsBlock" id="settingsTopNewsSourcesLanguageContentsBlock" >
+            <div class="" id="">
+
+              <center><h5 style="text-align: center; font-weight: 900;">LANGUAGE LIST</h5></center>
+              <div class="" id="settingsTopNewsSourcesLanguageContentsLoaderBlock">
+                <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+              </div>
+              <div id="settingsTopNewsSourcesLanguageContentsTemplate" class="container-fluid scrollmenu">
+
+              </div>
+            </div>
+          </div>
+
+
+
+      </div>
+    </div>
+
+    <div class="searchContentsBlock" id="searchContentsBlock" style="display:none;">
+      <div class="" id="">
+
+        <!-- <center><h5 style="text-align: center; font-weight: 900;">LANGUAGE LI</h5></center> -->
+        <div class="" id="searchContentsLoaderBlock">
+          <!-- <img class="loader-img" src="static/images/pleaseWait1.gif"  alt=""> -->
+        </div>
+        <!-- <div id="searchContentsTemplate" class="">
+          <form>
+            <div class="input-group">
+              <input id="searchPersonalizedNews" type="text" class="form-control" ng-model="query" ng-keypress='sendMsgByEnter($event, query, "enter")' ng-keydown='onClickBackSpace($event, query)'  placeholder="Search personalized news..." style="border: none; border-radius: 0%; border-bottom: 1px solid #ccc;">
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="searchPersonalizedNews()" style="border-radius: 0%; ">
+                  <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div> -->
+
+
+
+
+
+        <div id="hintsBlock" class="row hints-block" style="margin-left: 0px; border-bottom: 1px solid #ccc; border-top: 1px solid #ccc; padding-top: 10px;" >
+          <div class="">
+            <label style="margin-left: 16px; color: grey;" for="sel1">RECENT SEARCHES</label>
+          </div>
+           <div class="scrollmenu custom-search-hints-layout">
+               <a ng-repeat="txt in serachQariesList" ng-click="onClickHelpInfoItems(txt)" href="#" class="hints-item">{{txt}}</a>
+           </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label style="margin-left: 16px; color: grey;" for="sel1">READ NEWS BY</label>
+          <select class="form-control" id="headlineByCategory" onchange="onSelectHeadlineByCategory()" style="border: none !important; outline: none !important; background-color: gainsboro; border-radius: 0px;">
+            <option>Headline by news source</option>
+            <!-- <option>Headline by keywords</option> -->
+            <option>Headline by Indian english news source</option>
+            <option>Headline by news source by language</option>
+            <option>Headline by Nation</option>
+            <option>Headline by category</option>
+            <option>Wikipedia search</option>
+
+          </select>
+          <div id="headlineByCategorySearchContentsBlock" class="" style="display: none;">
+            <div class="" id="headlineByCategorySearchContentsLoaderBlock">
+              <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+            </div>
+            <div id="headlineByCategorySearchContentsTemplate" class="container-fluid scrollmenu" style="margin-top: 10px; width: 100%;">
+
+            </div>
+          </div>
+
+        </div>
+
+        <div id="searchResultsBlock" class="searchResultsBlock" style="display:none;">
+          <div class="" id="searchResultsContentsLoaderBlock">
+            <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+          </div>
+
+          <div id="searchResultsContentsTemplate" class="container-fluid " style="margin-top: -20px;">
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- The Modal -->
+    <div class="modal" id="URLModal">
+      <div class="modal-dialog" style="margin-top: 50%;">
+        <div class="modal-content" style="">
+
+          <!-- Modal Header -->
+          <div class="modal-header" style="border: none; padding-bottom: 5px !important; ">
+            <!-- <h4 class="modal-title">Modal Heading</h4> -->
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body" style="padding: 5px; padding-left: 20px;padding-right: 20px;">
+              <iframe id="urlIframe" src="" style="border: none; width: 100%; height: 100%;"></iframe>
+              <div id="modalContent" style="text-align: center; color: gray; font-weight: bold;">
+
+              </div>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer" style="border: none;">
+            <!-- <center> <button type="button" class="btn btn-danger" style="width: 100%;" data-dismiss="modal">Close</button> <center> -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- The Modal -->
+    <div class="modal" id="threeDotsActionModal">
+      <div class="modal-dialog" style="position: absolute; bottom: 0px; width: 100%; margin: 0px;">
+        <div class="modal-content" style="">
+
+          <!-- Modal Header -->
+          <div class="modal-header" style="border: none; padding-bottom: 5px !important; ">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body" style="padding: 5px; padding-left: 20px;padding-right: 20px; height: 300px; text-align: center;">
+              <h4 class="modal-title">THREE DOTS ACTION</h4>
+              <h1 class="modal-title">Comming soon...</h1>
+
+              <div id="threeDotsActionModalContent" style="text-align: center; color: gray; font-weight: bold;">
+
+              </div>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer" style="border: none;">
+            <!-- <center> <button type="button" class="btn btn-danger" style="width: 100%;" data-dismiss="modal">Close</button> <center> -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+</div>
+
+
+
+
+<script>
+  function w3_open() {
+    document.getElementById("mySidebar").style.display = "block";
+  }
+
+  function w3_close() {
+    document.getElementById("mySidebar").style.display = "none";
+  }
+</script>
+
+
+<script type="text/javascript">
+  var app = angular.module('nearByApi', []);
+  var modalState = null;
+  var defaultNewsSourceCountry = 'in';
+  let currentBlockId = 'topNewsContentsBlock';
+  var serachQariesList = ['CAA protest in india', 'CAA protest in kolkata', 'Mamata banerjee political view in kolkata', 'Corona virus latest news in india'];
+  var currentSearchSource = 'news_source';
+  function hScroll(hScrollBody){
+      return '<div class="scrollmenu">'+hScrollBody+'</div>';
+  }
+  socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topBusinessNewsTemplate', loaderId: 'topBusinessNewsLoaderBlock', category: 'business', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topEntertainmentNewsTemplate', loaderId: 'topEntertainmentNewsLoaderBlock', category: 'entertainment', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topHealthNewsTemplate', loaderId: 'topHealthNewsLoaderBlock', category: 'health', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topScienceNewsTemplate', loaderId: 'topScienceNewsLoaderBlock', category: 'science', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topTechnologyNewsTemplate', loaderId: 'topTechnologyNewsLoaderBlock', category: 'technology', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topSportsNewsTemplate', loaderId: 'topSportsNewsLoaderBlock', category: 'sports', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'wallStreetJournalNewsTemplate', loaderId: 'wallStreetJournalNewsLoaderBlock', category: 'journal', journalName: 'wsj.com', country: defaultNewsSourceCountry});
+
+//  socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'techcrunchNewsTemplate', loaderId: 'techcrunchNewsLoaderBlock', category: 'journal', journalName: 'techcrunch.com', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'theNextWebNewsTemplate', loaderId: 'theNextWebNewsLoaderBlock', category: 'journal', journalName: 'thenextweb.com', country: defaultNewsSourceCountry});
+
+
+  socket.emit("news-api-request", {from: 'Api', apiRef: 'currents-api', resposeTeplateId: 'topTravelNewsTemplate', loaderId: 'topTravelNewsLoaderBlock', category: 'travel', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', apiRef: 'currents-api', resposeTeplateId: 'topMedicalNewsTemplate', loaderId: 'topMedicalNewsLoaderBlock', category: 'medical', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', apiRef: 'currents-api', resposeTeplateId: 'topMusicNewsTemplate', loaderId: 'topMusicNewsLoaderBlock', category: 'music', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', apiRef: 'currents-api', resposeTeplateId: 'topEnvironmentNewsTemplate', loaderId: 'topEnvironmentNewsLoaderBlock', category: 'environment', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', apiRef: 'currents-api', resposeTeplateId: 'topEducationNewsTemplate', loaderId: 'topEducationNewsLoaderBlock', category: 'education', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', apiRef: 'currents-api', resposeTeplateId: 'topEntrepreneurNewsTemplate', loaderId: 'topEntrepreneurNewsLoaderBlock', category: 'entrepreneur', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', apiRef: 'currents-api', resposeTeplateId: 'topMovieNewsTemplate', loaderId: 'topMovieNewsLoaderBlock', category: 'movie', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', apiRef: 'currents-api', resposeTeplateId: 'topTelevisionNewsTemplate', loaderId: 'topTelevisionNewsLoaderBlock', category: 'television', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', apiRef: 'currents-api', resposeTeplateId: 'topGadgetsNewsTemplate', loaderId: 'topGadgetsNewsLoaderBlock', category: 'gadgets', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', apiRef: 'currents-api', resposeTeplateId: 'topMobileNewsTemplate', loaderId: 'topMobileNewsLoaderBlock', category: 'mobile', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', apiRef: 'currents-api', resposeTeplateId: 'currentsLatestNewsTemplate', loaderId: 'currentsLatestNewsLoaderBlock', category: 'currents-latest-news', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', apiRef: 'currents-api', resposeTeplateId: 'topProgrammingNewsTemplate', loaderId: 'topProgrammingNewsLoaderBlock', category: 'programming', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', apiRef: 'currents-api', resposeTeplateId: 'topPoliticsNewsTemplate', loaderId: 'topPoliticsNewsLoaderBlock', category: 'politics', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', apiRef: 'currents-api', resposeTeplateId: 'topCelebrityNewsTemplate', loaderId: 'topCelebrityNewsLoaderBlock', category: 'celebrity', country: defaultNewsSourceCountry});
+
+  socket.emit("news-api-request", {from: 'Api', apiRef: 'currents-api', resposeTeplateId: 'topAutoNewsTemplate', loaderId: 'topAutoNewsLoaderBlock', category: 'auto', country: defaultNewsSourceCountry});
+
+
+  // socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'hackerNewsTopStoriesBlock', loaderId: 'hackerNewsTopStoriesBlock', category: 'sports', country: defaultNewsSourceCountry});
+
+
+  socket.emit("request-hacker-news-api", {from: 'NewsApp:home', resposeTeplateId: 'hackerNewsTopStoriesTemplate', loaderId: 'hackerNewsTopStoriesLoaderBlock', hackerNewsCatgory : 'topstories'});
+
+  socket.emit("request-hacker-news-api", {from: 'NewsApp:home', resposeTeplateId: 'hackerNewsBestStoriesTemplate', loaderId: 'hackerNewsBestStoriesLoaderBlock', hackerNewsCatgory : 'beststories'});
+
+  socket.emit("request-hacker-news-api", {from: 'NewsApp:home', resposeTeplateId: 'hackerNewsAsksStoriesTemplate', loaderId: 'hackerNewsAsksStoriesLoaderBlock', hackerNewsCatgory : 'asksstories'});
+
+  socket.emit("request-hacker-news-api", {from: 'NewsApp:home', resposeTeplateId: 'hackerNewsNewStoriesTemplate', loaderId: 'hackerNewsNewStoriesLoaderBlock', hackerNewsCatgory : 'newstories'});
+
+  socket.emit("request-hacker-news-api", {from: 'NewsApp:home', resposeTeplateId: 'hackerNewsJobStoriesTemplate', loaderId: 'hackerNewsJobStoriesLoaderBlock', hackerNewsCatgory : 'jobstories'});
+
+  socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topNewsSourcesTemplate', loaderId: 'topNewsSourcesLoaderBlock', category: 'sources'});
+
+  socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topEnglishNewsSourcesTemplate', loaderId: 'topEnglishNewsSourcesLoaderBlock', category: 'englisg news sources'});
+
+  socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topIndianEnglishNewsSourcesTemplate', loaderId: 'topIndianEnglishNewsSourcesLoaderBlock', category: 'Indian englisg news sources'});
+
+  socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'allNewsContentsTemplate', loaderId: 'allNewsContentsLoaderBlock', category: 'all news'});
+
+  socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topNewsSourcesCountryContentsTemplate', loaderId: 'topNewsSourcesCountryContentsLoaderBlock', category: 'country'});
+
+  socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topNewsSourcesLanguageContentsTemplate', loaderId: 'topNewsSourcesLanguageContentsLoaderBlock', category: 'news language'});
+
+
+  socket.on('news-api-response', function(data){
+      let loaderId = data.loaderId;
+      let blockId = data.resposeTeplateId;
+      // console.log("@@data: ", data);
+      console.log("@@blockId: ", blockId);
+      console.log("@@loaderId: ", loaderId);
+
+      if(loaderId !== null && loaderId !== undefined){
+        if(document.getElementById(loaderId) !== null && document.getElementById(blockId) !== null){
+          document.getElementById(loaderId).style.display = "none";
+          document.getElementById(blockId).style.display = "block";
+        }
+        document.getElementById(blockId).innerHTML = '';
+        document.getElementById(blockId).innerHTML = data.returnMsg;
+      }
+  });
+
+
+  socket.on("response-one-minute-news-podcasts", function(data){
+      console.log("===  calling response-one-minute-news-podcasts === ");
+      oneMinutePodcasts(data.podcastData);
+  });
+
+
+
+  var textToSpeechSetUpObject = {};
+  function oneMinutePodcasts(textToSpeech){
+    console.log("==== callig textToSpeech fn ====");
+    // console.log("txt : ", textToSpeech);
+    let synth = window.speechSynthesis;
+    if(textToSpeech !== null && textToSpeech !== undefined && textToSpeech.length > 0 ){
+        for (let i = 0; i < textToSpeech.length; i++) {
+            let msg = new SpeechSynthesisUtterance();
+            if(textToSpeechSetUpObject.volume !== null && textToSpeechSetUpObject.volume !== undefined){
+              msg.volume = textToSpeechSetUpObject.volume;
+            }
+            if(textToSpeechSetUpObject.rate !== null && textToSpeechSetUpObject.rate !== undefined){
+              msg.rate = textToSpeechSetUpObject.rate;
+            }
+            if(textToSpeechSetUpObject.pitch !== null && textToSpeechSetUpObject.pitch !== undefined){
+              msg.pitch = textToSpeechSetUpObject.pitch;
+            }
+            let voices = null;
+            if(i % 2 === 0){
+                 voices = synth.getVoices();
+
+                 msg.voice = voices[3];
+                 console.log("x : ", JSON.stringify(msg.voice));
+
+            }else{
+                 voices = synth.getVoices();
+                 msg.voice = voices[5];
+
+            }
+            msg.text = textToSpeech[i];
+            window.speechSynthesis.speak(msg);
+
+        }
+    }
+    msg.onerror = function(event) {
+        console.log("== calling msg.onerror function ==");
+        window.speechSynthesis.end();
+        console.log('An error has occurred with the speech synthesis: ' + event.error);
+    }
+    msg.onstart = function(event) {
+        console.log("== calling msg.onstart function ==");
+        // window.speechSynthesis.end();
+    }
+    msg.onend = function(event) {
+        console.log("== calling msg.end function ==");
+    }
+
+  }
+
+  function onClickOneMinuteNewsPodcasts(newsCategory){
+      console.log("==== onclick onClickOneMinuteNewsPodcasts : ", onClickOneMinuteNewsPodcasts);
+      console.log("==== newsCategory : ", newsCategory);
+      socket.emit("request-one-minute-news-podcasts", {from: 'Api',  category: newsCategory, country: defaultNewsSourceCountry });
+  }
+  // 9836863092
+  function onClickSideMenu(argument){
+      console.log("=== on click side menu fun ===");
+      console.log("=== argument: ", argument);
+      if(argument === 'sports'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("topSportsNewsContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Top Sports News Headlines';
+        currentBlockId = 'topSportsNewsContentsBlock';
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topSportsNewsContentsTemplate', loaderId: 'topSportsNewsContentsLoaderBlock', category: 'sports', country: defaultNewsSourceCountry, scroll: 'vertical'});
+      }else if(argument === 'all news'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("topNewsContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Top News Headlines';
+
+        currentBlockId = 'topNewsContentsBlock';
+        // socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topNewsSourcesContentsTemplate', loaderId: 'topNewsSourcesContentsLoaderBlock', category: 'sources'});
+
+      }else if(argument === 'top latest news'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("currentsLatestNewsContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Top Latest Headlines';
+
+        currentBlockId = 'currentsLatestNewsContentsBlock';
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'currentsLatestNewsContentsTemplate', loaderId: 'currentsLatestNewsContentsLoaderBlock', category: 'currents-latest-news', country: defaultNewsSourceCountry, scroll: 'vertical'});
+
+      }else if(argument === 'source'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("topNewsSourcesContentsBlock").style.display = "block";
+        currentBlockId = 'topNewsSourcesContentsBlock';
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topNewsSourcesContentsTemplate', loaderId: 'topNewsSourcesContentsLoaderBlock', category: 'sources'});
+
+      }else if(argument === 'english news source'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("topEnglishNewsSourcesContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Top English News Source';
+
+        currentBlockId = 'topEnglishNewsSourcesContentsBlock';
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topEnglishNewsSourcesContentsBlock', loaderId: 'topEnglishNewsSourcesContentsLoaderBlock', category: 'sources'});
+
+      }else if(argument === 'indian english news source'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("topIndianEnglishNewsSourcesContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Top Indian English News Source';
+
+        currentBlockId = 'topIndianEnglishNewsSourcesContentsBlock';
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topIndianEnglishNewsSourcesContentsTemplate', loaderId: 'topIndianEnglishNewsSourcesContentsLoaderBlock', category: 'Indian englisg news sources' });
+
+      }else if(argument === 'business'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("topBusinessNewsContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Top Business News Headlines';
+
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topBusinessNewsContentsTemplate', loaderId: 'topBusinessNewsContentsLoaderBlock', category: 'business', country: defaultNewsSourceCountry, scroll: 'vertical'});
+        currentBlockId = 'topBusinessNewsContentsBlock';
+
+      }else if(argument === 'entertainment'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("topEntertainmentNewsContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Top Entertainment News Headlines';
+
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topEntertainmentNewsContentsTemplate', loaderId: 'topEntertainmentNewsContentsLoaderBlock', category: 'entertainment', country: defaultNewsSourceCountry, scroll: 'vertical'});
+        currentBlockId = 'topEntertainmentNewsContentsBlock';
+
+      }else if(argument === 'science'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("topScienceNewsContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Top Science News Headlines';
+
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topScienceNewsContentsTemplate', loaderId: 'topScienceNewsContentsLoaderBlock',  category: 'science', country: defaultNewsSourceCountry, scroll: 'vertical'});
+        currentBlockId = 'topScienceNewsContentsBlock';
+
+      }else if(argument === 'health'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("topHealthNewsContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Top Health News Headlines';
+
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topHealthNewsContentsTemplate', loaderId: 'topHealthNewsContentsLoaderBlock', category: 'health', country: defaultNewsSourceCountry, scroll: 'vertical'});
+        currentBlockId = 'topHealthNewsContentsBlock';
+
+      }else if(argument === 'technology'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("topTechnologyNewsContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Top Technology News Headlines';
+
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topTechnologyNewsContentsTemplate', loaderId: 'topTechnologyNewsContentsLoaderBlock', category: 'technology', country: defaultNewsSourceCountry, scroll: 'vertical'});
+        currentBlockId = 'topTechnologyNewsContentsBlock';
+
+      }else if(argument === 'programming'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("topProgrammingNewsContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Top Technology News Headlines';
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topProgrammingNewsContentsTemplate', loaderId: 'topProgrammingNewsContentsLoaderBlock', category: 'programming', country: defaultNewsSourceCountry, scroll: 'vertical'});
+        currentBlockId = 'topProgrammingNewsContentsBlock';
+
+      }else if(argument === 'hacker news top stories'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("hackerNewsTopStoriesContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Hacker News Top Stories';
+        socket.emit("request-hacker-news-api", {from: 'NewsApp:sideMenu', resposeTeplateId: 'hackerNewsTopStoriesContentsTemplate', loaderId: 'hackerNewsTopStoriesContentsLoaderBlock', hackerNewsCatgory : 'topstories'});
+        // socket.emit("news-api-request", {from: 'NewsApp', resposeTeplateId: 'hackerNewsTopStoriesContentsTemplate', loaderId: 'hackerNewsTopStoriesContentsLoaderBlock', hackerNewsCatgory : 'topstories'});
+        currentBlockId = 'hackerNewsTopStoriesContentsBlock';
+      }else if(argument === 'abp live'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("abpLiveContentsBlock").style.display = "block";
+        // document.getElementById("appHeadliesTitle").innerHTML = 'Hacker News Top Stories';
+        // socket.emit("request-hacker-news-api", {from: 'NewsApp:sideMenu', resposeTeplateId: 'hackerNewsTopStoriesContentsTemplate', loaderId: 'hackerNewsTopStoriesContentsLoaderBlock', hackerNewsCatgory : 'topstories'});
+        // socket.emit("news-api-request", {from: 'NewsApp', resposeTeplateId: 'hackerNewsTopStoriesContentsTemplate', loaderId: 'hackerNewsTopStoriesContentsLoaderBlock', hackerNewsCatgory : 'topstories'});
+        currentBlockId = 'abpLiveContentsBlock';
+      }else if(argument === 'cricket live'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("cricketLiveContentsBlock").style.display = "block";
+        // document.getElementById("appHeadliesTitle").innerHTML = 'Hacker News Top Stories';
+        // socket.emit("request-hacker-news-api", {from: 'NewsApp:sideMenu', resposeTeplateId: 'hackerNewsTopStoriesContentsTemplate', loaderId: 'hackerNewsTopStoriesContentsLoaderBlock', hackerNewsCatgory : 'topstories'});
+        // socket.emit("news-api-request", {from: 'NewsApp', resposeTeplateId: 'hackerNewsTopStoriesContentsTemplate', loaderId: 'hackerNewsTopStoriesContentsLoaderBlock', hackerNewsCatgory : 'topstories'});
+        currentBlockId = 'cricketLiveContentsBlock';
+      }else if(argument === 'football live'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("footballLiveContentsBlock").style.display = "block";
+        // document.getElementById("appHeadliesTitle").innerHTML = 'Hacker News Top Stories';
+        // socket.emit("request-hacker-news-api", {from: 'NewsApp:sideMenu', resposeTeplateId: 'hackerNewsTopStoriesContentsTemplate', loaderId: 'hackerNewsTopStoriesContentsLoaderBlock', hackerNewsCatgory : 'topstories'});
+        // socket.emit("news-api-request", {from: 'NewsApp', resposeTeplateId: 'hackerNewsTopStoriesContentsTemplate', loaderId: 'hackerNewsTopStoriesContentsLoaderBlock', hackerNewsCatgory : 'topstories'});
+        currentBlockId = 'footballLiveContentsBlock';
+      }else if(argument === 'search'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("searchContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Search Personalized News';
+        // socket.emit("request-hacker-news-api", {from: 'NewsApp:sideMenu', resposeTeplateId: 'searchContentsTemplate', loaderId: 'searchContentsLoaderBlock'});
+        // socket.emit("news-api-request", {from: 'NewsApp', resposeTeplateId: 'hackerNewsTopStoriesContentsTemplate', loaderId: 'hackerNewsTopStoriesContentsLoaderBlock', hackerNewsCatgory : 'topstories'});
+        currentBlockId = 'searchContentsBlock';
+
+
+      }else if(argument === 'country'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("topNewsSourcesCountryContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Top News Source Country';
+
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topNewsSourcesCountryContentsTemplate', loaderId: 'topNewsSourcesCountryContentsLoaderBlock', category: 'country', country: 'in', scroll: 'vertical'});
+        currentBlockId = 'topNewsSourcesCountryContentsBlock';
+
+      }else if(argument === 'news language'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("topNewsSourcesLanguageContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Top News Source Languages';
+
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topNewsSourcesLanguageContentsTemplate', loaderId: 'topNewsSourcesLanguageContentsLoaderBlock', category: 'news language', country: defaultNewsSourceCountry, scroll: 'vertical'});
+        currentBlockId = 'topNewsSourcesLanguageContentsBlock';
+      }else if(argument === 'settings'){
+        document.getElementById(currentBlockId).style.display = "none";
+        document.getElementById("settingsContentsBlock").style.display = "block";
+        document.getElementById("appHeadliesTitle").innerHTML = 'Settings';
+
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'settingsTopNewsSourcesContentsTemplate', loaderId: 'settingsTopNewsSourcesContentsLoaderBlock', category: 'sources'});
+
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'settingsTopEnglishNewsSourcesContentsTemplate', loaderId: 'settingsTopEnglishNewsSourcesContentsLoaderBlock', category: 'englisg news sources'});
+
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'settingsTopIndianEnglishNewsSourcesContentsTemplate', loaderId: 'settingsTopIndianEnglishNewsSourcesContentsLoaderBlock', category: 'Indian englisg news sources'});
+
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'settingsTopNewsSourcesCountryContentsTemplate', loaderId: 'settingsTopNewsSourcesCountryContentsLoaderBlock', category: 'country'});
+
+        socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'settingsTopNewsSourcesLanguageContentsTemplate', loaderId: 'settingsTopNewsSourcesLanguageContentsLoaderBlock', category: 'news language'});
+
+        // socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'topNewsSourcesLanguageContentsTemplate', loaderId: 'topNewsSourcesLanguageContentsLoaderBlock', category: 'news language', country: defaultNewsSourceCountry, scroll: 'vertical'});
+        currentBlockId = 'settingsContentsBlock';
+      }else{
+
+      }
+
+      document.getElementById("mySidebar").style.display = "none";
+
+  }
+
+  function onClickPersonalizedSearch(){
+      console.log("== on click onClickPersonalizedSearch fun ==");
+      document.getElementById("searchPersonalizedNews").focus();
+      document.getElementById(currentBlockId).style.display = "none";
+      document.getElementById("searchContentsBlock").style.display = "block";
+      document.getElementById("menuIcon").style.display = "none";
+      document.getElementById("searchBackIcon").style.display = "inline-block";
+      // document.getElementById("searchPersonalizedNews").style.backgroundColor = 'white';
+
+      document.getElementById("searchResultsContentsLoaderBlock").style.display = "block";
+      document.getElementById("searchResultsBlock").style.display = "block";
+      // document.getElementById("searchPersonalizedNews").value = "";
+      document.getElementById("searchResultsContentsTemplate").innerHTML = '';
+      let helpInfoTxt = serachQariesList[0];
+      console.log("helpInfoTxt: ", helpInfoTxt);
+      socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: helpInfoTxt, category: 'customSearch', country: defaultNewsSourceCountry, scroll: 'vertical'});
+
+  }
+
+  function onClickSearchBackBtn(){
+      console.log("== on click onClickSearchBackBtn ==");
+      document.getElementById(currentBlockId).style.display = "none";
+      document.getElementById("topNewsContentsBlock").style.display = "block";
+      document.getElementById("menuIcon").style.display = "inline-block";
+      document.getElementById("searchBackIcon").style.display = "none";
+      // document.getElementById("searchPersonalizedNews").style.backgroundColor = 'white';
+
+
+  }
+
+
+  function onSelectHeadlineByCategory(){
+    console.log("==on select onSelectHeadlineByCategory fun ==");
+    var headlineByCatVal = document.getElementById("headlineByCategory").value;
+    headlineByCatVal = headlineByCatVal.toString();
+    console.log("@@@ type of headlineByCatVal ", typeof(headlineByCatVal));
+    console.log("headlineByCatVal : ", headlineByCatVal);
+    if(headlineByCatVal === "Headline by category"){
+      document.getElementById("headlineByCategorySearchContentsBlock").style.display = "block";
+      document.getElementById("headlineByCategorySearchContentsTemplate").innerHTML = "";
+      socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'headlineByCategorySearchContentsTemplate', loaderId: 'headlineByCategorySearchContentsLoaderBlock', category: 'currents api news category'});
+
+    }else if(headlineByCatVal === "Headline by news source"){
+      console.log("===================");
+      // document.getElementById("searchResultsContentsTemplate").innerHTML = "";
+      document.getElementById("headlineByCategorySearchContentsBlock").style.display = "block";
+      document.getElementById("headlineByCategorySearchContentsTemplate").innerHTML = "";
+      socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'headlineByCategorySearchContentsTemplate', loaderId: 'headlineByCategorySearchContentsLoaderBlock', category: 'englisg news sources'});
+
+    }else if(headlineByCatVal === "Headline by keywords"){
+
+    }else if(headlineByCatVal === "Headline by news source by language"){
+      document.getElementById("headlineByCategorySearchContentsBlock").style.display = "block";
+      document.getElementById("headlineByCategorySearchContentsTemplate").innerHTML = "";
+      socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'headlineByCategorySearchContentsTemplate', loaderId: 'headlineByCategorySearchContentsLoaderBlock', category: 'news language'});
+
+    }else if(headlineByCatVal === "Headline by Nation"){
+      document.getElementById("headlineByCategorySearchContentsBlock").style.display = "block";
+      document.getElementById("headlineByCategorySearchContentsTemplate").innerHTML = "";
+      socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'headlineByCategorySearchContentsTemplate', loaderId: 'headlineByCategorySearchContentsLoaderBlock', category: 'country'});
+
+    }else if(headlineByCatVal === "Headline by Indian english news source"){
+      document.getElementById("headlineByCategorySearchContentsBlock").style.display = "block";
+      document.getElementById("headlineByCategorySearchContentsTemplate").innerHTML = "";
+      socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'headlineByCategorySearchContentsTemplate', loaderId: 'headlineByCategorySearchContentsLoaderBlock', category: 'Indian englisg news sources'});
+
+    }else if(headlineByCatVal === "Wikipedia search"){
+      // document.getElementById("headlineByCategorySearchContentsBlock").style.display = "block";
+      document.getElementById("searchPersonalizedNews").placeholder = 'Wikipedia search...';
+      document.getElementById("searchPersonalizedNews").focus();
+      document.getElementById("searchPersonalizedNews").style.backgroundColor = 'gainsboro';
+      document.getElementById("searchPersonalizedNews").style.color = 'black';
+      // document.getElementById("headlineByCategorySearchContentsTemplate").innerHTML = "";
+      let query = document.getElementById("searchPersonalizedNews").value;
+      currentSearchSource = 'wikipedia';
+
+      //socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'headlineByCategorySearchContentsTemplate', loaderId: 'headlineByCategorySearchContentsLoaderBlock', category: 'wikipedia_search'});
+
+    }
+
+  }
+
+
+  app.controller('nearByApiController', function($scope){
+
+    function onClickSideMenu(argument){
+        console.log("=== on click side menu fun ===");
+        // console.log("=== argument: ", argument);
+    }
+
+    $scope.onClickHelpInfoItems = function(helpInfoTxt){
+      console.log("help txt : ", helpInfoTxt);
+      document.getElementById("searchResultsContentsLoaderBlock").style.display = "block";
+      document.getElementById("searchResultsBlock").style.display = "block";
+      document.getElementById("searchPersonalizedNews").value = "";
+      document.getElementById("searchResultsContentsTemplate").innerHTML = '';
+      socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: helpInfoTxt, category: 'customSearch', country: defaultNewsSourceCountry, scroll: 'vertical'});
+    }
+
+    $scope.serachQariesList = ['CAA protest in india', 'CAA protest in kolkata', 'Mamata banerjee political view in kolkata', 'Corona virus latest news in india'];
+
+    $scope.searchPersonalizedNews = function(){
+        let queryMsg = document.getElementById("searchPersonalizedNews").value;
+        console.log("search value : ", queryMsg);
+        queryMsg = queryMsg.replace(/\s\s+/g, ' ');
+        if($scope.serachQariesList.indexOf(queryMsg) === -1){
+            $scope.serachQariesList.unshift(queryMsg);
+            window.serachQariesList.unshift(queryMsg);
+            console.log("@@@ serachQariesList : ", window.serachQariesList);
+        }
+        document.getElementById("searchResultsContentsLoaderBlock").style.display = "block";
+        document.getElementById("searchResultsBlock").style.display = "block";
+        document.getElementById("searchPersonalizedNews").value = "";
+        document.getElementById("searchResultsContentsTemplate").innerHTML = '';
+        // if(currentSearchSource !== 'wikipedia'){
+        //     socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: queryMsg, category: 'customSearch', country: defaultNewsSourceCountry, scroll: 'vertical'});
+        // }else{
+        //     console.log("==== callingf wikipedia search news ====");
+        //     socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: query, filterBy: "wikipedia_search", category: 'news_by_filter', scroll: 'vertical'});
+        // }
+        // socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: queryMsg, category: 'customSearch', country: defaultNewsSourceCountry, scroll: 'vertical'});
+    }
+
+    $scope.sendMsgByEnter = function(keyEvent, queryMsg, source){
+          console.log("=== call send msg by enter ===");
+         if (keyEvent.which === 13 || source === "send"){
+                 queryMsg = queryMsg.replace(/\s\s+/g, ' ');
+                 if($scope.serachQariesList.indexOf(queryMsg) === -1){
+                     $scope.serachQariesList.unshift(queryMsg);
+                     window.serachQariesList.unshift(queryMsg);
+
+                 }
+                 document.getElementById("searchResultsContentsLoaderBlock").style.display = "block";
+                 document.getElementById("searchResultsBlock").style.display = "block";
+                 document.getElementById("searchPersonalizedNews").value = "";
+                 document.getElementById("searchResultsContentsTemplate").innerHTML = '';
+
+                 if(currentSearchSource !== 'wikipedia'){
+                    socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: queryMsg, category: 'customSearch', country: defaultNewsSourceCountry, scroll: 'vertical'});
+                 }else{
+                     console.log("==== callingf wikipedia search news ====");
+                     // let query = document.getElementById("searchPersonalizedNews").value;
+                     // console.log("%%% query : ", query);
+                     document.getElementById("searchPersonalizedNews").value = '';
+                     document.getElementById("searchPersonalizedNews").style.backgroundColor = "white";
+                     document.getElementById("searchPersonalizedNews").placeholder = 'Search news by keywords...';
+
+                     socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: queryMsg, filterBy: "wikipedia_search", category: 'news_by_filter', scroll: 'vertical'});
+                 }
+         }
+
+    }
+
+    // ==== ON BACKSPACE :  enable diseable mike or send icon ====
+    $scope.onClickBackSpace = function(keyEvent, queryMsg){
+      console.log("============ on click  onClickBackSpacebutton action ==============");
+
+      // if (keyEvent.which === 8){
+      //     queryMsg = queryMsg.replace(/\s\s+/g, ' ');
+      //     document.getElementById("searchResultsBlock").style.display = "block";
+      //     document.getElementById("searchPersonalizedNews").value = "";
+      //     if(document.getElementById("searchPersonalizedNews") !== null && undefined){
+      //        document.getElementById("searchPersonalizedNews").innerHTML = '';
+      //     }
+      //     socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: queryMsg, category: 'customSearch', country: defaultNewsSourceCountry, scroll: 'vertical'});
+      // }
+    }
+
+    window.onClickButtonAction = function(bookIsbn, bookTitle, bookImg, api){
+      console.log("============ on click onClickButtonAction button action ==============");
+      // console.log("isbn: ", bookIsbn);
+      // console.log("title: ", bookTitle);
+      // console.log("bookImg : ", bookImg);
+      // console.log("@@@@ api : ", onClickButtonAction);
+      if(bookTitle === "HACKER-NEWS:topstories"){
+
+      }else{
+        client.emit("add-book-to-shelf",{from: 'Gini', bookIsbn: bookIsbn, bookTitle: bookTitle, bookImg:bookImg, api: api});
+      }
+    }
+
+    function textToSpeech(txt){
+      // console.log("==== callig textToSpeech fn ====");
+      let msg = new SpeechSynthesisUtterance();
+      let synth = window.speechSynthesis;
+      if(textToSpeechSetUpObject.volume !== null && textToSpeechSetUpObject.volume !== undefined){
+        msg.volume = textToSpeechSetUpObject.volume;
+      }
+      if(textToSpeechSetUpObject.rate !== null && textToSpeechSetUpObject.rate !== undefined){
+        msg.rate = textToSpeechSetUpObject.rate;
+      }
+      if(textToSpeechSetUpObject.pitch !== null && textToSpeechSetUpObject.pitch !== undefined){
+        msg.pitch = textToSpeechSetUpObject.pitch;
+      }
+      if(textToSpeechSetUpObject.voice !== null && textToSpeechSetUpObject.voice !== undefined){
+        msg.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name === textToSpeechSetUpObject.voice; })[0];
+      }else{
+        let voices = synth.getVoices();
+        msg.voice = voices[4];
+      }
+      msg.text = txt;
+      window.speechSynthesis.resume();
+      window.speechSynthesis.speak(msg);
+    }
+
+    window.onOpenModal = function(url, type){
+        console.log("==== call open modal function ====");
+        // console.log("== href value :: ", url);
+        // console.log("== type value :: ", type);
+        let dynId = '';
+        let playId = '';
+        let pauseId = '';
+        if(type === 'newWindow'){
+          window.open(url);
+        }if(type === 'textToSpeech'){
+          // console.log("============== textToSpeech ==============");
+          dynId = url.replace(/\s/g, '');
+          dynId = dynId.replace(/-/g, '');
+          dynId = dynId.replace(/,/g, '');
+          playId = 'play:'+dynId;
+          pauseId = 'pause:'+dynId;
+          // console.log("play id : ", playId);
+          // console.log("play id : ", pauseId);
+          // window.speechSynthesis.resume();
+
+          textToSpeech(url);
+          // document.getElementById(playId).style.display = "none";
+          // document.getElementById(pauseId).style.display = "block";
+        }else if(type === 'textToPause'){
+          // console.log("== href value :: ", url);
+          // console.log("== type value :: ", type);
+          dynId = url.replace(/\s/g, '');
+          dynId = dynId.replace(/-/g, '');
+          dynId = dynId.replace(/,/g, '');
+          playId = 'play:'+dynId;
+          pauseId = 'pause:'+dynId;
+          window.speechSynthesis.pause();
+          // document.getElementById(pauseId).style.display = "none";
+          // document.getElementById(playId).style.display = "block";
+        }else if(type === 'openModalWithContent'){
+          modalState = type;
+          socket.emit("open-modal-with-content-request", {url : url});
+        }else{
+          document.getElementById("urlIframe").style.display = "none";
+          document.getElementById("modalContent").innerHTML = url;
+          $("#URLModal").modal();
+        }
+
+    }
+
+    window.onOpenThreeDotsActionModal = function(){
+        // console.log("@@@@@@@@@ oclick onOpenThreeDotsActionModal @@@@@@@@@@");
+        document.getElementById("threeDotsActionModalContent").innerHTML = '';
+        $("#threeDotsActionModal").modal();
+    }
+
+    window.getNewsByCustomFilter = function(filterName, api){
+       console.log("call get products by id : ", filterName);
+       console.log("call get products by api : ", api);
+       if(api === "NEWSAPI:country"){
+           document.getElementById("searchResultsContentsLoaderBlock").style.display = "block";
+           document.getElementById("searchResultsBlock").style.display = "block";
+           document.getElementById("searchPersonalizedNews").value = "";
+           document.getElementById("searchResultsContentsTemplate").innerHTML = '';
+           socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: filterName, filterBy: api, category: 'news_by_filter', scroll: 'vertical'});
+       }else if(api === "NEWSAPI:language"){
+           document.getElementById("searchResultsContentsLoaderBlock").style.display = "block";
+           document.getElementById("searchResultsBlock").style.display = "block";
+           document.getElementById("searchPersonalizedNews").value = "";
+           document.getElementById("searchResultsContentsTemplate").innerHTML = '';
+           socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: filterName, filterBy: api, category: 'news_by_filter', scroll: 'vertical'});
+       }else if(api === "NEWSAPI:newsByCategory"){
+           document.getElementById("searchResultsContentsLoaderBlock").style.display = "block";
+           document.getElementById("searchResultsBlock").style.display = "block";
+           document.getElementById("searchPersonalizedNews").value = "";
+           document.getElementById("searchResultsContentsTemplate").innerHTML = '';
+           socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: filterName, filterBy: api, category: 'news_by_filter', scroll: 'vertical'});
+       }else if(api === "NEWSAPI:newsBySource"){
+           filterName = filterName.replace(/ /g,'-');
+           console.log("@@@ filtername : ", filterName);
+           if(filterName.indexOf('(') !== -1){
+             filterName = filterName.replace('(','');
+           }
+           if(filterName.indexOf(')') !== -1){
+             filterName = filterName.replace(')','');
+           }
+           document.getElementById("searchResultsContentsLoaderBlock").style.display = "block";
+           document.getElementById("searchResultsBlock").style.display = "block";
+           document.getElementById("searchPersonalizedNews").value = "";
+           document.getElementById("searchResultsContentsTemplate").innerHTML = '';
+           socket.emit("news-api-request", {from: 'Api', resposeTeplateId: 'searchResultsContentsTemplate', loaderId: 'searchResultsContentsLoaderBlock', searchQuery: filterName, filterBy: api, category: 'news_by_filter', scroll: 'vertical'});
+       }
+    }
+
+    // DQ0KKFk gaja key
+
+
+
+       // else if(api == ""){
+       //
+       // }else{
+       //
+       // }
+       // client.emit("find-products-by-id-request", {id : id , api: api, from: 'Gini'})
+
+
+    window.webShare = function(title, text, url){
+      // console.log("title : ", title);
+      //   console.log("=== calling web share function ===");
+      //   console.log("title : ", title);
+      //   console.log("text : ", text);
+      //   console.log("url : ", url);
+
+        if(navigator.share){
+            console.log("==== supported web share ====");
+            navigator.share({
+              title : title,
+              text : text,
+              url : url,
+            }).then((data) => {
+                console.log("thanks for sharingthe data.");
+                console.log("data : ", data);
+            })
+            .catch((err) => {
+                console.log("error occured when we are sharing the post.");
+            })
+        }
+    }
+
+    socket.on("open-modal-with-content-response", function(data){
+        // console.log("==== call open modal with content response ====");
+        // console.log("open-modal-with-content-response :: ", data.template);
+        if(modalState === 'openModalWithContent'){
+            document.getElementById("urlIframe").style.display = "none";
+            document.getElementById("modalContent").innerHTML = data.template;
+            $("#URLModal").modal();
+        }
+        modalState = null;
+    })
+  });
+</script>
+
+</body>
+</html>

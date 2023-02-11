@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html>
+<title>Portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="/socket.io/socket.io.js"></script>
+<style>
+.progress-circle {
+   font-size: 20px;
+   margin: 20px;
+   position: relative; /* so that children can be absolutely positioned */
+   padding: 0;
+   width: 5em;
+   height: 5em;
+   background-color: #F2E9E1;
+   border-radius: 50%;
+   line-height: 5em;
+}
+
+.progress-circle:after{
+    border: none;
+    position: absolute;
+    top: 0.35em;
+    left: 0.35em;
+    text-align: center;
+    display: block;
+    border-radius: 50%;
+    width: 4.3em;
+    height: 4.3em;
+    background-color: white;
+    content: " ";
+}
+/* Text inside the control */
+.progress-circle span {
+    position: absolute;
+    line-height: 5em;
+    width: 5em;
+    text-align: center;
+    display: block;
+    color: #53777A;
+    z-index: 2;
+}
+.left-half-clipper {
+   /* a round circle */
+   border-radius: 50%;
+   width: 5em;
+   height: 5em;
+   position: absolute; /* needed for clipping */
+   clip: rect(0, 5em, 5em, 2.5em); /* clips the whole left half*/
+}
+/* when p>50, don't clip left half*/
+.progress-circle.over50 .left-half-clipper {
+   clip: rect(auto,auto,auto,auto);
+}
+.value-bar {
+   /*This is an overlayed square, that is made round with the border radius,
+   then it is cut to display only the left half, then rotated clockwise
+   to escape the outer clipping path.*/
+   position: absolute; /*needed for clipping*/
+   clip: rect(0, 2.5em, 5em, 0);
+   width: 5em;
+   height: 5em;
+   border-radius: 50%;
+   border: 0.45em solid #53777A; /*The border is 0.35 but making it larger removes visual artifacts */
+   /*background-color: #4D642D;*/ /* for debug */
+   box-sizing: border-box;
+
+}
+/* Progress bar filling the whole right half for values above 50% */
+.progress-circle.over50 .first50-bar {
+   /*Progress bar for the first 50%, filling the whole right half*/
+   position: absolute; /*needed for clipping*/
+   clip: rect(0, 5em, 5em, 2.5em);
+   background-color: #53777A;
+   border-radius: 50%;
+   width: 5em;
+   height: 5em;
+}
+.progress-circle:not(.over50) .first50-bar{ display: none; }
+
+
+/* Progress bar rotation position */
+.progress-circle.p0 .value-bar { display: none; }
+.progress-circle.p1 .value-bar { transform: rotate(4deg); }
+.progress-circle.p2 .value-bar { transform: rotate(7deg); }
+.progress-circle.p3 .value-bar { transform: rotate(11deg); }
+.progress-circle.p4 .value-bar { transform: rotate(14deg); }
+.progress-circle.p5 .value-bar { transform: rotate(18deg); }
+.progress-circle.p6 .value-bar { transform: rotate(22deg); }
+.progress-circle.p7 .value-bar { transform: rotate(25deg); }
+.progress-circle.p8 .value-bar { transform: rotate(29deg); }
+.progress-circle.p9 .value-bar { transform: rotate(32deg); }
+.progress-circle.p10 .value-bar { transform: rotate(36deg); }
+.progress-circle.p11 .value-bar { transform: rotate(40deg); }
+.progress-circle.p12 .value-bar { transform: rotate(43deg); }
+.progress-circle.p13 .value-bar { transform: rotate(47deg); }
+.progress-circle.p14 .value-bar { transform: rotate(50deg); }
+.progress-circle.p15 .value-bar { transform: rotate(54deg); }
+.progress-circle.p16 .value-bar { transform: rotate(58deg); }
+.progress-circle.p17 .value-bar { transform: rotate(61deg); }
+.progress-circle.p18 .value-bar { transform: rotate(65deg); }
+.progress-circle.p19 .value-bar { transform: rotate(68deg); }
+.progress-circle.p20 .value-bar { transform: rotate(72deg); }
+.progress-circle.p21 .value-bar { transform: rotate(76deg); }
+.progress-circle.p22 .value-bar { transform: rotate(79deg); }
+.progress-circle.p23 .value-bar { transform: rotate(83deg); }
+.progress-circle.p24 .value-bar { transform: rotate(86deg); }
+.progress-circle.p25 .value-bar { transform: rotate(90deg); }
+.progress-circle.p26 .value-bar { transform: rotate(94deg); }
+.progress-circle.p27 .value-bar { transform: rotate(97deg); }
+.progress-circle.p28 .value-bar { transform: rotate(101deg); }
+.progress-circle.p29 .value-bar { transform: rotate(104deg); }
+.progress-circle.p30 .value-bar { transform: rotate(108deg); }
+.progress-circle.p31 .value-bar { transform: rotate(112deg); }
+.progress-circle.p32 .value-bar { transform: rotate(115deg); }
+.progress-circle.p33 .value-bar { transform: rotate(119deg); }
+.progress-circle.p34 .value-bar { transform: rotate(122deg); }
+.progress-circle.p35 .value-bar { transform: rotate(126deg); }
+.progress-circle.p36 .value-bar { transform: rotate(130deg); }
+.progress-circle.p37 .value-bar { transform: rotate(133deg); }
+.progress-circle.p38 .value-bar { transform: rotate(137deg); }
+.progress-circle.p39 .value-bar { transform: rotate(140deg); }
+.progress-circle.p40 .value-bar { transform: rotate(144deg); }
+.progress-circle.p41 .value-bar { transform: rotate(148deg); }
+.progress-circle.p42 .value-bar { transform: rotate(151deg); }
+.progress-circle.p43 .value-bar { transform: rotate(155deg); }
+.progress-circle.p44 .value-bar { transform: rotate(158deg); }
+.progress-circle.p45 .value-bar { transform: rotate(162deg); }
+.progress-circle.p46 .value-bar { transform: rotate(166deg); }
+.progress-circle.p47 .value-bar { transform: rotate(169deg); }
+.progress-circle.p48 .value-bar { transform: rotate(173deg); }
+.progress-circle.p49 .value-bar { transform: rotate(176deg); }
+.progress-circle.p50 .value-bar { transform: rotate(180deg); }
+.progress-circle.p51 .value-bar { transform: rotate(184deg); }
+.progress-circle.p52 .value-bar { transform: rotate(187deg); }
+.progress-circle.p53 .value-bar { transform: rotate(191deg); }
+.progress-circle.p54 .value-bar { transform: rotate(194deg); }
+.progress-circle.p55 .value-bar { transform: rotate(198deg); }
+.progress-circle.p56 .value-bar { transform: rotate(202deg); }
+.progress-circle.p57 .value-bar { transform: rotate(205deg); }
+.progress-circle.p58 .value-bar { transform: rotate(209deg); }
+.progress-circle.p59 .value-bar { transform: rotate(212deg); }
+.progress-circle.p60 .value-bar { transform: rotate(216deg); }
+.progress-circle.p61 .value-bar { transform: rotate(220deg); }
+.progress-circle.p62 .value-bar { transform: rotate(223deg); }
+.progress-circle.p63 .value-bar { transform: rotate(227deg); }
+.progress-circle.p64 .value-bar { transform: rotate(230deg); }
+.progress-circle.p65 .value-bar { transform: rotate(234deg); }
+.progress-circle.p66 .value-bar { transform: rotate(238deg); }
+.progress-circle.p67 .value-bar { transform: rotate(241deg); }
+.progress-circle.p68 .value-bar { transform: rotate(245deg); }
+.progress-circle.p69 .value-bar { transform: rotate(248deg); }
+.progress-circle.p70 .value-bar { transform: rotate(252deg); }
+.progress-circle.p71 .value-bar { transform: rotate(256deg); }
+.progress-circle.p72 .value-bar { transform: rotate(259deg); }
+.progress-circle.p73 .value-bar { transform: rotate(263deg); }
+.progress-circle.p74 .value-bar { transform: rotate(266deg); }
+.progress-circle.p75 .value-bar { transform: rotate(270deg); }
+.progress-circle.p76 .value-bar { transform: rotate(274deg); }
+.progress-circle.p77 .value-bar { transform: rotate(277deg); }
+.progress-circle.p78 .value-bar { transform: rotate(281deg); }
+.progress-circle.p79 .value-bar { transform: rotate(284deg); }
+.progress-circle.p80 .value-bar { transform: rotate(288deg); }
+.progress-circle.p81 .value-bar { transform: rotate(292deg); }
+.progress-circle.p82 .value-bar { transform: rotate(295deg); }
+.progress-circle.p83 .value-bar { transform: rotate(299deg); }
+.progress-circle.p84 .value-bar { transform: rotate(302deg); }
+.progress-circle.p85 .value-bar { transform: rotate(306deg); }
+.progress-circle.p86 .value-bar { transform: rotate(310deg); }
+.progress-circle.p87 .value-bar { transform: rotate(313deg); }
+.progress-circle.p88 .value-bar { transform: rotate(317deg); }
+.progress-circle.p89 .value-bar { transform: rotate(320deg); }
+.progress-circle.p90 .value-bar { transform: rotate(324deg); }
+.progress-circle.p91 .value-bar { transform: rotate(328deg); }
+.progress-circle.p92 .value-bar { transform: rotate(331deg); }
+.progress-circle.p93 .value-bar { transform: rotate(335deg); }
+.progress-circle.p94 .value-bar { transform: rotate(338deg); }
+.progress-circle.p95 .value-bar { transform: rotate(342deg); }
+.progress-circle.p96 .value-bar { transform: rotate(346deg); }
+.progress-circle.p97 .value-bar { transform: rotate(349deg); }
+.progress-circle.p98 .value-bar { transform: rotate(353deg); }
+.progress-circle.p99 .value-bar { transform: rotate(356deg); }
+.progress-circle.p100 .value-bar { transform: rotate(360deg); }
+</style>
+<style>
+:root {
+  --default-theme-color: #EA825C;
+
+}
+body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif;}
+body, html {
+  height: 100%;
+  color: #777;
+  line-height: 1.4;
+  background-color: #E8EAED;
+  /* background: #F7F7F7; */
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+/* Create a Parallax Effect */
+/* .bgimg-1, .bgimg-2, .bgimg-3 {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+} */
+
+/* First image (Logo. Full height) */
+.bgimg-1 {
+  background-image: url('static/images/final_portfolio/homepage/top-homepage/homepage-design2.jpg');
+  /* background-image: url('static/images/moumita-logo-design/moumita_profile.jpg'); */
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  /* min-height: 400px;
+  max-height: 500px; */
+  /* height: 100%; */
+}
+
+/* Second image (Portfolio) */
+.bgimg-2 {
+  background-image: url("static/images/final_portfolio/homepage/homepage-design-2.jpg");
+  min-height: 500px;
+  max-height: 500px;
+
+  /* height: 100%; */
+}
+
+/* Third image (Contact) */
+.bgimg-3 {
+  background-image: url("static/images/final_portfolio/homepage/homepage-design-3.jpg");
+  min-height: 500px;
+  max-height: 500px;
+
+  /* height: 100%; */
+}
+
+.w3-wide {letter-spacing: 10px;}
+.w3-hover-opacity {cursor: pointer;}
+.custom-menu{color: black;}
+.heading-title-layout{color: black; font-weight: 600; padding-top: 20px; font-size: 24px;}
+.skillset-title{color: #777; letter-spacing: 2px; font-weight: 600; font-size: 18px; margin-bottom: 5px;}
+.skillset-title-txt{position: relative; left: 10px; }
+/* .heading-title-block{padding-top: 20px;} */
+.custom-content-block{padding-left: 3rem;}
+/* .skillset-title{color: #D1B59E; } */
+
+
+.custom-skillset-bar{ width: 85%; background-color: var(--default-theme-color) !important; color: black; height: 7px; border-radius: 20px;}
+.custom-skillset-progress-bar{background-color: #576F77 !important; margin-left: 0px; border-radius: 20px; margin-top: 16px;}
+.custom-skill-track-percentage{ color: black; position: relative; top: -12px; font-weight: 600; border-radius: 50%; font-size: 11px; width: 30px; height: 30px; display: inline-block; background: white; padding-top: 6px; box-shadow: 4px 4px 4px -4px;}
+/* .custom-skill-track-percentage {color: black;position: relative;top: -8px;font-weight: 600;border-radius: 50%;font-size: 12px;width: 30px;height: 30px;display: inline-block;background: white;padding-top: 7px;} */
+
+.each-skillset-section{display: inline-block; width: 48%; margin-right: 16px; padding: 0px 20px 30px 20px; background: #f7f7f7;}
+.custom-portfolio-img{width: 100%; height: 175px;  box-shadow: rgba(0, 0, 0, 0.13) 0px 1px 3px 0px, rgba(0, 0, 0, 0.11) 0px 0px 0px 0px;}
+.w3-white, .w3-hover-white:hover { color: #000!important; background: white !important;}
+.custom-nav-bar-btn:hover{background-color: white !important;}
+.small-hr{border-top: 3px solid var(--default-theme-color); width: 70px; padding-bottom: 20px; margin-top: -8px; margin-left: 6%;}
+div.scrollmenu { overflow: auto; white-space: nowrap; transition: 0.3s;}
+
+div.scrollmenu a {  display: inline-block; text-decoration: none; vertical-align: top; color: grey;}
+.category-item{background: #E8EAED; padding: 6px 16px; margin-right: 8px; border-radius: 16px; color: black;}
+.work-item{width: 24%; float: left; display: inline-block; margin-right: 1%; margin-bottom: 16px;}
+.work-cat-arrow-block{display: inline-block; width: 3%;}
+.work-cat-items-block{display: inline-block; width: 93%;}
+.work-desc-heading::first-letter {text-transform: uppercase;}
+.custom-about-me-block{ padding-left: 10px; background: white; padding-bottom: 75px; margin-top: 10px; box-shadow: rgba(0, 0, 0, 0.13) 0px 1px 3px 0px, rgba(0, 0, 0, 0.11) 0px 0px 0px 0px;}
+.custom-skillset-block{background: white; padding-right: 20px; margin-top: 10px; box-shadow: rgba(0, 0, 0, 0.13) 0px 1px 3px 0px, rgba(0, 0, 0, 0.11) 0px 0px 0px 0px;}
+.custom-container{background: white; padding-left: 10px; padding-bottom: 50px;}
+.custom-education-block{margin-top: 10px;box-shadow: rgba(0, 0, 0, 0.13) 0px 1px 3px 0px, rgba(0, 0, 0, 0.11) 0px 0px 0px 0px;  padding: 10px;background: white;}
+.custom-language-block{margin-top: 10px;  box-shadow: rgba(0, 0, 0, 0.13) 0px 1px 3px 0px, rgba(0, 0, 0, 0.11) 0px 0px 0px 0px; padding: 10px; background: white;}
+.custom-work-exp-block{margin-top: 10px;}
+.custom-my-work-block{background: white;padding-left: 10px;padding-bottom: 40px;margin-top: 10px;margin-bottom: 10px;padding-right: 10px; box-shadow: rgba(0, 0, 0, 0.13) 0px 1px 3px 0px, rgba(0, 0, 0, 0.11) 0px 0px 0px 0px;}
+.custom-education-section-degree, .custom-project-header-section{font-weight: 600; margin-top: 5px; margin-bottom: 5px; font-size: 18px; padding: 16px;}
+.custom-nav-icon{margin-right: 3px;position: relative; font-size: 16px;}
+.custom-project-header-desc-section{margin-top: 10px; font-size: 16px;}
+.custom-nav-item{font-size: 16px; }
+.custom-menu-home{font-weight: 600; color: var(--default-theme-color);}
+.loader-block{text-align: center;}
+.about-me-each-attrribute{width: 50%; display: inline-block; float: left; padding: 5px 0px;}
+.custom-each-education-section {width: 50%;}
+.custom-nav-bar{width: 40%; margin: auto;}
+.custom-work-category-template{margin-left: 1%;}
+.custom-work-exp-block{clear: both; box-shadow: rgba(0, 0, 0, 0.13) 0px 1px 3px 0px, rgba(0, 0, 0, 0.11) 0px 0px 0px 0px; background: white; padding: 10px;}
+.workCategory-right-arrow{color: #000; position: relative; top: -20px; font-size: 24px; float: right; right: 30%;}
+.workCategory-left-arrow{color: #000; position: relative; top: -20px; font-size: 24px; left: 40%;}
+.w3-container, .w3-panel {padding: 0px !important;}
+.custom-my-contact-block{background: white;padding-left: 10px !important;padding-right: 10px !important; margin-bottom: 16px; margin-top: 10px; box-shadow: rgba(0, 0, 0, 0.13) 0px 1px 3px 0px, rgba(0, 0, 0, 0.11) 0px 0px 0px 0px;}
+.custom-skillset-section{padding-right: 30px; }
+.about-me-profile-block{display: inline-block; width: 30%; position: relative; top: 32px; float: left;}
+.about-me-profile-desc-block{position: relative; display: inline-block; width: 69%; padding-right: 20px;}
+.about-me-profile-pic{width: 90%; border-radius: 0%;}
+.customabout-me-profile-name{position: relative; left: -16px;}
+.work-desc-heading{margin-bottom: 5px;}
+.custom-about-me-content-section{padding-right: 20px;}
+.custom-additional-skill-each-section{display: inline-block; width: 48%; padding: 20px; margin-right: 16px; margin-top: 16px; background: #f7f7f7;}
+.custom-project-content-block{padding-left: 36px;}
+.custom-additional-block{width: 100%; padding-left: 44px; margin-top: 10px; margin-bottom: 10px;}
+
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .custom-portfolio-img{width: 100%; height: 225px;  box-shadow: rgba(0, 0, 0, 0.13) 0px 1px 3px 0px, rgba(0, 0, 0, 0.11) 0px 0px 0px 0px;}
+  .work-item{width: 100%; float: left; display: inline-block; margin-right: 0%; }
+  .work-cat-arrow-block{display: none; width: 3%;}
+  .work-cat-items-block{display: inline-block; width: 98%;}
+  .about-me-profile-block{width: 100% !important;};
+  .about-me-profile-desc-block{width: 100% !important;}
+  .custom-education-block{border-radius: 10px;}
+  .custom-each-education-section {width: 100% !important;}
+  .custom-work-exp-block, .custom-my-contact-block{border-radius: 10px;}
+  .custom-my-work-block{border-radius: 10px; padding: 10px !important}
+  .custom-each-work-exp-section{width: 100% !important; margin-left: 16px;}
+  .about-me-profile-block{width: 100% !important;}
+  .about-me-profile-desc-block{width: 100% !important;}
+  .custom-education-section-degree{font-weight: 600; margin-top: 5px; margin-bottom: 5px; font-size: 18px;}
+  .about-me-each-attrribute, .custom-project-header-desc-section, .custom-additional-skill-each-section{width: 100% !important;}
+  .custom-nav-bar{width: 100%;}
+  .custom_about_me_template{clear: both;}
+  .custom-skillset-template{margin-top: 10px;}
+  .custom-about-me-block{clear: both; border-radius: 10px;  }
+  .custom-skillset-section{width: 90% !important; padding-right: 0px !important;}
+  .w3-container{margin-left: 8px !important; margin-right: 8px !important;}
+  /* .custom-skill-track-percentage {color: black;position: relative;top: -8px;font-weight: 600;border-radius: 50%;font-size: 12px;width: 30px;height: 30px;display: inline-block;background: white;padding-top: 7px;} */
+  .custom-skill-track-percentage{ color: white; position: relative; top: -12px; font-weight: 600; border-radius: 50%; font-size: 10px; width: 26px; height: 26px; display: inline-block; background: black; padding-top: 6px;}
+  .each-skillset-section{display: inline-block; width: 100% !important; margin-right: 16px; margin-top: 16px; padding: 0px 20px 30px 20px; background: #f7f7f7;}
+
+  .custom-content-block{padding-left: 16px !important; padding-right: 16px; }
+  .custom-project-content-block{padding-left: 0px !important; padding-right: 0px; }
+  .custom-skillset-block{ padding-right: 0px !important; padding: 10px; border-radius: 10px;}
+  .custom-language-block{border-radius: 10px; }
+  .custom-project-block{box-shadow: rgba(0, 0, 0, 0.13) 0px 1px 3px 0px, rgba(0, 0, 0, 0.11) 0px 0px 0px 0px;  padding: 10px;border-radius: 10px;background: white;margin-top: 10px;}
+  .custom-language-each-block{width: 100% !important; margin-bottom: 16px; margin-right: 0px !important;}
+  .custom-contacts-each-block{width: 100% !important; margin-bottom: 16px;}
+  .custom-contacts-msg-area{width: 99%;}
+  .about-me-profile-pic{width: 96%; border-radius: 0%;}
+  .w3-modal-content{position: relative; top: 25%;}
+  .custom-skillset-progress-bar{margin-top: 1rem;}
+  .custom-language-section{ width: 100%;padding-left: 0px !important;padding-right: 0px !important;}
+  .custom-work-exp-section {width: 100%;padding-left: 0px !important;padding-right: 10px !important;}
+  .custom-contacts-map-section{top: 0px !important;}
+  .heading-title-layout{position: relative; left: -10px; font-size: 18px !important;}
+  .custom-title-prefix-img{width: 40px !important;}
+  .small-hr{margin-left: 11%; width: 50px !important;}
+  .custom-my-navbar{padding-top: 10px; padding-bottom: 10px;}
+  .custom-about-me-title{margin-top: 24px;}
+  .custom-side-bar{margin-left: 8px;margin-right: 8px;background: #ea8256!important;color: black!important;min-height: 570px;max-height: 600px;}
+  .custom-about-me-content-section{padding-right: 0px !important; }
+  .custom-additional-block{width: 100%; padding-left: 0px; margin-top: 10px; margin-bottom: 10px;}
+  .bgimg-1 {
+    background-image: url('static/images/final_portfolio/homepage/top-homepage/homepage-design2.jpg');
+    width: 100%;
+    max-height: 280px !important;
+    background-size: contain;
+  }
+
+}
+
+/* Turn off parallax scrolling for tablets and phones */
+@media only screen and (max-device-width: 1600px) {
+   /* .bgimg-2, .bgimg-3 {
+    background-attachment: fixed;
+  }
+  .bgimg-1 {
+    min-height: 650px;
+  } */
+}
+</style>
+<body>
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar custom-my-navbar" id="myNavbar" style="padding-top: 15px; padding-bottom: 10px;">
+    <div class="custom-nav-bar" style="">
+      <a class="w3-bar-item w3-button  w3-hide-medium w3-hide-large w3-right custom-nav-bar-btn" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
+        <i class="fa fa-bars"></i>
+      </a>
+      <a href="#home" class="w3-bar-item w3-button custom-menu custom-menu-home"><i class="fa fa-home custom-nav-icon"></i><span class="custom-nav-item">HOME</span></a>
+      <a href="#about" class="w3-bar-item w3-button w3-hide-small custom-menu"><i class="fa fa-user custom-nav-icon"></i> <span class="custom-nav-item">ABOUT</span></a>
+      <a href="#portfolio" class="w3-bar-item w3-button w3-hide-small custom-menu"><i class="fa fa-th custom-nav-icon"></i><span class="custom-nav-item"> PORTFOLIO<span></a>
+      <a href="#contact" class="w3-bar-item w3-button w3-hide-small custom-menu"><i class="fa fa-envelope custom-nav-icon"></i> <span class="custom-nav-item">CONTACT</span></a>
+    </div>
+  </div>
+
+  <!-- Navbar on small screens -->
+  <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium custom-side-bar">
+    <div class="" style="text-align: center;">
+        <div class="">
+            <div class="" style="margin-bottom: 12px;">
+                <img src="static/images/moumita-logo-design/moumita_profile.jpg" alt="" style="width: 100px; border-radius: 50%; padding: 3px; margin-top: 100px; ">
+                <!-- <img src="static/images/final_portfolio/homepage/top-homepage/homepage-design2.jpg" alt="" style="width: 100px; border-radius: 50%; padding: 3px; margin-top: 100px; "> -->
+
+            </div>
+            <div class="" >
+                <span style="font-size: 20px; ">Moumita Biswas</span>
+            </div>
+        </div>
+    </div>
+    <div class="" style="margin-top: 32px; padding-bottom: 60px; margin-left: 10px; ">
+      <a href="#about" class="w3-bar-item w3-button " onclick="toggleFunction()"><span style="margin-right: 10px;"><i class="fa fa-user" aria-hidden="true"></i></span> ABOUT</a>
+      <a href="#portfolio" class="w3-bar-item w3-button" onclick="toggleFunction()"><span style="margin-right: 10px;"><i class="fa fa-user" aria-hidden="true"></i></span> PORTFOLIO</a>
+      <a href="#contact" class="w3-bar-item w3-button" onclick="toggleFunction()"><span style="margin-right: 10px;"><i class="fa fa-envelope" aria-hidden="true"></i></span> CONTACT</a>
+      <!-- <a href="#" class="w3-bar-item w3-button">SEARCH</a> -->
+    </div>
+
+  </div>
+</div>
+
+<!-- First Parallax Image with Logo Text -->
+<div class="bgimg-1 w3-display-container w3-opacity-min" id="home"></div>
+
+<!-- Container (About Section) -->
+
+
+<div class="w3-content w3-container" id="about">
+    <div><img class="loader-img" src="static/images/ofc/pdfImg1.png"  alt=""></div>
+    <div class="custom-about-me-block" id="custom_about_me_block">
+      <div class="loader-block" id="custom_about_me_loader" style="display: block;">
+        <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        <!-- <i class="fa fa-spinner" aria-hidden="true"></i> -->
+
+      </div>
+      <div id="custom_about_me_template" style="display: none;">
+      </div>
+    </div>
+
+    <div class="custom-skillset-block" id="custom_skillset_block">
+      <div class="loader-block" id="custom_skillset_loader" style="display: block;">
+        <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+        <!-- <i class="fa fa-spinner" aria-hidden="true"></i> -->
+
+      </div>
+      <div class="custom-skillset-template" id="custom_skillset_template" style="display: none;">
+      </div>
+    </div>
+
+  <!-- =================================    EDUCATION SECTION START ======================================== -->
+  <div class="custom-education-block" id="custom_education_block">
+    <div class="loader-block" id="custom_education_loader" style="display: block;">
+      <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+    </div>
+    <div class="custom-education-template" id="custom_education_template" style="display: none;">
+    </div>
+  </div>
+
+  <!-- <div class="custom-project-block" id="custom_project_block">
+    <div class="loader-block" id="custom_project_loader" style="display: block;">
+      <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+    </div>
+    <div class="custom-project-template" id="custom_project_template" style="display: none;">
+    </div>
+  </div> -->
+
+
+
+  <!-- =================================    EDUCATION SECTION  END ======================================== -->
+
+  <!-- =================================    WORK EXP SECTION START ======================================== -->
+  <div class="custom-work-exp-block" id="custom_work_exp_block">
+    <div class="loader-block" id="custom_work_exp_loader" style="display: block;">
+      <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+      <!-- <i class="fa fa-spinner" aria-hidden="true"></i> -->
+
+    </div>
+    <div class="custom-work-exp-template" id="custom_work_exp_template" style="display: none;">
+    </div>
+  </div>
+
+  <div class="custom-language-block" id="custom_language_block">
+    <div class="loader-block" id="custom_language_loader" style="display: block;">
+      <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+      <!-- <i class="fa fa-spinner" aria-hidden="true"></i> -->
+    </div>
+    <div class="custom-language-template" id="custom_language_template" style="display: none;">
+    </div>
+  </div>
+
+  <!-- =================================    WORK EXP SECTION  END ======================================== -->
+
+</div>
+
+
+
+<!-- Container (Portfolio Section) -->
+<div class="w3-content w3-container custom-my-work-block" id="portfolio">
+  <div class="">
+    <div class="heading-title-block" style="padding-left: 10px;">
+      <h3 class=" heading-title-layout">
+        <!-- <img src="static/images/final_portfolio/m-logo/m-logo-1.png" alt="" style="width: 50px;" /> -->
+        <img src="static/images/final_portfolio/icon/m_logo.png" alt="" class="custom-title-prefix-img" style="width: 50px;" />
+
+        My Work
+      </h3>
+      <hr class="small-hr" >
+    </div>
+
+    <div class="">
+      <div id="workCategoryContainer" class="">
+        <p class="w3-center"><em>Here are some of my latest work.<br> Click on the images to make them bigger</em></p><br>
+        <hr style="border-top: 1px solid black;">
+        <div class="" style="width: 100%;">
+            <div  class="work-cat-arrow-block" style="" >
+                <i id="workCategory_left_arrow" class="fa fa-angle-left workCategory-left-arrow" onclick="onClickworkCategoryArrowIcon(event, 'left_arrow')" style="" aria-hidden="true"></i>
+            </div>
+            <div class="work-cat-items-block" style="">
+                <div class="work-category scrollmenu" id="workCategory"></div>
+            </div>
+            <div class="work-cat-arrow-block" style=""  >
+                <i id="workCategory_right_arrow" class="fa fa-angle-right workCategory-right-arrow" onclick="onClickworkCategoryArrowIcon(event, 'right_arrow')" style="" aria-hidden="true"></i>
+            </div>
+        </div>
+
+        <div class="custom-work-category-block">
+            <div class="custom-work-category-loader" id="custom_work_category_loader" style="display: block;">
+              <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+            </div>
+            <div class="custom-work-category-template" id="custom_work_category_template" style="display: none;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal for full size images on click-->
+<div id="modal01" class="w3-modal w3-black" onclick="this.style.display='none'">
+  <span class="w3-button w3-large w3-black w3-display-topright" title="Close Modal Image"><i class="fa fa-remove"></i></span>
+  <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent ">
+    <img id="img01" class="w3-image">
+    <p id="caption" class="w3-opacity w3-large"></p>
+  </div>
+</div>
+
+<!-- Third Parallax Image with Portfolio Text -->
+<div class="bgimg-3 w3-display-container w3-opacity-min">
+  <!-- <div class="w3-display-middle">
+     <span class="w3-xxlarge w3-text-white w3-wide" style="color: black;">CONTACT</span>
+  </div> -->
+</div>
+
+<!-- Container (Contact Section) -->
+
+
+
+<div class="w3-content w3-container w3-padding-64 custom-my-contact-block" id="contact">
+  <div class="custom-contact-block" id="custom_contact_block">
+    <div class="loader-block" id="custom_contact_loader" style="display: block;">
+      <img class="loader-img" src="static/images/pleaseWait1.gif"  alt="">
+      <!-- <i class="fa fa-spinner" aria-hidden="true"></i> -->
+    </div>
+    <div class="custom-contact-template" id="custom_contact_template" style="display: none;">
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="w3-center w3-black w3-padding-64 w3-opacity w3-hover-opacity-off">
+  <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+  <!-- <div class="w3-xlarge w3-section">
+    <i class="fa fa-facebook-official w3-hover-opacity"></i>
+    <i class="fa fa-instagram w3-hover-opacity"></i>
+    <i class="fa fa-snapchat w3-hover-opacity"></i>
+    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+    <i class="fa fa-twitter w3-hover-opacity"></i>
+    <i class="fa fa-linkedin w3-hover-opacity"></i>
+  </div> -->
+</footer>
+
+<script>
+var socket = io();
+// Modal Image Gallery
+function onClick(element) {
+  document.getElementById("img01").src = element.src;
+  document.getElementById("modal01").style.display = "block";
+  var captionText = document.getElementById("caption");
+  captionText.innerHTML = element.alt;
+}
+
+// Change style of navbar on scroll
+window.onscroll = function() {myFunction()};
+function myFunction() {
+    var navbar = document.getElementById("myNavbar");
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        navbar.className = "w3-bar" + " w3-card" + " w3-animate-top" + " w3-white";
+    } else {
+        navbar.className = navbar.className.replace(" w3-card w3-animate-top w3-white", "");
+    }
+}
+
+// Used to toggle the menu on small screens when clicking on the menu button
+function toggleFunction() {
+    var x = document.getElementById("navDemo");
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+    } else {
+        x.className = x.className.replace(" w3-show", "");
+    }
+}
+// =====================================================================================
+
+let workCategoryStartIndex = 0;
+let currentSelectedWorkCategory = "Education";
+let workCategory = [
+  {name : "Education"},
+  {name : "Consulting And Accounting"},
+  {name : "Beauty"},
+  {name : "Nature Source"},
+  {name : "Illustration"},
+  {name : "Media And Technology"},
+  {name : "Medical"},
+  {name : "Real Estate"},
+  {name : "Restaurant"},
+  {name : "Sports"},
+  {name : "Service Industries"},
+];
+function createWordByCategoryList(start, selectElementId){
+    let template = '';
+    let itemsTemplate = '';
+    for (var i = start; i < workCategory.length; i++) {
+          let id = workCategory[i].name.replace(/\s+/g, '_');
+          itemsTemplate += '<a href="#" onclick="return false;" style=""> <div id="'+id+'" class="category-item" onclick="onClickWorkCatItem(event)"> '+workCategory[i].name+'</div> </a>';
+    }
+    document.getElementById("workCategory").innerHTML = itemsTemplate;
+    document.getElementById("workCategory_left_arrow").style.display = "none";
+    if(selectElementId !== undefined && document.getElementById(selectElementId) !== null){
+        document.getElementById(selectElementId).style.background = "var(--default-theme-color)";
+        document.getElementById(selectElementId).style.color = "white";
+    }
+};
+
+(function init(){
+  createWordByCategoryList(0, currentSelectedWorkCategory);
+
+  socket.emit("request-portfolio-data", {apiRef : 'about_me_section', blockId: 'custom_about_me_block', templateId: 'custom_about_me_template', loaderId: 'custom_about_me_loader'});
+
+  socket.emit("request-portfolio-data", {apiRef : 'logo_by_category', blockId: 'custom_work_category_block', templateId: 'custom_work_category_template', loaderId: 'custom_work_category_loader', logoCategory : "Education"});
+
+  socket.emit("request-portfolio-data", {apiRef : 'skillset', blockId: 'custom_skillset_block', templateId: 'custom_skillset_template', loaderId: 'custom_skillset_loader'});
+
+  socket.emit("request-portfolio-data", {apiRef : 'language', blockId: 'custom_language_block', templateId: 'custom_language_template', loaderId: 'custom_language_loader'});
+
+  socket.emit("request-portfolio-data", {apiRef : 'education_section', blockId: 'custom_education_block', templateId: 'custom_education_template', loaderId: 'custom_education_loader'});
+
+  // socket.emit("request-portfolio-data", {apiRef : 'projects_section', blockId: 'custom_project_block', templateId: 'custom_project_template', loaderId: 'custom_project_loader'});
+
+  socket.emit("request-portfolio-data", {apiRef : 'professional_experience_section', blockId: 'custom_work_exp_block', templateId: 'custom_work_exp_template', loaderId: 'custom_work_exp_loader'});
+
+  socket.emit("request-portfolio-data", {apiRef : 'contact_me_section', blockId: 'custom_contact_block', templateId: 'custom_contact_template', loaderId: 'custom_contact_loader'});
+
+})();
+
+socket.on("response-portfolio-data", (data) => {
+    console.log("==== response from portfolio data ====");
+    console.log("@@@ data :: ", data.template);
+    if(data.blockId !== null && data.blockId !== undefined){
+
+    }
+    if(data.loaderId !== null && data.loaderId !== undefined && data.loaderId !== ''){
+        document.getElementById(data.loaderId).style.display = "none";
+    }
+    if(data.templateId !== null && data.templateId !== undefined && data.templateId !== ''){
+      document.getElementById(data.templateId).style.display = "block";
+      document.getElementById(data.templateId).innerHTML = '';
+      document.getElementById(data.templateId).innerHTML = data.template;
+    }
+    // document.getElementById("workCategoryContainer").innerHTML = '';
+    // document.getElementById("workCategoryContainer").innerHTML = data.template;
+})
+
+
+window.onClickworkCategoryArrowIcon = function(event, arrow){
+    // console.log("==== calling on click work category ====");
+    if(arrow === "left_arrow"){
+        if(workCategoryStartIndex !== 0){
+            workCategoryStartIndex -= 1;
+            createWordByCategoryList(workCategoryStartIndex, currentSelectedWorkCategory);
+            document.getElementById("workCategory_left_arrow").style.display = "block";
+            document.getElementById("workCategory_right_arrow").style.display = "block";
+        }else if(workCategoryStartIndex === 0){
+          document.getElementById("workCategory_left_arrow").style.display = "none";
+        }else{
+            document.getElementById("workCategory_left_arrow").style.display = "none";
+        }
+    }else if(arrow === "right_arrow"){
+        if(workCategoryStartIndex <= 3){
+            workCategoryStartIndex += 1;
+            createWordByCategoryList(workCategoryStartIndex, currentSelectedWorkCategory);
+            document.getElementById("workCategory_left_arrow").style.display = "block";
+        }else{
+          document.getElementById("workCategory_right_arrow").style.display = "none";
+        }
+    }
+    console.log("@@ workCategoryStartIndex : ", workCategoryStartIndex);
+}
+
+window.onClickWorkCatItem = function(event){
+    console.log("=== on click work catgory item ===");
+    document.getElementById(currentSelectedWorkCategory).style.background = "#E8EAED";
+    document.getElementById(currentSelectedWorkCategory).style.color = "black";
+    let id = event.target.id;
+    // id = id.replace(/\s+/g, ' ');
+    console.log("@@@ id :: ", id);
+    currentSelectedWorkCategory = id;
+    document.getElementById(currentSelectedWorkCategory).style.background = "var(--default-theme-color)";
+    document.getElementById(currentSelectedWorkCategory).style.color = "white";
+    id = id.replace(/\_+/g, ' ');
+    console.log("### id :: ", id);
+    // socket.emit("request-portfolio-data", {apiRef : 'logo_by_category', logoCategory : id});
+    socket.emit("request-portfolio-data", {apiRef : 'logo_by_category', blockId: 'custom_work_category_block', templateId: 'custom_work_category_template', loaderId: 'custom_work_category_loader', logoCategory : id});
+
+
+}
+</script>
+
+</body>
+</html>

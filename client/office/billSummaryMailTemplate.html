@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+<h2>HTML Table</h2>
+
+<table id="table">
+  <tr>
+    <th >Bill Date</th>
+    <th >Bill Due Date</th>
+    <th >Unpaid non vat amount</th>
+    <th >Unpaid vat amount</th>
+    <th >total amount</th>
+
+  </tr>
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Germany</td>
+    <!-- <td>none</td> -->
+
+    <td></td>
+    <td>Germany</td>
+    <td></td>
+
+  </tr>
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Germany</td>
+    <!-- <td>none</td> -->
+
+    <td></td>
+    <td>Germany</td>
+    <td></td>
+
+  </tr>
+
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Germany</td>
+    <!-- <td>none</td> -->
+
+    <td></td>
+    <td>Germany</td>
+    <td></td>
+
+  </tr>
+
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Germany</td>
+    <!-- <td>none</td> -->
+
+    <td></td>
+    <td>Germany</td>
+    <td></td>
+
+  </tr>
+
+
+</table>
+
+<script>
+        function Geeks() {
+            console.log("============= calling geeks fun ============");
+            var tble = document.getElementById('table');
+            document.getElementById('table').style.background = "yellow"
+            var row = tble.rows; // Getting the rows
+            let index = null;
+            let indexArr = [];
+            console.log("@@@ row:: ", row);
+            for(let i=0; i<row.length; i++){
+                let isEmptyColumn = true;
+                for(let j=0; j<row[i].cells.length; j++){
+                    let str = row[i].cells[j].innerHTML;
+                    // console.log("@@@ str : ", str.length);
+                    // console.log("@@@ str length: ", str.length);
+                    if(str.length !== 1){
+                        isEmptyColumn = false;
+                    }
+                    if(str.length === 0){
+                      row[i].deleteCell(j);
+                    }
+                }
+                if(isEmptyColumn){
+                    indexArr.push(i);
+                }
+            }
+            console.log("@@@ indexArr :: ", indexArr);
+            // for (let i = 0; i < indexArr.length; i++) {
+            //     let index = indexArr[i];
+            //     console.log("@@@ indexarr index : ", index);
+            //     // row[0].deleteCell[2];
+            //     // row[0].deleteCell[3];
+            //
+            //     let id = "th"+index;
+            //     document.getElementById(id).style.width = "0%";
+            // }
+                console.log("=================");
+                row[0].deleteCell(2);
+                row[0].deleteCell(3);
+        }
+        Geeks();
+    </script>
+
+</body>
+</html>

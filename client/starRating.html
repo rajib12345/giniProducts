@@ -1,0 +1,254 @@
+<!DOCTYPE html><html lang="en" dir="ltr">  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+      .checked {color: red;}
+      .cusatom-star{font-size: 3rem; color: gray;}
+      /* .cusatom-star:hover{color: red !important;} */
+      label{font-size: 16px !important; font-weight: 700;}
+      .rating-option{width: 150px; padding: 5px 10px; background-color: grey; color: white;}
+      .rating-block{margin-top: 32px; margin-left: 16px; width: 100%;}
+      .question-block{margin-left: 5px; display: inline-block; width: 80%;}
+      .checkbox-block{display: inline-block; margin-left: 5px;}
+      .checkbox-star-block{display: inline-block;}
+      .custom-input-check{width: 22px !important; height: 22px !important;}
+      .checkbox-section{}
+      .rating-block-content{margin-top: 20px;}
+      .custom-disabled-star{font-size: 3rem; color: gray;}
+      .checkbox-text{margin-left: 5px; position: relative; top: -6px;}
+      .submit-btn-block{margin-top: 20px; }
+      .submit-btn{background-color: red; color: white; padding: 5px 40px; border: none;}
+      .disabled-submit-btn{background-color: grey; color: white; padding: 5px 40px; border: none;}
+      .count-block{text-align: center; top: -20px; padding-top: 6px; font-size: 20px;background-color: red; display: inline-block; background-color: grey; font-weight: 700; color: white; display: inline-block; width: 40px; height: 40px; border-radius: 50%; vertical-align: top;}
+    </style>
+
+
+  </head>
+  <body id="mainContentBlock" >
+          <center>
+              <h1>STAR RATING</h1>
+          </center>
+
+          <div id="ratingBlock" class="rating-block" >
+
+          </div>
+          <center>
+            <div class="submit-btn-block">
+              <button id="disabledSubmitBtn" class="disabled-submit-btn" style="" disabled type="button" name="button">Submit</button>
+              <button id="submitBtn" class="submit-btn" style="" onclick="onSubmitRating()" type="button" name="button">Submit</button>
+            </div>
+          </center>
+
+
+
+      <script type="text/javascript">
+        // var app = angular.module('movieApp', []);
+        // app.controller('popularMovies', function($scope){
+
+            var questionArr = [
+              {question: 'This is question one This is question one This is question one.', rating: 'yes'},
+              {question: 'This is question two This is question one This is question one.', rating: 'yes'},
+              {question: 'This is question three This is question one This is question one.', rating: 'dropdown'},
+              {question: 'This is question four This is question one This is question one.', rating: 'checkbox'},
+            ];
+            let defaultRatingCount = 0;
+            var answerArr = {};
+            var tracIndexkArr = [];
+            var selectedDrpdownVal = 'yes';
+            let onSelectCheckBoxVal = null;
+            (function(){
+              console.log("=== calling on init function ===");
+              let ratingTemplate = '';
+              let optionTemplate = '';
+              for (var i = 0; i < questionArr.length; i++) {
+                  if(questionArr[i].rating === 'yes'){
+                      defaultRatingCount++;
+                      optionTemplate = `
+                        <div id="startBlock`+i+`">
+                          <span id="star`+i.toString()+`1" class="fa fa-star   cusatom-star" style="color: gray;" onclick="onClickStar('star',`+i.toString()+`, 1)" ></span>
+                          <span id="star`+i.toString()+`2" class="fa fa-star   cusatom-star" style="color: gray;" onclick="onClickStar('star',`+i.toString()+`, 2)" ></span>
+                          <span id="star`+i.toString()+`3" class="fa fa-star   cusatom-star" style="color: gray;" onclick="onClickStar('star',`+i.toString()+`, 3)" ></span>
+                          <span id="star`+i.toString()+`4" class="fa fa-star  cusatom-star" style="color: gray;" onclick="onClickStar('star',`+i.toString()+`, 4)" ></span>
+                          <span id="star`+i.toString()+`5" class="fa fa-star  cusatom-star" style="color: gray;" onclick="onClickStar('star',`+i.toString()+`, 5)" ></span>
+                        </div>
+                      `
+                  }else if(questionArr[i].rating !== null && questionArr[i].rating !== undefined && questionArr[i].rating === 'dropdown'){
+                    optionTemplate = `
+                    <select id="ratingOption" name="ratingOption" class="rating-option" onclick="onClickRatingOption('ratingOption', `+i.toString()+`)">
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                    `
+                  }else{
+                    optionTemplate = `
+                    <div class="checkbox-section" id="checkboxSection">
+                      <div class="checkbox-star-block">
+                        <div id="startBlock`+i+`" style="display: block;">
+                          <span id="star`+i.toString()+`1" class="fa fa-star   cusatom-star" style="" onclick="onClickStar('star',`+i.toString()+`, 1)" ></span>
+                          <span id="star`+i.toString()+`2" class="fa fa-star   cusatom-star" style="" onclick="onClickStar('star',`+i.toString()+`, 2)" ></span>
+                          <span id="star`+i.toString()+`3" class="fa fa-star   cusatom-star" style="" onclick="onClickStar('star',`+i.toString()+`, 3)" ></span>
+                          <span id="star`+i.toString()+`4" class="fa fa-star  cusatom-star" style="" onclick="onClickStar('star',`+i.toString()+`, 4)" ></span>
+                          <span id="star`+i.toString()+`5" class="fa fa-star  cusatom-star" style="" onclick="onClickStar('star',`+i.toString()+`, 5)" ></span>
+                        </div>
+                        <div id="diasbledStarBlock" style="display: none;">
+                          <span id="star1" class="fa fa-star  custom-disabled-star" style="" ></span>
+                          <span id="star2" class="fa fa-star  custom-disabled-star" style="" ></span>
+                          <span id="star3" class="fa fa-star  custom-disabled-star" style="" "></span>
+                          <span id="star4" class="fa fa-star  custom-disabled-star" style="" "></span>
+                          <span id="star5" class="fa fa-star  custom-disabled-star" style="" "></span>
+                        </div>
+                      </div>
+                      <div class="checkbox-block">
+                        <input class="custom-input-check" type="checkbox" id="ratingCheckBox" onclick="onClickCheckBox(`+i.toString()+`)" name="raingCheckBox" >
+                        <label for="ratingCheckBox" class="checkbox-text" for="male">Check box value</label>
+                      </div>
+                     </div>
+                    `;
+                  }
+                  ratingTemplate += `
+                    <div style="" id="ratingBlock`+i.toString()+`">
+                        <div class="rating-block-content">
+                            <div class="count-block">`+(i+1)+`</div>
+                            <div class="question-block">
+                              <label for="" >`+questionArr[i].question+`</label>
+                              <div>
+                                `+optionTemplate+`
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                  `;
+              }
+              document.getElementById("ratingBlock").innerHTML = ratingTemplate;
+              if(document.getElementById("ratingBlock3") !== null && document.getElementById("ratingBlock3") !== undefined ){
+                  document.getElementById("ratingBlock3").style.display = "none";
+              }
+              document.getElementById("diasbledStarBlock").style.display = "none";
+              document.getElementById("disabledSubmitBtn").style.display = "block";
+              document.getElementById("submitBtn").style.display = "none";
+
+
+            })();
+
+            window.onClickStar = function(blockname, starid, index ){
+              console.log("=== @@@ on click start @@@ ===");
+              let ansObj = {};
+              ansObj.question = questionArr[starid].question;
+              ansObj.rating = index;
+              answerArr[starid] = ansObj;
+              console.log("## answerArr : ", answerArr);
+              for (let i = 1; i <= 5; i++) {
+                  let dynStarId = '';
+                  dynStarId = blockname+starid+i.toString();
+                  if(i <= index){
+                    document.getElementById(dynStarId).style.color = 'red';
+                  }else{
+                    document.getElementById(dynStarId).style.color = 'black';
+                  }
+              }
+
+
+              if(tracIndexkArr.indexOf(starid) !== null && tracIndexkArr.indexOf(starid) === -1 ){
+                  tracIndexkArr.push(starid);
+                  console.log("tracIndexkArr : ", tracIndexkArr.length);
+                  if((selectedDrpdownVal === 'yes' && tracIndexkArr.length === defaultRatingCount) ||
+                  selectedDrpdownVal === 'no' && tracIndexkArr.length === defaultRatingCount + 1) {
+                    document.getElementById("disabledSubmitBtn").style.display = "none";
+                    document.getElementById("submitBtn").style.display = "block";
+                  }
+
+              }
+
+            }
+            // onmouseover="onHoverStar(`+i.toString()+`,1)"
+
+            // window.onHoverStar = function(starid,index){
+            //   // console.log("== on hover start ==");
+            //   // console.log("starid : ", starid);
+            //   // console.log("index : ", index);
+            //
+            //   var id = null;
+            //   for (let i = 1; i <= 5; i++) {
+            //       id = 'star'+starid+i.toString();
+            //       if(i <= index){
+            //         document.getElementById(id).style.color = 'red';
+            //       }
+            //   }
+            // }
+
+
+            window.onClickRatingOption = function(rationOptionId, index){
+                let ansObj = {};
+                let ratingOptionValue = null;
+                ratingOptionValue = document.getElementById(rationOptionId).value;
+                selectedDrpdownVal = ratingOptionValue;
+                if(ratingOptionValue === 'no'){
+                  document.getElementById("ratingBlock3").style.display = "block";
+                  if((tracIndexkArr.length !== defaultRatingCount + 1) ){
+                    document.getElementById("disabledSubmitBtn").style.display = "block";
+                    document.getElementById("submitBtn").style.display = "none";
+                  }
+                }
+                ansObj.question = questionArr[index].question;
+                ansObj.rating = ratingOptionValue;
+                answerArr[index] = ansObj;
+                console.log("## answerArr : ", answerArr);
+
+            }
+
+            window.onSubmitRating = function(){
+              console.log("== on click submit btn ==");
+              console.log("answer arr : ", answerArr);
+              if(onSelectCheckBoxVal && answerArr[3] !== null && answerArr[3] !== undefined){
+                  // answerArr.splice (3, 1);
+                  delete answerArr['3'];
+                  console.log("after delete ans arr : ", answerArr);
+              }
+            }
+
+            window.onClickCheckBox = function(index){
+              console.log("== on click rating check box ==");
+              console.log("check box index val : ", index);
+              let checkVal = document.getElementById("ratingCheckBox").checked;
+              let starBlockId = 'startBlock'+index;
+              console.log("checkVal: ", checkVal);
+              onSelectCheckBoxVal = checkVal;
+              if(checkVal){
+                document.getElementById("diasbledStarBlock").style.display = "block";
+                if(document.getElementById(starBlockId) !== null && document.getElementById(starBlockId) !== undefined ){
+                    document.getElementById(starBlockId).style.display = "none";
+                }
+              }else{
+                document.getElementById("diasbledStarBlock").style.display = "none";
+                if(document.getElementById(starBlockId) !== null && document.getElementById(starBlockId) !== undefined ){
+                    document.getElementById(starBlockId).style.display = "block";
+                }
+              }
+
+              // on click check box submit btn action
+              if(checkVal && selectedDrpdownVal === 'no' && tracIndexkArr.length === defaultRatingCount){
+                  document.getElementById("disabledSubmitBtn").style.display = "none";
+                  document.getElementById("submitBtn").style.display = "block";
+              }
+            }
+
+
+
+
+        // });
+      </script>
+
+
+
+  </body>
+</html>

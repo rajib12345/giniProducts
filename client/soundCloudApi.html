@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://cdn.cloudmersive.com/js/email-validate-widget.js?4a95cd2a-efdc-4dd1-a4b8-d4ca27bd90fe" type="text/javascript"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+      div.scrollmenu {
+        /* background-color: #333; */
+        overflow: auto;
+        white-space: nowrap;
+      }
+
+      div.scrollmenu a {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        /* padding: 14px; */
+        text-decoration: none;
+      }
+
+      div.scrollmenu a:hover {
+        /* background-color: #777; */
+      }
+      .btn{
+        /* background-color: white; */
+      }
+      .one-line-ellipse-hscroll-bar{
+        white-space: nowrap;
+        /* width: auto; */
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+</style>
+    <script>
+
+    </script>
+  </head>
+  <body>
+
+    <div class="main-content" ng-app="quizApi" ng-controller="quizApiController">
+      <!-- THIS CODE IS FOR EMAIL VERIFICATION  -->
+      <!-- <input class="cloudmersiveEmailValidator" type="text" name="MyEmailField" id="MyEmail" /> -->
+
+      <div class="container-fluid">
+            <center><h3>Sound Cloud api preview</h3></center>
+            <div class="row">
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                <div id="soundCloudTemplate" class="col-lg-10 col-md-10 col-sm-10 col-xs-10 scrollmenu">
+
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+            </div>
+
+      </div>
+    </div>
+
+      <script>
+
+          var app = angular.module('quizApi', []);
+          app.controller('quizApiController', function($scope){
+              var client = io();
+              client.emit("sound-cloud-api-request", {from : "Api"});
+
+              client.on("sound-cloud-api-response", (data) => {
+                  // console.log("sound cloud api response : ", data.returnMsg);
+                  document.getElementById("soundCloudTemplate").innerHTML = data.returnMsg;
+              })
+          });
+
+          window.onOpenModal = function(url, type, api){
+              // console.log("==== call open modal function ====");
+              // console.log("== href value :: ", url);
+              // console.log("== type value :: ", type);
+              // console.log("== api name : ", api);
+              //
+              if(type !== undefined && type !== null && type === 'newWindow'){
+                window.open(url);
+              }else if(type !== undefined && type !== null && type === 'openModalWithContent'){
+                modalState = type;
+                client.emit("open-modal-with-content-request", {url : url, api: api});
+              }else if(type === "here map"){
+                 client.emit("here-map-api-request", {from : 'gini', placesCategory : url});
+              }else{
+                document.getElementById("urlIframe").src = url;
+                $("#URLModal").modal();
+              }
+
+          }
+      </script>
+
+
+  </body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        div.scrollmenu {
+          /* background-color: #333; */
+          overflow: auto;
+          white-space: nowrap;
+        }
+
+        div.scrollmenu a {
+          display: inline-block;
+          color: white;
+          /* text-align: center; */
+          padding: 14px;
+          text-decoration: none;
+        }
+
+        /* div.scrollmenu a:hover {
+          background-color: #777;
+        } */
+        .one-line-ellipse-hscroll-bar{
+          white-space: nowrap;
+          width: auto;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+    </style>
+    <script>
+      var socket = io();
+    </script>
+  </head>
+  <body ng-app="nearByApi" ng-controller="nearByApiController">
+      <h3 style="text-align: center;">Near By Places</h3>
+      <hr>
+      <div id="testTemplate" class="container-fluid scrollmenu">
+
+      </div>
+
+      <div class="">
+          <button type="button" name="button" onclick="onOpenModal()">open modal</button>
+      </div>
+      <!-- The Modal -->
+      <div class="modal" id="URLModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Modal Heading</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" style="height: 55rem; padding: 5px;">
+                <iframe id="urlIframe" src="" style="border: none; width: 100%; height: 100%;"></iframe>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <center> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> <center>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <script>
+          function hScroll(hScrollBody){
+              return '<div class="scrollmenu">'+hScrollBody+'</div>';
+          }
+          socket.emit("near-by-place-data", {});
+
+          socket.on('location-by-search-response', function(data){
+              // console.log("data .template :: ", data.template);
+              document.getElementById("testTemplate").innerHTML = data.template;
+              // document.getElementById("testTemplate").innerHTML = hScroll(data.template)
+
+          });
+
+
+      </script>
+
+      <script type="text/javascript">
+        var app = angular.module('nearByApi', []);
+        app.controller('nearByApiController', function($scope){
+          window.onOpenModal = function(url){
+              console.log("==== call open modal function ====");
+              console.log("== href value :: ", url);
+              document.getElementById("urlIframe").src = url;
+              $("#URLModal").modal();
+
+          }
+        });
+      </script>
+
+  </body>
+</html>
